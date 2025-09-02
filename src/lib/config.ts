@@ -1,3 +1,8 @@
+import * as dotenv from "dotenv";
+
+// Load .env file
+dotenv.config();
+
 // Simple configuration for Applied Epic API
 export interface ApiConfig {
   readonly baseUrl: string;
@@ -15,12 +20,17 @@ export class ConfigService {
   private constructor() {
     // Determine environment
     const environment = process.env.APPLIED_EPIC_ENV || "mock";
-    const isProduction = environment === "production";
 
     // Set URLs based on environment
-    const baseUrl = isProduction
-      ? "https://api.myappliedproducts.com"
-      : "https://api.mock.myappliedproducts.com";
+    let baseUrl: string;
+    switch (environment) {
+      case "production":
+        baseUrl = "https://api.myappliedproducts.com";
+        break;
+      default:
+        baseUrl = "https://api.mock.myappliedproducts.com";
+        break;
+    }
 
     this.config = {
       baseUrl,

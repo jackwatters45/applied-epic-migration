@@ -50,7 +50,11 @@ class AuthServiceImpl implements AuthService {
       const requestBody = new URLSearchParams({
         grant_type: "client_credentials",
         audience: "api.myappliedproducts.com/epic",
+        scope: "epic", // Required for mock API to return data
       });
+
+      console.log("🔐 Auth URL:", config.authUrl);
+      console.log("🔐 Auth request body:", requestBody.toString());
 
       const response = yield* Effect.tryPromise({
         try: () =>
