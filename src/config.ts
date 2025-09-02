@@ -1,19 +1,33 @@
-import type { ApiConfig, AuthCredentials } from "./types.js";
+// Simple configuration for Applied Epic API
+export interface ApiConfig {
+  readonly baseUrl: string;
+  readonly authUrl: string;
+  readonly credentials: {
+    readonly clientId: string;
+    readonly clientSecret: string;
+  };
+}
 
-// Configuration service for Applied Epic API
 export class ConfigService {
   private static instance: ConfigService;
   private config: ApiConfig;
 
   private constructor() {
-    // Default to mock environment - user should override with production credentials
+    // Determine environment
+    const environment = process.env.APPLIED_EPIC_ENV || "mock";
+    const isProduction = environment === "production";
+
+    // Set URLs based on environment
+    const baseUrl = isProduction
+      ? "https://api.myappliedproducts.com"
+      : "https://api.mock.myappliedproducts.com";
+
     this.config = {
-      baseUrl: "https://api.mock.myappliedproducts.com",
-      authUrl: "https://api.mock.myappliedproducts.com/v1/auth/connect/token",
+      baseUrl,
+      authUrl: `${baseUrl}/v1/auth/connect/token`,
       credentials: {
         clientId: process.env.APPLIED_EPIC_CLIENT_ID || "",
         clientSecret: process.env.APPLIED_EPIC_CLIENT_SECRET || "",
-        baseUrl: "https://api.mock.myappliedproducts.com",
       },
     };
   }
@@ -27,25 +41,6 @@ export class ConfigService {
 
   getConfig(): ApiConfig {
     return this.config;
-  }
-
-  setCredentials(credentials: AuthCredentials): void {
-    this.config.credentials = credentials;
-  }
-
-  setEnvironment(isProduction: boolean): void {
-    if (isProduction) {
-      this.config.baseUrl = "https://api.myappliedproducts.com";
-      this.config.authUrl =
-        "https://api.myappliedproducts.com/v1/auth/connect/token";
-      this.config.credentials.baseUrl = "https://api.myappliedproducts.com";
-    } else {
-      this.config.baseUrl = "https://api.mock.myappliedproducts.com";
-      this.config.authUrl =
-        "https://api.mock.myappliedproducts.com/v1/auth/connect/token";
-      this.config.credentials.baseUrl =
-        "https://api.mock.myappliedproducts.com";
-    }
   }
 
   validateCredentials(): boolean {
