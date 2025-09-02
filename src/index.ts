@@ -4,7 +4,7 @@ import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
 import { AuthService, AuthServiceLive } from "./auth.js";
 import { ConfigService } from "./config.js";
 import { DownloadService, DownloadServiceLive } from "./download.js";
-import type { ListAttachmentsParams } from "./types.js";
+import type { ListAttachmentsParams } from "./lib/types.js";
 
 // Create the main application layer
 const AppLayer = Layer.merge(
@@ -22,17 +22,18 @@ const exampleProgram = Effect.gen(function* () {
   const attachmentsService = yield* AttachmentsService;
   const downloadService = yield* DownloadService;
 
-  // Configure credentials (in production, use environment variables)
-  configService.setCredentials({
-    clientId: process.env.APPLIED_EPIC_CLIENT_ID || "your-client-id",
-    clientSecret:
-      process.env.APPLIED_EPIC_CLIENT_SECRET || "your-client-secret",
-    baseUrl: "https://api.mock.myappliedproducts.com",
-  });
+  // Configuration is loaded from environment variables:
+  // APPLIED_EPIC_CLIENT_ID, APPLIED_EPIC_CLIENT_SECRET, APPLIED_EPIC_ENV
+  const config = configService.getConfig();
 
-  // Set to production if needed
-  // configService.setEnvironment(true)
+  if (!configService.validateCredentials()) {
+    console.log("⚠️  No credentials configured. Using mock API.");
+    console.log(
+      "   Set APPLIED_EPIC_CLIENT_ID and APPLIED_EPIC_CLIENT_SECRET to use real API.",
+    );
+  }
 
+  console.log(`🌍 Using ${config.baseUrl}`);
   console.log("🔐 Authenticating with Applied Epic API...");
 
   // Get access token

@@ -2,8 +2,8 @@ import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { ConfigService } from "./config.js";
-import { AuthenticationError, NetworkError, ParseError } from "./errors.js";
-import type { AuthToken } from "./types.js";
+import { AuthenticationError, NetworkError, ParseError } from "./lib/errors.js";
+import type { AuthToken } from "./lib/types.js";
 
 // Auth service interface
 export interface AuthService {
