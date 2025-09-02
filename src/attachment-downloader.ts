@@ -5,11 +5,13 @@ import { DownloadService, DownloadServiceLive } from "./download.js";
 import { AuthServiceLive } from "./lib/auth.js";
 import type { ListAttachmentsParams } from "./lib/types.js";
 
-// Create the application layer
-export const AppLayer = Layer.mergeAll(
+// Create the application layer with proper dependencies
+export const AppLayer = Layer.merge(
   AuthServiceLive,
-  AttachmentsServiceLive,
-  DownloadServiceLive,
+  Layer.merge(
+    Layer.provide(AttachmentsServiceLive, AuthServiceLive),
+    DownloadServiceLive,
+  ),
 );
 
 /**
@@ -27,9 +29,10 @@ export const downloadAccountAttachments = (
 
     // List attachments for the specific account
     const params: ListAttachmentsParams = {
-      account: accountId,
+      ...(accountId ? { account: accountId } : {}), // Only add account filter if provided
       clientAccessible: true,
       active_status: "active",
+      fileStatus: "OK", // Only get downloadable files
       limit: 100, // Adjust as needed
     };
 
@@ -48,30 +51,54 @@ export const downloadAccountAttachments = (
     let errors = 0;
 
     for (const attachment of attachmentsResponse._embedded.attachments) {
-      try {
-        if (attachment.file.url && attachment.file.status === "OK") {
-          console.log(`⬇️  Downloading: ${attachment.description}`);
+      console.log(`\n📎 Processing: ${attachment.description}`);
 
-          const result = yield* downloadService.downloadAttachment(
-            attachment,
-            outputPath,
-          );
+      // Skip inactive or problematic files
+      if (!attachment.active || attachment.file.status !== "OK") {
+        console.log(
+          `   ⏭️  Skipped: ${!attachment.active ? "Inactive" : `Status: ${attachment.file.status}`}`,
+        );
+        skipped++;
+        continue;
+      }
 
-          if (result.success) {
-            console.log(`✅ Downloaded: ${result.fileName}`);
-            downloaded++;
-          } else {
-            console.log(`❌ Failed: ${result.message}`);
-            errors++;
-          }
-        } else {
-          console.log(
-            `⏭️  Skipped: ${attachment.description} (no URL or invalid status)`,
-          );
-          skipped++;
-        }
-      } catch (error) {
-        console.log(`❌ Error processing ${attachment.description}:`, error);
+      // Get full attachment details (includes download URL)
+      const fullAttachmentResult = yield* Effect.either(
+        attachmentsService.getAttachment(attachment.id),
+      );
+
+      if (fullAttachmentResult._tag === "Left") {
+        console.log(
+          `   ❌ Failed to get details: ${fullAttachmentResult.left.message}`,
+        );
+        errors++;
+        continue;
+      }
+
+      const fullAttachment = fullAttachmentResult.right;
+
+      if (!fullAttachment.file?.url) {
+        console.log("   ⏭️  Skipped: No download URL");
+        skipped++;
+        continue;
+      }
+
+      console.log(`   ⬇️  Downloading from: ${fullAttachment.file.url}`);
+
+      // Try to download with error handling
+      const downloadResult = yield* Effect.either(
+        downloadService.downloadAttachment(fullAttachment, outputPath),
+      );
+
+      if (downloadResult._tag === "Right" && downloadResult.right.success) {
+        console.log(`   ✅ Downloaded: ${downloadResult.right.fileName}`);
+        downloaded++;
+      } else {
+        const errorMsg =
+          downloadResult._tag === "Left"
+            ? downloadResult.left.message
+            : downloadResult.right.message;
+        console.log(`   ❌ Failed: ${errorMsg}`);
         errors++;
       }
     }

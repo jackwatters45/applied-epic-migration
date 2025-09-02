@@ -4,11 +4,8 @@ import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { AuthService } from "./lib/auth.js";
 import { ConfigService } from "./lib/config.js";
-import {
-  type AuthenticationError,
-  NetworkError,
-  ParseError,
-} from "./lib/errors.js";
+import type { AuthenticationError } from "./lib/errors.js";
+import { NetworkError, ParseError } from "./lib/errors.js";
 import type {
   Attachment,
   AttachmentsResponse,
@@ -134,14 +131,17 @@ class AttachmentsServiceImpl implements AttachmentsService {
 
       const url = `${config.baseUrl}/epic/attachment/v2/attachments${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
 
+      const headers = {
+        Authorization: `Bearer ${token.access_token}`,
+        Accept: "application/json",
+        "Accept-Language": "en-US",
+      };
+
       const response = yield* Effect.tryPromise({
         try: () =>
           fetch(url, {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${token.access_token}`,
-              Accept: "application/json",
-            },
+            headers,
           }),
         catch: (error) =>
           new NetworkError({
@@ -151,16 +151,33 @@ class AttachmentsServiceImpl implements AttachmentsService {
       });
 
       if (!response.ok) {
-        const errorData = yield* Effect.tryPromise({
-          try: () => response.json() as Promise<{ detail?: string }>,
-          catch: () => ({ detail: undefined }),
-        }).pipe(Effect.orElseSucceed(() => ({ detail: undefined })));
+        const errorText = yield* Effect.tryPromise({
+          try: () => response.text(),
+          catch: () => "",
+        }).pipe(Effect.orElseSucceed(() => ""));
+
+        console.error("❌ API Error Response:");
+        console.error("   Status:", response.status, response.statusText);
+        console.error("   Body:", errorText);
+
+        let errorMessage = `Failed to list attachments: ${response.statusText}`;
+
+        // Try to parse JSON error
+        if (errorText) {
+          try {
+            const parsed = JSON.parse(errorText);
+            if (parsed.detail) {
+              errorMessage = parsed.detail;
+            }
+          } catch {
+            // If not JSON, use the text as-is
+            errorMessage = errorText || errorMessage;
+          }
+        }
 
         return yield* Effect.fail(
           new NetworkError({
-            message:
-              errorData.detail ||
-              `Failed to list attachments: ${response.statusText}`,
+            message: errorMessage,
             status: response.status,
           }),
         );
@@ -192,14 +209,17 @@ class AttachmentsServiceImpl implements AttachmentsService {
 
       const url = `${config.baseUrl}/epic/attachment/v2/attachments/${id}`;
 
+      const headers = {
+        Authorization: `Bearer ${token.access_token}`,
+        Accept: "application/json",
+        "Accept-Language": "en-US",
+      };
+
       const response = yield* Effect.tryPromise({
         try: () =>
           fetch(url, {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${token.access_token}`,
-              Accept: "application/json",
-            },
+            headers,
           }),
         catch: (error) =>
           new NetworkError({

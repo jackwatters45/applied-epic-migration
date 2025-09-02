@@ -20,3 +20,7 @@
 
 - **Pre-commit**: Biome check/fix, TypeScript check, Python ruff check/format
 - **Pre-push**: Biome check/fix, TypeScript check
+
+## Folders
+
+- Use `scratchpad` for temporary code snippets and experiments.

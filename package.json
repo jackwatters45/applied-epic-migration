@@ -9,6 +9,7 @@
     "check": "biome check --fix ."
   },
   "dependencies": {
+    "dotenv": "^17.2.1",
     "effect": "^3.17.7"
   },
   "devDependencies": {

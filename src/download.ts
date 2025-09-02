@@ -3,7 +3,14 @@ import * as path from "node:path";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { DownloadError, FileSystemError, NetworkError } from "./lib/errors.js";
+import { AuthService } from "./lib/auth.js";
+import {
+  type AuthenticationError,
+  DownloadError,
+  FileSystemError,
+  NetworkError,
+  type ParseError,
+} from "./lib/errors.js";
 import type { Attachment } from "./lib/types.js";
 
 // File download service interface
@@ -13,7 +20,11 @@ export interface DownloadService {
     outputPath: string,
   ) => Effect.Effect<
     DownloadResult,
-    DownloadError | FileSystemError | NetworkError
+    | DownloadError
+    | FileSystemError
+    | NetworkError
+    | AuthenticationError
+    | ParseError
   >;
 }
 
@@ -27,13 +38,20 @@ export interface DownloadResult {
 
 // File download service implementation
 class DownloadServiceImpl implements DownloadService {
+  constructor(private authService: AuthService) {}
+
   downloadAttachment(
     attachment: Attachment,
     outputPath: string,
   ): Effect.Effect<
     DownloadResult,
-    DownloadError | FileSystemError | NetworkError
+    | DownloadError
+    | FileSystemError
+    | NetworkError
+    | AuthenticationError
+    | ParseError
   > {
+    const self = this;
     return Effect.gen(function* () {
       if (!attachment.file.url) {
         return yield* Effect.fail(
@@ -45,9 +63,18 @@ class DownloadServiceImpl implements DownloadService {
         );
       }
 
-      // Generate filename
+      // Generate filename - use file name if available, otherwise use description
       const extension = attachment.file.extension || "";
-      const fileName = `${attachment.description}${extension ? `.${extension}` : ""}`;
+      const baseName =
+        attachment.file.name ||
+        attachment.description ||
+        `attachment_${attachment.id}`;
+      // Clean the filename (remove any path separators or invalid characters)
+      const cleanBaseName = baseName.replace(/[/\\:*?"<>|]/g, "_");
+      const fileName =
+        extension && !cleanBaseName.endsWith(extension)
+          ? `${cleanBaseName}${extension}`
+          : cleanBaseName;
       const fullPath = path.resolve(outputPath, fileName);
 
       // Ensure output directory exists
@@ -62,14 +89,42 @@ class DownloadServiceImpl implements DownloadService {
           }),
       });
 
-      // Download the file
+      // Get auth token for file download
+      const token = yield* self.authService.getAccessToken();
+
+      // Download the file with timeout and auth header
       const response = yield* Effect.tryPromise({
-        try: () => fetch(attachment.file.url!),
-        catch: (error) =>
-          new NetworkError({
-            message: `Failed to download file: ${error}`,
+        try: async () => {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+          try {
+            const res = await fetch(attachment.file.url!, {
+              signal: controller.signal,
+              headers: {
+                Authorization: `Bearer ${token.access_token}`,
+                "User-Agent": "Applied-Epic-Migration-Tool/1.0",
+              },
+            });
+            clearTimeout(timeoutId);
+            return res;
+          } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+          }
+        },
+        catch: (error) => {
+          const message =
+            error instanceof Error && error.name === "AbortError"
+              ? "Download timeout (30 seconds)"
+              : error instanceof Error
+                ? `Failed to download file: ${error.message}`
+                : `Failed to download file: ${String(error)}`;
+          return new NetworkError({
+            message,
             status: 0,
-          }),
+          });
+        },
       });
 
       if (!response.ok) {
@@ -123,5 +178,8 @@ export const DownloadService = Context.GenericTag<DownloadService>(
 // Layer for providing the download service
 export const DownloadServiceLive = Layer.effect(
   DownloadService,
-  Effect.succeed(new DownloadServiceImpl()),
+  Effect.gen(function* () {
+    const authService = yield* AuthService;
+    return new DownloadServiceImpl(authService);
+  }),
 );
