@@ -22,7 +22,9 @@ export interface AttachmentFile {
   id: string;
   status: string;
   url?: string;
+  name?: string;
   extension?: string;
+  size?: number;
 }
 
 export interface AttachedTo {

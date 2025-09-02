@@ -4,7 +4,6 @@ import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
 import { DownloadService, DownloadServiceLive } from "./download.js";
 import { AuthService, AuthServiceLive } from "./lib/auth.js";
 import { ConfigService } from "./lib/config.js";
-import type { ListAttachmentsParams } from "./lib/types.js";
 
 // Create the main application layer
 const AppLayer = Layer.merge(
@@ -42,12 +41,15 @@ const exampleProgram = Effect.gen(function* () {
 
   console.log("📋 Listing attachments...");
 
-  // List attachments with optional filters
-  const params: ListAttachmentsParams = {
-    limit: 10,
-    clientAccessible: true,
-    active_status: "active",
+  // Default params for listing attachments
+  const params = {
+    embed: "folder,account,organizations,accessLevel",
+    limit: 100,
+    active_status: "active,inactive",
+    fileStatus: "OK",
   };
+
+  console.log("📝 Request params:", params);
 
   const attachmentsResponse = yield* attachmentsService.listAttachments(params);
   console.log(`📄 Found ${attachmentsResponse.total} attachments`);
@@ -62,21 +64,45 @@ const exampleProgram = Effect.gen(function* () {
     console.log(`   Client Accessible: ${attachment.clientAccessible}`);
     console.log(`   File Status: ${attachment.file.status}`);
 
-    // Download the attachment if it has a URL
-    if (attachment.file.url) {
-      console.log("⬇️  Downloading attachment...");
+    // Skip inactive or quarantined files
+    if (!attachment.active || attachment.file.status !== "OK") {
+      console.log("⏭️  Skipping (inactive or invalid status)");
+      continue;
+    }
 
-      const downloadResult = yield* downloadService.downloadAttachment(
-        attachment,
-        "./downloads",
+    // Get individual attachment details (includes download URL)
+    console.log("📥 Fetching attachment details...");
+    const fullAttachment = yield* attachmentsService.getAttachment(
+      attachment.id,
+    );
+
+    // Download the attachment if it has a URL
+    if (fullAttachment.file?.url) {
+      console.log(`   URL: ${fullAttachment.file.url}`);
+      console.log(
+        `   Extension: ${fullAttachment.file.extension || "unknown"}`,
+      );
+      console.log(`   Size: ${fullAttachment.file.size || "unknown"} bytes`);
+
+      console.log("⬇️  Downloading file...");
+
+      const downloadResult = yield* Effect.either(
+        downloadService.downloadAttachment(fullAttachment, "./downloads"),
       );
 
-      if (downloadResult.success) {
-        console.log(`✅ Downloaded: ${downloadResult.fileName}`);
-        console.log(`   Size: ${downloadResult.size} bytes`);
-        console.log(`   Saved to: ${downloadResult.filePath}`);
+      if (downloadResult._tag === "Right") {
+        const result = downloadResult.right;
+        if (result.success) {
+          console.log(`✅ Downloaded: ${result.fileName}`);
+          console.log(`   Size: ${result.size} bytes`);
+          console.log(`   Saved to: ${result.filePath}`);
+        } else {
+          console.log(`❌ Download failed: ${result.message}`);
+        }
       } else {
-        console.log(`❌ Download failed: ${downloadResult.message}`);
+        const error = downloadResult.left;
+        console.log(`⚠️  Download error: ${error.message || "Unknown error"}`);
+        // Continue processing other attachments even if one fails
       }
     } else {
       console.log("⚠️  No download URL available for this attachment");
