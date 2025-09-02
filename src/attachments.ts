@@ -1,8 +1,9 @@
+import { Schema } from "effect";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { AuthService } from "./auth.js";
-import { ConfigService } from "./config.js";
+import { AuthService } from "./lib/auth.js";
+import { ConfigService } from "./lib/config.js";
 import {
   type AuthenticationError,
   NetworkError,
@@ -13,6 +14,66 @@ import type {
   AttachmentsResponse,
   ListAttachmentsParams,
 } from "./lib/types.js";
+
+// Schema for attachment query parameters
+export const AttachmentQueryParams = Schema.Struct({
+  // Date filters
+  attachedOn_before: Schema.optional(Schema.String),
+  attachedOn_after: Schema.optional(Schema.String),
+  editedOn_before: Schema.optional(Schema.String),
+  editedOn_after: Schema.optional(Schema.String),
+  inactiveOn_before: Schema.optional(Schema.String),
+  inactiveOn_after: Schema.optional(Schema.String),
+
+  // Status filters
+  active_status: Schema.optional(Schema.String),
+  fileStatus: Schema.optional(Schema.String),
+  clientAccessible: Schema.optional(Schema.Boolean),
+  systemGenerated: Schema.optional(Schema.Boolean),
+  has_client_accessed: Schema.optional(Schema.Boolean),
+
+  // Entity filters
+  account: Schema.optional(Schema.String),
+  policy: Schema.optional(Schema.String),
+  claim: Schema.optional(Schema.String),
+  opportunity: Schema.optional(Schema.String),
+  activity: Schema.optional(Schema.String),
+  service: Schema.optional(Schema.String),
+  certificate: Schema.optional(Schema.String),
+  line: Schema.optional(Schema.String),
+  quote: Schema.optional(Schema.String),
+  disbursement: Schema.optional(Schema.String),
+  cancellation: Schema.optional(Schema.String),
+  reconciliation: Schema.optional(Schema.String),
+  evidence: Schema.optional(Schema.String),
+  governmentReconciliation: Schema.optional(Schema.String),
+  carrierSubmission: Schema.optional(Schema.String),
+  marketingSubmission: Schema.optional(Schema.String),
+
+  // Organization filters
+  organization: Schema.optional(Schema.String),
+  folder: Schema.optional(Schema.String),
+  include_subfolders: Schema.optional(Schema.Boolean),
+
+  // Text filters
+  description: Schema.optional(Schema.String),
+  description_contains: Schema.optional(Schema.String),
+
+  // Access filters
+  accountType: Schema.optional(Schema.String),
+  accessible_by_employee_code: Schema.optional(Schema.String),
+
+  // Pagination
+  limit: Schema.optional(Schema.Number),
+  offset: Schema.optional(Schema.Number),
+
+  // Other
+  embed: Schema.optional(Schema.String),
+});
+
+export type AttachmentQueryParams = Schema.Schema.Type<
+  typeof AttachmentQueryParams
+>;
 
 // Attachments service interface
 export interface AttachmentsService {
@@ -38,7 +99,7 @@ class AttachmentsServiceImpl implements AttachmentsService {
   ) {}
 
   listAttachments(
-    params?: ListAttachmentsParams,
+    params?: AttachmentQueryParams,
   ): Effect.Effect<
     AttachmentsResponse,
     NetworkError | ParseError | AuthenticationError
@@ -48,10 +109,23 @@ class AttachmentsServiceImpl implements AttachmentsService {
       const token = yield* self.authService.getAccessToken();
       const config = self.configService.getConfig();
 
-      // Build query parameters
+      // Validate and build query parameters
       const queryParams = new URLSearchParams();
       if (params) {
-        Object.entries(params).forEach(([key, value]) => {
+        // Parse params through schema for validation
+        const validatedParams = yield* Schema.decodeUnknown(
+          AttachmentQueryParams,
+        )(params).pipe(
+          Effect.mapError(
+            (error) =>
+              new ParseError({
+                message: `Invalid query parameters: ${error.message}`,
+                status: 0,
+              }),
+          ),
+        );
+
+        Object.entries(validatedParams).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
             queryParams.append(key, value.toString());
           }

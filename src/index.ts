@@ -1,9 +1,9 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
-import { AuthService, AuthServiceLive } from "./auth.js";
-import { ConfigService } from "./config.js";
 import { DownloadService, DownloadServiceLive } from "./download.js";
+import { AuthService, AuthServiceLive } from "./lib/auth.js";
+import { ConfigService } from "./lib/config.js";
 import type { ListAttachmentsParams } from "./lib/types.js";
 
 // Create the main application layer
