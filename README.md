@@ -1,4 +1,4 @@
-# Applied Epic Attachments API Client
+<!--# Applied Epic Attachments API Client
 
 A TypeScript client for reading and downloading attachments from the Applied Epic API using Effect for functional programming.
 
@@ -51,7 +51,7 @@ Effect.runPromise(
 ```typescript
 import { downloadAttachmentById } from "./src/attachment-downloader.js"
 
-Effect.runPromise(
+
   Effect.provide(
     downloadAttachmentById("attachment-id", "./downloads"),
     AppLayer
@@ -122,4 +122,4 @@ To test the package:
 
 ```sh
 pnpm test
-```
+```-->

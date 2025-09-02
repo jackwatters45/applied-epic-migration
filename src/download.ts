@@ -3,7 +3,6 @@ import * as path from "node:path";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { AuthService } from "./auth.js";
 import { DownloadError, FileSystemError, NetworkError } from "./lib/errors.js";
 import type { Attachment } from "./lib/types.js";
 
@@ -11,13 +10,6 @@ import type { Attachment } from "./lib/types.js";
 export interface DownloadService {
   downloadAttachment: (
     attachment: Attachment,
-    outputPath: string,
-  ) => Effect.Effect<
-    DownloadResult,
-    DownloadError | FileSystemError | NetworkError
-  >;
-  downloadAttachmentById: (
-    attachmentId: string,
     outputPath: string,
   ) => Effect.Effect<
     DownloadResult,
@@ -121,26 +113,6 @@ class DownloadServiceImpl implements DownloadService {
       };
     });
   }
-
-  downloadAttachmentById(
-    attachmentId: string,
-    _outputPath: string,
-  ): Effect.Effect<
-    DownloadResult,
-    DownloadError | FileSystemError | NetworkError
-  > {
-    return Effect.gen(function* () {
-      // This would need the AttachmentsService to get the attachment first
-      // For now, return an error
-      return yield* Effect.fail(
-        new DownloadError({
-          message: "downloadAttachmentById is not yet implemented",
-          status: 501,
-          attachmentId,
-        }),
-      );
-    });
-  }
 }
 
 // Context tag for dependency injection
@@ -151,8 +123,5 @@ export const DownloadService = Context.GenericTag<DownloadService>(
 // Layer for providing the download service
 export const DownloadServiceLive = Layer.effect(
   DownloadService,
-  Effect.gen(function* () {
-    yield* AuthService; // Dependency is available but not used currently
-    return new DownloadServiceImpl();
-  }),
+  Effect.succeed(new DownloadServiceImpl()),
 );
