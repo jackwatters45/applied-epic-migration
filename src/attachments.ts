@@ -7,12 +7,12 @@ import {
   type AuthenticationError,
   NetworkError,
   ParseError,
-} from "./errors.js";
+} from "./lib/errors.js";
 import type {
   Attachment,
   AttachmentsResponse,
   ListAttachmentsParams,
-} from "./types.js";
+} from "./lib/types.js";
 
 // Attachments service interface
 export interface AttachmentsService {

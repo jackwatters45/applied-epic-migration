@@ -9,7 +9,6 @@ export interface AuthToken {
 export interface AuthCredentials {
   clientId: string;
   clientSecret: string;
-  baseUrl: string;
 }
 
 export interface ApiConfig {

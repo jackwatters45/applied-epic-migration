@@ -3,7 +3,7 @@ import * as Layer from "effect/Layer";
 import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
 import { AuthServiceLive } from "./auth.js";
 import { DownloadService, DownloadServiceLive } from "./download.js";
-import type { ListAttachmentsParams } from "./types.js";
+import type { ListAttachmentsParams } from "./lib/types.js";
 
 // Create the application layer
 export const AppLayer = Layer.mergeAll(

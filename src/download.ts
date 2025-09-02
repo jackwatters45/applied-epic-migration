@@ -4,8 +4,8 @@ import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
 import { AuthService } from "./auth.js";
-import { DownloadError, FileSystemError, NetworkError } from "./errors.js";
-import type { Attachment } from "./types.js";
+import { DownloadError, FileSystemError, NetworkError } from "./lib/errors.js";
+import type { Attachment } from "./lib/types.js";
 
 // File download service interface
 export interface DownloadService {
