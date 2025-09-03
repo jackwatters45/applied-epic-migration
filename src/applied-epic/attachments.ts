@@ -2,15 +2,15 @@ import { Schema } from "effect";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { AuthService } from "./lib/auth.js";
-import { ConfigService } from "./lib/config.js";
-import type { AuthenticationError } from "./lib/errors.js";
-import { NetworkError, ParseError } from "./lib/errors.js";
+import { ConfigService } from "../lib/config.js";
+import type { AuthenticationError } from "../lib/errors.js";
+import { NetworkError, ParseError } from "../lib/errors.js";
 import type {
   Attachment,
   AttachmentsResponse,
   ListAttachmentsParams,
-} from "./lib/types.js";
+} from "../lib/types.js";
+import { AuthService } from "./auth.js";
 
 // Schema for attachment query parameters
 export const AttachmentQueryParams = Schema.Struct({
@@ -88,23 +88,15 @@ export interface AttachmentsService {
   >;
 }
 
-// Attachments service implementation
-class AttachmentsServiceImpl implements AttachmentsService {
-  constructor(
-    private authService: AuthService,
-    private configService: ConfigService,
-  ) {}
-
-  listAttachments(
-    params?: AttachmentQueryParams,
-  ): Effect.Effect<
-    AttachmentsResponse,
-    NetworkError | ParseError | AuthenticationError
-  > {
-    const self = this;
-    return Effect.gen(function* () {
-      const token = yield* self.authService.getAccessToken();
-      const config = self.configService.getConfig();
+// Create attachments service implementation
+const createAttachmentsService = (
+  authService: AuthService,
+  configService: ConfigService,
+): AttachmentsService => ({
+  listAttachments: (params?: AttachmentQueryParams) =>
+    Effect.gen(function* () {
+      const token = yield* authService.getAccessToken();
+      const config = configService.getConfig();
 
       // Validate and build query parameters
       const queryParams = new URLSearchParams();
@@ -129,7 +121,7 @@ class AttachmentsServiceImpl implements AttachmentsService {
         });
       }
 
-      const url = `${config.baseUrl}/epic/attachment/v2/attachments${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+      const url = `${config.appliedEpic.baseUrl}/epic/attachment/v2/attachments${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
 
       const headers = {
         Authorization: `Bearer ${token.access_token}`,
@@ -193,21 +185,14 @@ class AttachmentsServiceImpl implements AttachmentsService {
       });
 
       return data;
-    });
-  }
+    }),
 
-  getAttachment(
-    id: string,
-  ): Effect.Effect<
-    Attachment,
-    NetworkError | ParseError | AuthenticationError
-  > {
-    const self = this;
-    return Effect.gen(function* () {
-      const token = yield* self.authService.getAccessToken();
-      const config = self.configService.getConfig();
+  getAttachment: (id: string) =>
+    Effect.gen(function* () {
+      const token = yield* authService.getAccessToken();
+      const config = configService.getConfig();
 
-      const url = `${config.baseUrl}/epic/attachment/v2/attachments/${id}`;
+      const url = `${config.appliedEpic.baseUrl}/epic/attachment/v2/attachments/${id}`;
 
       const headers = {
         Authorization: `Bearer ${token.access_token}`,
@@ -254,9 +239,8 @@ class AttachmentsServiceImpl implements AttachmentsService {
       });
 
       return data;
-    });
-  }
-}
+    }),
+});
 
 // Context tag for dependency injection
 export const AttachmentsService = Context.GenericTag<AttachmentsService>(
@@ -269,6 +253,6 @@ export const AttachmentsServiceLive = Layer.effect(
   Effect.gen(function* () {
     const authService = yield* AuthService;
     const configService = ConfigService.getInstance();
-    return new AttachmentsServiceImpl(authService, configService);
+    return createAttachmentsService(authService, configService);
   }),
 );

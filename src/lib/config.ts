@@ -3,19 +3,26 @@ import * as dotenv from "dotenv";
 // Load .env file
 dotenv.config();
 
-// Simple configuration for Applied Epic API
-export interface ApiConfig {
-  readonly baseUrl: string;
-  readonly authUrl: string;
-  readonly credentials: {
+// Configuration for all services
+export interface Config {
+  readonly appliedEpic: {
+    readonly baseUrl: string;
+    readonly authUrl: string;
+    readonly credentials: {
+      readonly clientId: string;
+      readonly clientSecret: string;
+    };
+  };
+  readonly googleDrive: {
     readonly clientId: string;
     readonly clientSecret: string;
+    readonly scopes: readonly string[];
   };
 }
 
 export class ConfigService {
   private static instance: ConfigService;
-  private config: ApiConfig;
+  private config: Config;
 
   private constructor() {
     // Determine environment
@@ -33,11 +40,21 @@ export class ConfigService {
     }
 
     this.config = {
-      baseUrl,
-      authUrl: `${baseUrl}/v1/auth/connect/token`,
-      credentials: {
-        clientId: process.env.APPLIED_EPIC_CLIENT_ID || "",
-        clientSecret: process.env.APPLIED_EPIC_CLIENT_SECRET || "",
+      appliedEpic: {
+        baseUrl,
+        authUrl: `${baseUrl}/v1/auth/connect/token`,
+        credentials: {
+          clientId: process.env.APPLIED_EPIC_CLIENT_ID || "",
+          clientSecret: process.env.APPLIED_EPIC_CLIENT_SECRET || "",
+        },
+      },
+      googleDrive: {
+        clientId: process.env.GOOGLE_CLIENT_ID || "",
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+        scopes: [
+          "https://www.googleapis.com/auth/drive.metadata.readonly",
+          "https://www.googleapis.com/auth/drive.file",
+        ],
       },
     };
   }
@@ -49,13 +66,14 @@ export class ConfigService {
     return ConfigService.instance;
   }
 
-  getConfig(): ApiConfig {
+  getConfig(): Config {
     return this.config;
   }
 
   validateCredentials(): boolean {
     return !!(
-      this.config.credentials.clientId && this.config.credentials.clientSecret
+      this.config.appliedEpic.credentials.clientId &&
+      this.config.appliedEpic.credentials.clientSecret
     );
   }
 }
