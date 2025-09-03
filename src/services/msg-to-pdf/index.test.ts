@@ -20,7 +20,7 @@ describe("MsgToPdfService", () => {
   describe("MsgToPdfConfig", () => {
     it("should accept valid configuration", () => {
       const config: MsgToPdfConfig = {
-        gotenbergUrl: "http://localhost:3000",
+        gotenbergUrl: "http://localhost:3001",
         pdfFormat: "A4",
         landscape: false,
         scale: 1.0,

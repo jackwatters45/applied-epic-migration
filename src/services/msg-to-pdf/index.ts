@@ -429,7 +429,7 @@ const makeService = (
 
   convert: (msgFilePath: string, outputPath?: string) =>
     Effect.gen(function* () {
-      const gotenbergUrl = config.gotenbergUrl || "http://localhost:3000";
+      const gotenbergUrl = config.gotenbergUrl || "http://localhost:3001";
 
       yield* makeService(config).validateMsgFile(msgFilePath);
 
@@ -562,7 +562,7 @@ const makeService = (
 
   convertBuffer: (msgBuffer: Buffer, fileName: string) =>
     Effect.gen(function* () {
-      const gotenbergUrl = config.gotenbergUrl || "http://localhost:3000";
+      const gotenbergUrl = config.gotenbergUrl || "http://localhost:3001";
 
       const htmlContent = yield* Effect.try({
         try: () => msgToHtml(msgBuffer),
