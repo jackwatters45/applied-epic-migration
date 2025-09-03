@@ -1,8 +1,14 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
-import { DownloadService, DownloadServiceLive } from "./download.js";
-import { AuthService, AuthServiceLive } from "./lib/auth.js";
+import {
+  AttachmentsService,
+  AttachmentsServiceLive,
+} from "./applied-epic/attachments.js";
+import { AuthService, AuthServiceLive } from "./applied-epic/auth.js";
+import {
+  DownloadService,
+  DownloadServiceLive,
+} from "./applied-epic/download.js";
 import { ConfigService } from "./lib/config.js";
 
 // Create the main application layer
@@ -32,7 +38,7 @@ const exampleProgram = Effect.gen(function* () {
     );
   }
 
-  console.log(`🌍 Using ${config.baseUrl}`);
+  console.log(`🌍 Using ${config.appliedEpic.baseUrl}`);
   console.log("🔐 Authenticating with Applied Epic API...");
 
   // Get access token
@@ -89,7 +95,7 @@ const exampleProgram = Effect.gen(function* () {
       const downloadResult = yield* Effect.either(
         downloadService.downloadAttachment(
           fullAttachment,
-          "/Users/jw/Desktop/applied-epic-migration",
+          "/Users/jw/Desktop/repos/applied-epic-migration/downloads",
         ),
       );
 
