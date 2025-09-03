@@ -1,15 +1,15 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
+import { ConfigService } from "./lib/config.js";
 import {
   AttachmentsService,
   AttachmentsServiceLive,
-} from "./applied-epic/attachments.js";
-import { AuthService, AuthServiceLive } from "./applied-epic/auth.js";
+} from "./services/applied-epic/attachments.js";
+import { AuthService, AuthServiceLive } from "./services/applied-epic/auth.js";
 import {
   DownloadService,
   DownloadServiceLive,
-} from "./applied-epic/download.js";
-import { ConfigService } from "./lib/config.js";
+} from "./services/applied-epic/download.js";
 
 // Create the main application layer
 const AppLayer = Layer.merge(

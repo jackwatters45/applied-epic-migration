@@ -1,6 +1,6 @@
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import type { ListAttachmentsParams } from "../lib/types.js";
+import type { ListAttachmentsParams } from "../../lib/types.js";
 import { AttachmentsService, AttachmentsServiceLive } from "./attachments.js";
 import { AuthServiceLive } from "./auth.js";
 import { DownloadService, DownloadServiceLive } from "./download.js";

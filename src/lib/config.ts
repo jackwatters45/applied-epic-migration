@@ -14,8 +14,7 @@ export interface Config {
     };
   };
   readonly googleDrive: {
-    readonly clientId: string;
-    readonly clientSecret: string;
+    readonly serviceAccountKeyPath: string;
     readonly scopes: readonly string[];
   };
 }
@@ -49,8 +48,9 @@ export class ConfigService {
         },
       },
       googleDrive: {
-        clientId: process.env.GOOGLE_CLIENT_ID || "",
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+        serviceAccountKeyPath:
+          process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH ||
+          "service-account-key.json",
         scopes: [
           "https://www.googleapis.com/auth/drive.metadata.readonly",
           "https://www.googleapis.com/auth/drive.file",

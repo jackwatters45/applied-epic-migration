@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google-cloud/local-auth": "2.1.0",
+    "@kenjiuno/msgreader": "^1.26.0-beta1",
     "dotenv": "^17.2.1",
     "effect": "^3.17.7",
     "googleapis": "105"

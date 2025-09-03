@@ -2,14 +2,14 @@ import { Schema } from "effect";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { ConfigService } from "../lib/config.js";
-import type { AuthenticationError } from "../lib/errors.js";
-import { NetworkError, ParseError } from "../lib/errors.js";
+import { ConfigService } from "../../lib/config.js";
+import type { AuthenticationError } from "../../lib/errors.js";
+import { NetworkError, ParseError } from "../../lib/errors.js";
 import type {
   Attachment,
   AttachmentsResponse,
   ListAttachmentsParams,
-} from "../lib/types.js";
+} from "../../lib/types.js";
 import { AuthService } from "./auth.js";
 
 // Schema for attachment query parameters
