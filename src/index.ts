@@ -87,7 +87,10 @@ const exampleProgram = Effect.gen(function* () {
       console.log("⬇️  Downloading file...");
 
       const downloadResult = yield* Effect.either(
-        downloadService.downloadAttachment(fullAttachment, "./downloads"),
+        downloadService.downloadAttachment(
+          fullAttachment,
+          "/Users/jw/Desktop/applied-epic-migration",
+        ),
       );
 
       if (downloadResult._tag === "Right") {

@@ -19,7 +19,7 @@ export const AppLayer = Layer.merge(
  */
 export const downloadAccountAttachments = (
   accountId: string,
-  outputPath = "./downloads",
+  outputPath = "/Users/jw/Desktop/applied-epic-migration",
 ) =>
   Effect.gen(function* () {
     const attachmentsService = yield* AttachmentsService;
@@ -116,7 +116,7 @@ export const downloadAccountAttachments = (
  */
 export const downloadAttachmentById = (
   attachmentId: string,
-  outputPath = "./downloads",
+  outputPath = "/Users/jw/Desktop/applied-epic-migration",
 ) =>
   Effect.gen(function* () {
     const attachmentsService = yield* AttachmentsService;
