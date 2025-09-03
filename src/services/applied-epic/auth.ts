@@ -1,13 +1,13 @@
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { type Config, ConfigService } from "../lib/config.js";
+import { type Config, ConfigService } from "../../lib/config.js";
 import {
   AuthenticationError,
   NetworkError,
   ParseError,
-} from "../lib/errors.js";
-import type { AuthToken } from "../lib/types.js";
+} from "../../lib/errors.js";
+import type { AuthToken } from "../../lib/types.js";
 
 // Auth service interface
 export interface AuthService {

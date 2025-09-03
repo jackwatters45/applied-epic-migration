@@ -9,8 +9,8 @@ import {
   FileSystemError,
   NetworkError,
   type ParseError,
-} from "../lib/errors.js";
-import type { Attachment } from "../lib/types.js";
+} from "../../lib/errors.js";
+import type { Attachment } from "../../lib/types.js";
 import { AuthService } from "./auth.js";
 
 // File download service interface
