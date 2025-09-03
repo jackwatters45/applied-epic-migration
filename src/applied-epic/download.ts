@@ -3,15 +3,15 @@ import * as path from "node:path";
 import * as Context from "effect/Context";
 import * as Effect from "effect/Effect";
 import * as Layer from "effect/Layer";
-import { AuthService } from "./lib/auth.js";
 import {
   type AuthenticationError,
   DownloadError,
   FileSystemError,
   NetworkError,
   type ParseError,
-} from "./lib/errors.js";
-import type { Attachment } from "./lib/types.js";
+} from "../lib/errors.js";
+import type { Attachment } from "../lib/types.js";
+import { AuthService } from "./auth.js";
 
 // File download service interface
 export interface DownloadService {
@@ -36,23 +36,10 @@ export interface DownloadResult {
   message: string;
 }
 
-// File download service implementation
-class DownloadServiceImpl implements DownloadService {
-  constructor(private authService: AuthService) {}
-
-  downloadAttachment(
-    attachment: Attachment,
-    outputPath: string,
-  ): Effect.Effect<
-    DownloadResult,
-    | DownloadError
-    | FileSystemError
-    | NetworkError
-    | AuthenticationError
-    | ParseError
-  > {
-    const self = this;
-    return Effect.gen(function* () {
+// Create download service implementation
+const createDownloadService = (authService: AuthService): DownloadService => ({
+  downloadAttachment: (attachment: Attachment, outputPath: string) =>
+    Effect.gen(function* () {
       if (!attachment.file.url) {
         return yield* Effect.fail(
           new DownloadError({
@@ -90,7 +77,7 @@ class DownloadServiceImpl implements DownloadService {
       });
 
       // Get auth token for file download
-      const token = yield* self.authService.getAccessToken();
+      const token = yield* authService.getAccessToken();
 
       // Download the file with timeout and auth header
       const response = yield* Effect.tryPromise({
@@ -166,9 +153,8 @@ class DownloadServiceImpl implements DownloadService {
         size: arrayBuffer.byteLength,
         message: `Successfully downloaded ${fileName}`,
       };
-    });
-  }
-}
+    }),
+});
 
 // Context tag for dependency injection
 export const DownloadService = Context.GenericTag<DownloadService>(
@@ -180,6 +166,6 @@ export const DownloadServiceLive = Layer.effect(
   DownloadService,
   Effect.gen(function* () {
     const authService = yield* AuthService;
-    return new DownloadServiceImpl(authService);
+    return createDownloadService(authService);
   }),
 );
