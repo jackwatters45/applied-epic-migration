@@ -1,5 +1,9 @@
 # Agent Guidelines for Applied Epic Migration
 
+## Instructions
+
+- When you are finished with a task, run our linting and typechecking commands to ensure code quality. `bun run typecheck` and `bun run check`. We need to resolve these issues in the files we have edited before the task is complete.
+
 ## Build/Lint/Test Commands
 
 - **Package Manager**: bun (pnpm compatible)
