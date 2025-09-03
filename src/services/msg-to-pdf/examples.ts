@@ -24,7 +24,7 @@ export const exampleSingleConversion = async () => {
     marginBottom: "1in",
     marginLeft: "1in",
     marginRight: "1in",
-    gotenbergUrl: "http://localhost:3000",
+    gotenbergUrl: "http://localhost:3001",
   };
 
   const program = convertMsgToPdf(msgFilePath, outputPath, config);
