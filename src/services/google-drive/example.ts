@@ -1,6 +1,6 @@
 import * as Effect from "effect/Effect";
 import { google } from "googleapis";
-import { GoogleDriveAuthService, GoogleDriveAuthServiceLive } from "./auth.js";
+import { GoogleDriveAuthService } from "./auth.js";
 
 // Test folder ID from the shared Drive link (null = upload to service account's root drive)
 const TEST_FOLDER_ID: string | null = null; // Change to your Shared Drive ID when available
@@ -83,7 +83,7 @@ const example = Effect.gen(function* () {
 
 // Run the example
 const program = example.pipe(
-  Effect.provide(GoogleDriveAuthServiceLive),
+  Effect.provide(GoogleDriveAuthService.Default),
   Effect.catchAll((error) =>
     Effect.sync(() => {
       console.error("❌ Error:", error);
