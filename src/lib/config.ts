@@ -1,79 +1,31 @@
-import * as dotenv from "dotenv";
+import { Config, Effect } from "effect";
 
-// Load .env file
-dotenv.config();
+export class ConfigService extends Effect.Service<ConfigService>()(
+  "ConfigService",
+  {
+    effect: Effect.gen(function* () {
+      const serviceAccountKeyPath = yield* Config.string(
+        "GOOGLE_SERVICE_ACCOUNT_KEY_PATH",
+      ).pipe(Config.withDefault("service-account-key.json"));
 
-// Configuration for all services
-export interface Config {
-  readonly appliedEpic: {
-    readonly baseUrl: string;
-    readonly authUrl: string;
-    readonly credentials: {
-      readonly clientId: string;
-      readonly clientSecret: string;
-    };
-  };
-  readonly googleDrive: {
-    readonly serviceAccountKeyPath: string;
-    readonly scopes: readonly string[];
-  };
-}
-
-export class ConfigService {
-  private static instance: ConfigService;
-  private config: Config;
-
-  private constructor() {
-    // Determine environment
-    const environment = process.env.APPLIED_EPIC_ENV || "mock";
-
-    // Set URLs based on environment
-    let baseUrl: string;
-    switch (environment) {
-      case "production":
-        baseUrl = "https://api.myappliedproducts.com";
-        break;
-      default:
-        baseUrl = "https://api.mock.myappliedproducts.com";
-        break;
-    }
-
-    this.config = {
-      appliedEpic: {
-        baseUrl,
-        authUrl: `${baseUrl}/v1/auth/connect/token`,
-        credentials: {
-          clientId: process.env.APPLIED_EPIC_CLIENT_ID || "",
-          clientSecret: process.env.APPLIED_EPIC_CLIENT_SECRET || "",
-        },
-      },
-      googleDrive: {
-        serviceAccountKeyPath:
-          process.env.GOOGLE_SERVICE_ACCOUNT_KEY_PATH ||
-          "service-account-key.json",
-        scopes: [
+      const scopes = yield* Config.array(
+        Config.string(),
+        "GOOGLE_DRIVE_SCOPES",
+      ).pipe(
+        Config.withDefault([
           "https://www.googleapis.com/auth/drive.metadata.readonly",
           "https://www.googleapis.com/auth/drive.file",
-        ],
-      },
-    };
-  }
+        ]),
+      );
 
-  static getInstance(): ConfigService {
-    if (!ConfigService.instance) {
-      ConfigService.instance = new ConfigService();
-    }
-    return ConfigService.instance;
-  }
+      const config = {
+        googleDrive: {
+          serviceAccountKeyPath,
+          scopes,
+        },
+      };
 
-  getConfig(): Config {
-    return this.config;
-  }
-
-  validateCredentials(): boolean {
-    return !!(
-      this.config.appliedEpic.credentials.clientId &&
-      this.config.appliedEpic.credentials.clientSecret
-    );
-  }
-}
+      return config;
+    }),
+  },
+) {}
