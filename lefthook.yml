@@ -6,12 +6,6 @@ pre-commit:
       run: bunx biome check --write --unsafe --no-errors-on-unmatched --files-ignore-unknown=true {staged_files} && git update-index --again
     types:
       run: bun run typecheck
-    ruff-check:
-      glob: "packages/pipeline/**/*.py"
-      run: ruff check --fix {staged_files}
-    ruff-format:
-      glob: "packages/pipeline/**/*.py"
-      run: ruff format {staged_files}
 
 pre-push:
   parallel: true
