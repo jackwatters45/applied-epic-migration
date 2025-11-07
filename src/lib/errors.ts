@@ -40,6 +40,19 @@ export class ValidationError extends Data.TaggedError("ValidationError")<{
   readonly status: number;
 }> {}
 
+// API errors
+export class ApiError extends Data.TaggedError("ApiError")<{
+  readonly type: string;
+  readonly title: string;
+  readonly status: number;
+  readonly detail: string;
+}> {}
+
+export class DateError extends Data.TaggedError("DateError")<{
+  readonly message: string;
+  readonly status: number;
+}> {}
+
 // Union type for all application errors
 export type AppError =
   | AuthenticationError
@@ -47,4 +60,5 @@ export type AppError =
   | ParseError
   | DownloadError
   | FileSystemError
-  | ValidationError;
+  | ValidationError
+  | ApiError;
