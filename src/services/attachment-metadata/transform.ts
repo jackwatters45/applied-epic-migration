@@ -14,12 +14,12 @@ export interface FormattedAttachment {
   readonly policyType: string | undefined;
 }
 
-export interface CompanyGroup {
+export interface Attachment {
   readonly formatted: FormattedAttachment;
   readonly raw: AttachmentMetaData;
 }
 
-export type TransformResult = HashMap.HashMap<string, List.List<CompanyGroup>>;
+export type TransformResult = HashMap.HashMap<string, List.List<Attachment>>;
 
 export class AttachmentMetadataTransformerError extends Schema.TaggedError<AttachmentMetadataTransformerError>()(
   "AttachmentMetadataTransformerError",
@@ -37,7 +37,10 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
       return {
         transformAttachmentMetadata: (rows: AttachmentMetaData[]) =>
           Effect.sync(() => {
-            let result = HashMap.empty<string, List.List<CompanyGroup>>();
+            let result: TransformResult = HashMap.empty<
+              string,
+              List.List<Attachment>
+            >();
 
             for (const attachment of rows) {
               const lookupCode = attachment.lookupCode;
@@ -58,7 +61,7 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
                 policyType: attachment.policyType,
               };
 
-              const companyGroup: CompanyGroup = {
+              const attachmentRecord: Attachment = {
                 formatted,
                 raw: attachment,
               };
@@ -68,10 +71,14 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
                 result = HashMap.set(
                   result,
                   lookupCode,
-                  List.append(existing.value, companyGroup),
+                  List.append(existing.value, attachmentRecord),
                 );
               } else {
-                result = HashMap.set(result, lookupCode, List.of(companyGroup));
+                result = HashMap.set(
+                  result,
+                  lookupCode,
+                  List.of(attachmentRecord),
+                );
               }
             }
 
