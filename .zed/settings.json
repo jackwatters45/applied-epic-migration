@@ -1,0 +1,9 @@
+{
+  "languages": {
+    "TSX": {
+      "prettier": {
+        "allowed": false
+      }
+    }
+  }
+}
