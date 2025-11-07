@@ -18,7 +18,6 @@
     "sourceMap": true,
     "declarationMap": true,
     "noImplicitReturns": false,
-    "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noEmitOnError": false,
