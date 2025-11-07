@@ -3,6 +3,7 @@ import { NodeContext } from "@effect/platform-node";
 import { Effect, HashMap, List, Option } from "effect";
 import { CsvExplorerService } from "../csv/explorer.js";
 import { CsvExtractorService } from "../csv/extract.js";
+import { DeduplicationService } from "./deduplication.js";
 import { AttachmentMetadataTransformerService } from "./transform.js";
 import { AttachmentMetadataValidatorService } from "./validate.js";
 import { YearResolutionService } from "./year-resolver.js";
@@ -16,6 +17,7 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
       const validator = yield* AttachmentMetadataValidatorService;
       const transformer = yield* AttachmentMetadataTransformerService;
       const yearResolver = yield* YearResolutionService;
+      const deduplicator = yield* DeduplicationService;
 
       return {
         run: () =>
@@ -32,9 +34,24 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
 
             yield* logSingleOutput(transformed, "transformed");
 
-            const organized = yield* yearResolver.resolveYear(transformed);
+            const deduplicated = yield* deduplicator.deduplicateByFileId(
+              HashMap.map(transformed, List.toArray),
+            );
+
+            const deduplicatedTransformed = HashMap.map(
+              deduplicated,
+              List.fromIterable,
+            );
+
+            yield* logSingleOutput(deduplicatedTransformed, "deduplicated");
+
+            const organized = yield* yearResolver.resolveYear(
+              deduplicatedTransformed,
+            );
 
             yield* logSingleOutput(organized, "organized");
+
+            yield* logYearMetrics(yearResolver);
 
             return organized;
 
@@ -48,6 +65,7 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
       AttachmentMetadataValidatorService.Default,
       AttachmentMetadataTransformerService.Default,
       YearResolutionService.Default,
+      DeduplicationService.Default,
     ],
   },
 ) {}
@@ -69,6 +87,16 @@ const logSingleOutput = (
     yield* fs.writeFileString(
       `logs/${name}.json`,
       JSON.stringify(data, null, 2),
-      { flag: "w" },
+    );
+  }).pipe(Effect.provide(NodeContext.layer));
+
+const logYearMetrics = (yearResolver: YearResolutionService) =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const metrics = yield* yearResolver.getMetrics();
+
+    yield* fs.writeFileString(
+      "logs/year-metrics.json",
+      JSON.stringify(metrics, null, 2),
     );
   }).pipe(Effect.provide(NodeContext.layer));

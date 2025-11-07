@@ -1,11 +1,14 @@
 import { Array as A } from "effect";
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// Schema Helpers
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const cleanValue = (value: string): string => {
   return value
     .trim()
     .replace(/^\s+|\s+$/g, "") // Trim whitespace
     .replace(/\s+/g, " "); // Normalize multiple spaces to single space
-  // .replace(/[\u0000-\u001F\u007F-\u009F]/g, ""); // Remove control characters
 };
 
 export const getNonNullValuesFromArr = (
@@ -78,4 +81,42 @@ export const analyzeBooleanValues = (
     hasSome: booleanValues.length > 0,
     count: booleanValues.length,
   };
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+// Year Validation
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Helper function to validate reasonable years
+export const validateReasonableYear = (year: number): boolean => {
+  const currentYear = new Date().getFullYear();
+  const minYear = 2015; // Reasonable minimum for insurance documents
+  const maxYear = currentYear + 1; // Allow next year for renewals
+
+  return year >= minYear && year <= maxYear;
+};
+
+// Helper function to validate and convert 2-digit year
+export const validateTwoDigitYear = (twoDigitYear: number): number | null => {
+  const currentYear = new Date().getFullYear();
+  const currentTwoDigit = currentYear % 100;
+  const maxTwoDigit = currentTwoDigit + 1;
+
+  // Validate reasonable year range (15 through current year + 1)
+  if (twoDigitYear >= 15 && twoDigitYear <= maxTwoDigit) {
+    return twoDigitYear >= 50 ? 1900 + twoDigitYear : 2000 + twoDigitYear;
+  }
+
+  return null;
+};
+
+// Helper function to validate and convert 4-digit year
+export const validateFourDigitYear = (fourDigitYear: number): number | null => {
+  return validateReasonableYear(fourDigitYear) ? fourDigitYear : null;
+};
+
+// Helper function to validate year from Date object
+export const validateYearFromDate = (date: Date): number | null => {
+  const year = date.getFullYear();
+  return validateFourDigitYear(year);
 };
