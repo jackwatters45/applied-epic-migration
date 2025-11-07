@@ -15,4 +15,3 @@ scratchpad/*
 .env.test.local
 .env.production.local
 .private_key.json
-logs
