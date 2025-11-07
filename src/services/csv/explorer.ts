@@ -5,7 +5,7 @@ import {
   analyzeNumericValues,
   cleanValue,
   getNonNullValuesFromArr,
-} from "src/lib/utils.js";
+} from "src/lib/util.js";
 
 // Error types for CSV exploration
 export class CsvExplorerError extends Schema.TaggedError<CsvExplorerError>()(
