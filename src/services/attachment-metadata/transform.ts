@@ -6,6 +6,7 @@ export interface FormattedAttachment {
   readonly nameOf: string;
   readonly lookupCode: string;
   readonly newPath: string;
+  readonly originalPath: string;
   readonly attachedDate: Date;
   readonly folder: string | undefined;
   readonly description: string;
@@ -49,6 +50,7 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
                 nameOf: attachment.nameOf,
                 lookupCode: attachment.lookupCode,
                 newPath: attachment.newPath,
+                originalPath: attachment.originalPath,
                 attachedDate: attachment.attachedDate,
                 folder: attachment.folder,
                 description: attachment.description || "",
