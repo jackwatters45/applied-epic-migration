@@ -1,42 +1,58 @@
-import { Effect, Layer } from "effect";
-import { ConfigService } from "./lib/config.js";
-import { GoogleDriveAuthService } from "./services/google-drive/auth.js";
+import { FileSystem } from "@effect/platform";
+import { NodeContext } from "@effect/platform-node";
+import { Effect, HashMap, Layer, List, Option } from "effect";
+import {
+  AttachmentMetadataTransformerService,
+  type CompanyGroup,
+} from "./services/attachment-metadata/transform.js";
+import { AttachmentMetadataValidatorService } from "./services/attachment-metadata/validate.js";
+import { CsvExplorerService } from "./services/csv/explorer.js";
+import { CsvExtractorService } from "./services/csv/extract.js";
 
-// Example usage program
-const exampleProgram = Effect.gen(function* () {
-  const config = yield* ConfigService;
-  const authService = yield* GoogleDriveAuthService;
+export const ApplicationLayer = Layer.mergeAll(
+  CsvExplorerService.Default,
+  CsvExtractorService.Default,
+  AttachmentMetadataValidatorService.Default,
+  AttachmentMetadataTransformerService.Default,
+);
 
-  console.log("🔧 Configuration loaded successfully");
-  console.log(
-    `📁 Google Drive Key Path: ${config.googleDrive.serviceAccountKeyPath}`,
+const program = Effect.gen(function* () {
+  const extractor = yield* CsvExtractorService;
+  const validator = yield* AttachmentMetadataValidatorService;
+  const transformer = yield* AttachmentMetadataTransformerService;
+
+  const extracted = yield* extractor.extract(
+    "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
   );
-  console.log(
-    `🔐 Google Drive Scopes: ${config.googleDrive.scopes.join(", ")}`,
-  );
 
-  console.log("\n🔐 Testing Google Drive authentication...");
+  const validated = yield* validator.validateAttachmentMetadata(extracted);
 
-  // Test authentication
-  yield* authService.getAuthenticatedClient();
-  console.log("✅ Successfully authenticated with Google Drive");
+  const transformed = yield* transformer.transformAttachmentMetadata(validated);
 
-  // Get service account email
-  const serviceAccountEmail = yield* authService.getServiceAccountEmail();
-  console.log(`📧 Service Account Email: ${serviceAccountEmail}`);
+  yield* logSingleOutput(transformed);
 
-  console.log("\n🎉 Google Drive service test complete!");
+  // organize into year
+  // determine how/if we can determine subfolders? ie claims, etc
+  // start with sorting logic from above?
 });
 
-const mainLayer = Layer.mergeAll(
-  GoogleDriveAuthService.Default,
-  ConfigService.Default,
-);
+const logSingleOutput = (
+  transformed: HashMap.HashMap<string, List.List<CompanyGroup>>,
+) =>
+  Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const option = HashMap.get(transformed, "SUNDMON-01");
+    const values = Option.getOrThrow(option);
+    const arr = List.toArray(values);
 
-// Run the program
-Effect.runPromise(exampleProgram.pipe(Effect.provide(mainLayer))).catch(
-  (error: unknown) => {
-    console.error("💥 Unexpected error:", error);
-    process.exit(1);
-  },
-);
+    const data = {
+      "SUNDMON-01": arr,
+    };
+
+    yield* fs.writeFileString(
+      "logs/output.json",
+      JSON.stringify(data, null, 2),
+    );
+  }).pipe(Effect.provide(NodeContext.layer));
+
+Effect.runPromise(program.pipe(Effect.provide(ApplicationLayer)));
