@@ -3,10 +3,7 @@ import { NodeContext } from "@effect/platform-node";
 import { Effect, HashMap, List, Option } from "effect";
 import { CsvExplorerService } from "../csv/explorer.js";
 import { CsvExtractorService } from "../csv/extract.js";
-import {
-  AttachmentMetadataTransformerService,
-  type CompanyGroup,
-} from "./transform.js";
+import { AttachmentMetadataTransformerService } from "./transform.js";
 import { AttachmentMetadataValidatorService } from "./validate.js";
 import { YearResolutionService } from "./year-resolver.js";
 
@@ -32,12 +29,15 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
 
             const transformed =
               yield* transformer.transformAttachmentMetadata(validated);
-            yield* logSingleOutput(transformed);
 
-            // organize into year
+            yield* logSingleOutput(transformed, "transformed");
+
             const organized = yield* yearResolver.resolveYear(transformed);
 
+            yield* logSingleOutput(organized, "organized");
+
             return organized;
+
             // TODO: determine how/if we can determine subfolders? ie claims, etc
           }),
       };
@@ -53,11 +53,12 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
 ) {}
 
 const logSingleOutput = (
-  transformed: HashMap.HashMap<string, List.List<CompanyGroup>>,
+  hashMap: HashMap.HashMap<string, List.List<unknown>>,
+  name: string,
 ) =>
   Effect.gen(function* () {
     const fs = yield* FileSystem.FileSystem;
-    const option = HashMap.get(transformed, "SUNDMON-01");
+    const option = HashMap.get(hashMap, "SUNDMON-01");
     const values = Option.getOrThrow(option);
     const arr = List.toArray(values);
 
@@ -66,7 +67,8 @@ const logSingleOutput = (
     };
 
     yield* fs.writeFileString(
-      "logs/output.json",
+      `logs/${name}.json`,
       JSON.stringify(data, null, 2),
+      { flag: "w" },
     );
   }).pipe(Effect.provide(NodeContext.layer));
