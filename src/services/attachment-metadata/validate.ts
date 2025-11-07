@@ -3,7 +3,7 @@ import {
   BooleanFromYN,
   OptionalDateFromString,
   OptionalNumberFromString,
-} from "../../lib/schemas.js";
+} from "../../lib/schema.js";
 
 export class AttachmentMetadataValidatorError extends Schema.TaggedError<AttachmentMetadataValidatorError>()(
   "AttachmentMetadataValidatorError",
