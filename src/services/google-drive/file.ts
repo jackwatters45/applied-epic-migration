@@ -1,4 +1,3 @@
-import * as fs from "node:fs";
 import { Effect, Schema } from "effect";
 import { google } from "googleapis";
 import { GoogleDriveAuthService } from "./auth.js";
@@ -13,13 +12,6 @@ export class GoogleDriveFileError extends Schema.TaggedError<GoogleDriveFileErro
 ) {}
 
 // Types for file operations
-export interface UploadResult {
-  readonly success: boolean;
-  readonly fileId: string;
-  readonly fileName: string;
-  readonly message: string;
-}
-
 export interface MoveFileResult {
   readonly success: boolean;
   readonly fileId: string;
@@ -87,47 +79,12 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
             );
           }),
 
-        uploadFile: (filePath: string, fileName: string, parentId = "root") =>
-          Effect.gen(function* () {
-            const authClient = yield* authService.getAuthenticatedClient();
-            const drive = google.drive({ version: "v3", auth: authClient });
-
-            const fileMetadata = {
-              name: fileName,
-              parents: [parentId],
-            };
-
-            const media = {
-              body: fs.createReadStream(filePath),
-            };
-
-            const response = yield* Effect.tryPromise({
-              try: () =>
-                drive.files.create({
-                  requestBody: fileMetadata,
-                  media: media,
-                  fields: "id,name",
-                }),
-              catch: (error) =>
-                new GoogleDriveFileError({
-                  message: `Failed to upload file: ${error}`,
-                }),
-            });
-
-            return {
-              success: true,
-              fileId: response.data.id!,
-              fileName: response.data.name!,
-              message: `File '${fileName}' uploaded successfully`,
-            } as const;
-          }),
-
         moveFile: (fileId: string, newParentId: string) =>
           Effect.gen(function* () {
             const authClient = yield* authService.getAuthenticatedClient();
             const drive = google.drive({ version: "v3", auth: authClient });
 
-            // First get the current parents
+            // First get current parents
             const getResponse = yield* Effect.tryPromise({
               try: () =>
                 drive.files.get({
