@@ -1,4 +1,4 @@
-import { validateFourDigitYear, validateTwoDigitYear } from "src/lib/util.js";
+import { validateFourDigitYear, validateTwoDigitYear } from "../../lib/util.js";
 import type { Attachment } from "./transform.js";
 
 // Priority configuration interface
