@@ -1,334 +1,195 @@
 import { Effect } from "effect";
 import type { Attachment } from "./transform.js";
+import type { PriorityConfig } from "./year-priority-config.js";
 
-// Metrics interface for year determination
-export interface YearDeterminationMetrics {
-  totalRecords: number;
-  successfulDeterminations: number;
-  fallbackToAttachedDate: number;
-  failures: number;
-  priority1Success: number; // Year folder in original path
-  priority2Success: number; // Explicit 4-digit year in description
-  priority3Success: number; // Two-digit year at start of description
-  priority4Success: number; // Year range patterns and filename patterns
-  priority5Success: number; // Additional filename patterns
-  priority6Success: number; // Single digit year patterns like "24 WC"
-  priority7Success: number; // Date ranges in parentheses
-  priority8Success: number; // Year in original path
-  priority9Success: number; // Year in blob timestamps
-  priority10Success: number; // Year in filename with underscores
-  priority11Success: number; // Year in filename with dashes
-  priority12Success: number; // Year after dash in description
-  priority13Success: number; // Expiration date fallback
-  priority14Success: number; // Activity description date patterns
-  priority15Success: number; // Activity entered date
-  priority16Success: number; // Attached date fallback after 10/30/2022
-  priority17Success: number; // Lookup code start date fallback
-  priority18Success: number; // Specific lookup codes attachment date fallback
-  failureSamples: Attachment[]; // Full attachment objects for failed cases
-  failureBreakdown: Record<string, { count: number; nameOf: string }>; // Failures by lookup code
+// Metrics interfaces
+export interface PriorityMetric {
+  count: number;
+  percentage: string;
+  description: string;
 }
 
-export class YearMetricsService extends Effect.Service<YearMetricsService>()(
-  "YearMetricsService",
+export interface FailureBreakdown {
+  count: number;
+  nameOf: string;
+  percentage: string;
+}
+
+export interface YearDeterminationMetrics {
+  summary: {
+    totalRecords: number;
+    successRate: string;
+    successfulDeterminations: number;
+    fallbackToAttachedDate: number;
+    failures: number;
+  };
+  breakdown: Record<string, PriorityMetric>;
+  failureBreakdown: Record<string, FailureBreakdown>;
+  failureSamples: Attachment[];
+}
+
+// Dynamic metrics service
+export class DynamicYearMetricsService extends Effect.Service<DynamicYearMetricsService>()(
+  "DynamicYearMetricsService",
   {
     effect: Effect.gen(function* () {
-      const metrics: YearDeterminationMetrics = {
-        totalRecords: 0,
-        successfulDeterminations: 0,
-        fallbackToAttachedDate: 0,
-        failures: 0,
-        priority1Success: 0,
-        priority2Success: 0,
-        priority3Success: 0,
-        priority4Success: 0,
-        priority5Success: 0,
-        priority6Success: 0,
-        priority7Success: 0,
-        priority8Success: 0,
-        priority9Success: 0,
-        priority10Success: 0,
-        priority11Success: 0,
-        priority12Success: 0,
-        priority13Success: 0,
-        priority14Success: 0,
-        priority15Success: 0,
-        priority16Success: 0,
-        priority17Success: 0,
-        priority18Success: 0,
-        failureSamples: [],
-        failureBreakdown: {},
-      };
+      // Internal state
+      const priorityMetrics = new Map<number, number>();
+      const failureSamples: Attachment[] = [];
+      const failureBreakdown = new Map<
+        string,
+        { count: number; nameOf: string }
+      >();
+
+      let totalRecords = 0;
+      let successfulDeterminations = 0;
+      let fallbackToAttachedDate = 0;
+      let failures = 0;
 
       return {
-        getMetrics: () => Effect.sync(() => ({ ...metrics })),
-
-        incrementTotal: () =>
+        // Record a successful year determination for a specific priority
+        recordPrioritySuccess: (priorityId: number) =>
           Effect.sync(() => {
-            metrics.totalRecords++;
+            const currentCount = priorityMetrics.get(priorityId) || 0;
+            priorityMetrics.set(priorityId, currentCount + 1);
+            successfulDeterminations++;
           }),
 
-        recordPrioritySuccess: (priority: number) =>
+        // Record a failed year determination
+        recordFailure: (attachment: Attachment) =>
           Effect.sync(() => {
-            const priorityKey =
-              `priority${priority}Success` as keyof YearDeterminationMetrics;
-            if (typeof metrics[priorityKey] === "number") {
-              (metrics[priorityKey] as number)++;
-              metrics.successfulDeterminations++;
-            }
-          }),
+            failures++;
 
-        recordFailure: () =>
-          Effect.sync(() => {
-            metrics.failures++;
-          }),
-
-        addFailureSample: (attachment: Attachment) =>
-          Effect.sync(() => {
             // Keep only last 20 failure samples to avoid huge output
-            if (metrics.failureSamples.length >= 20) {
-              metrics.failureSamples.shift();
+            if (failureSamples.length >= 20) {
+              failureSamples.shift();
             }
-            metrics.failureSamples.push(attachment);
+            failureSamples.push(attachment);
 
             // Track failure breakdown by lookup code
             const lookupCode = attachment.raw.lookupCode;
             const nameOf = attachment.raw.nameOf;
 
-            if (lookupCode && !metrics.failureBreakdown[lookupCode]) {
-              metrics.failureBreakdown[lookupCode] = {
+            if (lookupCode && !failureBreakdown.has(lookupCode)) {
+              failureBreakdown.set(lookupCode, {
                 count: 0,
                 nameOf: nameOf || "Unknown",
+              });
+            }
+
+            if (lookupCode && failureBreakdown.has(lookupCode)) {
+              const current = failureBreakdown.get(lookupCode)!;
+              current.count++;
+            }
+          }),
+
+        // Increment total records processed
+        incrementTotal: () =>
+          Effect.sync(() => {
+            totalRecords++;
+          }),
+
+        // Get current success rate
+        getSuccessRate: () =>
+          Effect.sync(() => {
+            if (totalRecords === 0) return 0;
+            return (successfulDeterminations / totalRecords) * 100;
+          }),
+
+        // Generate detailed metrics report
+        getDetailedReport: (priorityConfigs: PriorityConfig[]) =>
+          Effect.sync(() => {
+            const successRate =
+              totalRecords > 0
+                ? (successfulDeterminations / totalRecords) * 100
+                : 0;
+
+            // Generate breakdown for each priority
+            const breakdown: Record<string, PriorityMetric> = {};
+            for (const config of priorityConfigs) {
+              const count = priorityMetrics.get(config.id) || 0;
+              breakdown[`priority${config.id}`] = {
+                count,
+                percentage:
+                  totalRecords > 0
+                    ? `${((count / totalRecords) * 100).toFixed(2)}%`
+                    : "0%",
+                description: config.description,
               };
             }
 
-            if (lookupCode && metrics.failureBreakdown[lookupCode]) {
-              metrics.failureBreakdown[lookupCode].count++;
+            // Generate failure breakdown
+            const failureBreakdownObj: Record<string, FailureBreakdown> = {};
+            for (const [lookupCode, data] of failureBreakdown.entries()) {
+              failureBreakdownObj[lookupCode] = {
+                count: data.count,
+                nameOf: data.nameOf,
+                percentage:
+                  totalRecords > 0
+                    ? `${((data.count / totalRecords) * 100).toFixed(2)}%`
+                    : "0%",
+              };
             }
-          }),
 
-        getSuccessRate: () =>
-          Effect.sync(() => {
-            if (metrics.totalRecords === 0) return 0;
-            return (
-              (metrics.successfulDeterminations / metrics.totalRecords) * 100
-            );
-          }),
-
-        getDetailedReport: () =>
-          Effect.sync(() => {
-            const successRate =
-              metrics.totalRecords > 0
-                ? (metrics.successfulDeterminations / metrics.totalRecords) *
-                  100
-                : 0;
+            // Sort failures by count and take top 20
+            const sortedFailures = Object.entries(failureBreakdownObj)
+              .sort(([, a], [, b]) => b.count - a.count)
+              .slice(0, 20)
+              .reduce(
+                (acc, [key, value]) => {
+                  acc[key] = value;
+                  return acc;
+                },
+                {} as Record<string, FailureBreakdown>,
+              );
 
             return {
               summary: {
-                totalRecords: metrics.totalRecords,
+                totalRecords,
                 successRate: `${successRate.toFixed(2)}%`,
-                successfulDeterminations: metrics.successfulDeterminations,
-                fallbackToAttachedDate: metrics.fallbackToAttachedDate,
-                failures: metrics.failures,
+                successfulDeterminations,
+                fallbackToAttachedDate,
+                failures,
               },
-              breakdown: {
-                priority1: {
-                  count: metrics.priority1Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority1Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year folder in original path",
-                },
-                priority2: {
-                  count: metrics.priority2Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority2Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Explicit 4-digit year in description",
-                },
-                priority3: {
-                  count: metrics.priority3Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority3Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Two-digit year at start of description",
-                },
-                priority4: {
-                  count: metrics.priority4Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority4Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year range patterns (e.g., '18-23')",
-                },
-                priority5: {
-                  count: metrics.priority5Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority5Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year in filename patterns (e.g., '18-23 CVLR')",
-                },
-                priority6: {
-                  count: metrics.priority6Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority6Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Single digit year patterns like '24 WC'",
-                },
-                priority7: {
-                  count: metrics.priority7Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority7Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description:
-                    "Date ranges in parentheses like '(10272023 to 10272024)'",
-                },
-                priority8: {
-                  count: metrics.priority8Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority8Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year in original path patterns",
-                },
-                priority9: {
-                  count: metrics.priority9Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority9Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year in blob timestamps",
-                },
-                priority10: {
-                  count: metrics.priority10Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority10Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year in filename with underscores",
-                },
-                priority11: {
-                  count: metrics.priority11Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority11Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year in filename with dashes",
-                },
-                priority12: {
-                  count: metrics.priority12Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority12Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Year after dash in description",
-                },
-                priority13: {
-                  count: metrics.priority13Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority13Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Expiration date fallback",
-                },
-                priority14: {
-                  count: metrics.priority14Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority14Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Activity description date patterns",
-                },
-                priority15: {
-                  count: metrics.priority15Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority15Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Activity entered date",
-                },
-                priority16: {
-                  count: metrics.priority16Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority16Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Attached date fallback after 10/30/2022",
-                },
-                priority17: {
-                  count: metrics.priority17Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority17Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Lookup code start date fallback",
-                },
-                priority18: {
-                  count: metrics.priority18Success,
-                  percentage:
-                    metrics.totalRecords > 0
-                      ? `${((metrics.priority18Success / metrics.totalRecords) * 100).toFixed(2)}%`
-                      : "0%",
-                  description: "Specific lookup codes attachment date fallback",
-                },
-              },
-              failureBreakdown: Object.entries(metrics.failureBreakdown)
-                .sort(([, a], [, b]) => b.count - a.count) // Sort by count descending
-                .slice(0, 20) // Top 20 failing lookup codes
-                .reduce(
-                  (acc, [lookupCode, data]) => {
-                    acc[lookupCode] = {
-                      count: data.count,
-                      nameOf: data.nameOf,
-                      percentage:
-                        metrics.totalRecords > 0
-                          ? `${((data.count / metrics.totalRecords) * 100).toFixed(2)}%`
-                          : "0%",
-                    };
-                    return acc;
-                  },
-                  {} as Record<
-                    string,
-                    { count: number; nameOf: string; percentage: string }
-                  >,
-                ),
-              failureSamples: metrics.failureSamples.slice(0, 20), // Include first 20 failure samples
+              breakdown,
+              failureBreakdown: sortedFailures,
+              failureSamples: failureSamples.slice(0, 20),
+            } as YearDeterminationMetrics;
+          }),
+
+        // Get raw metrics (for backward compatibility)
+        getRawMetrics: () =>
+          Effect.sync(() => {
+            return {
+              totalRecords,
+              successfulDeterminations,
+              fallbackToAttachedDate,
+              failures,
+              priorityMetrics: Object.fromEntries(priorityMetrics),
+              failureSamples: [...failureSamples],
+              failureBreakdown: Object.fromEntries(failureBreakdown),
             };
           }),
 
+        // Reset all metrics
         reset: () =>
           Effect.sync(() => {
-            metrics.totalRecords = 0;
-            metrics.successfulDeterminations = 0;
-            metrics.fallbackToAttachedDate = 0;
-            metrics.failures = 0;
-            metrics.priority1Success = 0;
-            metrics.priority2Success = 0;
-            metrics.priority3Success = 0;
-            metrics.priority4Success = 0;
-            metrics.priority5Success = 0;
-            metrics.priority6Success = 0;
-            metrics.priority7Success = 0;
-            metrics.priority8Success = 0;
-            metrics.priority9Success = 0;
-            metrics.priority10Success = 0;
-            metrics.priority11Success = 0;
-            metrics.priority12Success = 0;
-            metrics.priority13Success = 0;
-            metrics.priority14Success = 0;
-            metrics.priority15Success = 0;
-            metrics.priority16Success = 0;
-            metrics.priority17Success = 0;
-            metrics.priority18Success = 0;
-            metrics.failureSamples = [];
-            metrics.failureBreakdown = {};
+            priorityMetrics.clear();
+            failureSamples.length = 0;
+            failureBreakdown.clear();
+            totalRecords = 0;
+            successfulDeterminations = 0;
+            fallbackToAttachedDate = 0;
+            failures = 0;
           }),
+
+        // Get priority count by ID
+        getPriorityCount: (priorityId: number) =>
+          Effect.sync(() => priorityMetrics.get(priorityId) || 0),
+
+        // Get all priority metrics
+        getAllPriorityMetrics: () =>
+          Effect.sync(() => Object.fromEntries(priorityMetrics)),
       };
     }),
     dependencies: [],

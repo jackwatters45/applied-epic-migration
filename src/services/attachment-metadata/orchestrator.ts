@@ -45,17 +45,29 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
 
             yield* logSingleOutput(deduplicatedTransformed, "deduplicated");
 
-            const organized = yield* yearResolver.resolveYear(
-              deduplicatedTransformed,
+            const deduplicatedEntries = Array.from(
+              HashMap.entries(deduplicatedTransformed),
+            );
+            const deduplicatedMap = new Map(
+              deduplicatedEntries.map(([key, list]) => [
+                key,
+                List.toArray(list),
+              ]),
             );
 
-            yield* logSingleOutput(organized, "organized");
+            const organized = yield* yearResolver.resolveYear(deduplicatedMap);
+
+            const organizedHashMap = HashMap.fromIterable(
+              Array.from(organized.entries()).map(([key, value]) => [
+                key,
+                List.fromIterable(value),
+              ]),
+            );
+            yield* logSingleOutput(organizedHashMap, "organized");
 
             yield* logYearMetrics(yearResolver);
 
             return organized;
-
-            // TODO: determine how/if we can determine subfolders? ie claims, etc
           }),
       };
     }),

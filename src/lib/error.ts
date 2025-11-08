@@ -61,4 +61,5 @@ export type AppError =
   | DownloadError
   | FileSystemError
   | ValidationError
-  | ApiError;
+  | ApiError
+  | DateError;
