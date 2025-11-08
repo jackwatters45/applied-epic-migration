@@ -6,7 +6,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
     effect: Effect.gen(function* () {
       const serviceAccountKeyPath = yield* Config.string(
         "GOOGLE_SERVICE_ACCOUNT_KEY_PATH",
-      ).pipe(Config.withDefault("service-account-key.json"));
+      ).pipe(Config.withDefault("./.private_key.json"));
 
       const scopes = yield* Config.array(
         Config.string(),
