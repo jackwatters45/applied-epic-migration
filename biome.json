@@ -42,7 +42,13 @@
         "noUselessElse": "error"
       }
     },
-    "includes": ["**", "!**/tests/**/*", "!**/dist/**/*", "!**/*.py"]
+    "includes": [
+      "**",
+      "!**/tests/**/*",
+      "!**/dist/**/*",
+      "!**/*.py",
+      "!**/logs/**/*"
+    ]
   },
   "javascript": {
     "formatter": {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@effect/vitest";
 import { Effect } from "effect";
-import { AttachmentMetadataOrchestratorService } from "../../src/services/attachment-metadata/orchestrator.js";
+import { AttachmentMetadataOrchestratorService } from "../../../src/services/attachment-metadata/orchestrator.js";
 
 describe("Attachment Metadata Orchestrator", () => {
   it("should have complete interface with metrics", async () => {
