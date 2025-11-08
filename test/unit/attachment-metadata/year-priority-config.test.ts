@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@effect/vitest";
-import { PRIORITY_CONFIGS } from "../../src/services/attachment-metadata/year-priority-config.js";
-import { expectedResults, mockAttachments } from "../utils/mock-data.js";
+import { PRIORITY_CONFIGS } from "../../../src/services/attachment-metadata/year-priority-config.js";
+import { expectedResults, mockAttachments } from "../../utils/mock-data.js";
 
 describe("Year Priority Extractors", () => {
   describe("Priority 1: Path Year Folder", () => {
@@ -157,7 +157,7 @@ describe("Year Priority Extractors", () => {
     it("should handle invalid years", () => {
       const attachment = mockAttachments.invalidYear;
 
-      // Extractors should find the year but validators will reject it
+      // Extractors should find year but validators will reject it
       const pathExtractor = PRIORITY_CONFIGS[0];
 
       expect(pathExtractor.extractor(attachment)).toBe(1800);

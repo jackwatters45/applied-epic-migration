@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "@effect/vitest";
 import { Effect } from "effect";
-import { AttachmentMetaData } from "../../src/services/attachment-metadata/validate.js";
-import { DynamicYearMetricsService } from "../../src/services/attachment-metadata/year-metrics.js";
-import { PRIORITY_CONFIGS } from "../../src/services/attachment-metadata/year-priority-config.js";
-import { createMockAttachment } from "../utils/mock-data.js";
+import { AttachmentMetaData } from "../../../src/services/attachment-metadata/validate.js";
+import { DynamicYearMetricsService } from "../../../src/services/attachment-metadata/year-metrics.js";
+import { PRIORITY_CONFIGS } from "../../../src/services/attachment-metadata/year-priority-config.js";
+import { createMockAttachment } from "../../utils/mock-data.js";
 
 describe("Year Metrics Service", () => {
   let service: DynamicYearMetricsService;

@@ -9,6 +9,8 @@
 - **Package Manager**: bun (pnpm compatible)
 - **Typecheck**: `bun run typecheck` or `tsc -b tsconfig.json`
 - **Lint/Format**: `bun run check` or `biome check --fix .`
+- **Test**: `bun test` or `vitest`
+- **Single test**: `bun test --run filename.test.ts` or `vitest run filename.test.ts`
 
 ## Code Style Guidelines
 
@@ -22,7 +24,7 @@
 
 ## Git Hooks (Lefthook)
 
-- **Pre-commit**: Biome check/fix, TypeScript check, Python ruff check/format
+- **Pre-commit**: Biome check/fix, TypeScript check
 - **Pre-push**: Biome check/fix, TypeScript check
 
 ## Folders
