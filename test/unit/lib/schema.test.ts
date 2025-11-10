@@ -7,117 +7,117 @@ import {
   OptionalString,
 } from "../../../src/lib/schema.js";
 
-describe.skip("Lib Schema Tests", () => {
+describe("Lib Schema Tests", () => {
   describe("OptionalString", () => {
     it("should handle valid strings", () => {
-      const schema = OptionalString();
-      const result = Schema.decodeUnknownEither(schema)("test");
+      const schema = Schema.Struct({ v: OptionalString() });
+      const result = Schema.decodeUnknownEither(schema)({ v: "test" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBe("test");
+        expect(result.right).toStrictEqual({ v: "test" });
       }
     });
 
     it("should convert empty strings to undefined", () => {
-      const schema = OptionalString();
-      const result = Schema.decodeUnknownEither(schema)("");
+      const schema = Schema.Struct({ v: OptionalString() });
+      const result = Schema.decodeUnknownEither(schema)({ v: "" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should handle undefined", () => {
-      const schema = OptionalString();
-      const result = Schema.decodeUnknownEither(schema)(undefined);
+      const schema = Schema.Struct({ v: OptionalString() });
+      const result = Schema.decodeUnknownEither(schema)({ v: undefined });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should encode correctly", () => {
-      const schema = OptionalString();
-      const encoded = Schema.encodeEither(schema)("test");
+      const schema = Schema.Struct({ v: OptionalString() });
+      const encoded = Schema.encodeEither(schema)({ v: "test" });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toBe("test");
+        expect(encoded.right.v).toBe("test");
       }
     });
 
     it("should encode undefined as empty string", () => {
-      const schema = OptionalString();
-      const encoded = Schema.encodeEither(schema)(undefined);
+      const schema = Schema.Struct({ v: OptionalString() });
+      const encoded = Schema.encodeEither(schema)({ v: undefined });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toBe("");
+        expect(encoded.right.v).toBe("");
       }
     });
   });
 
   describe("OptionalNumberFromString", () => {
     it("should parse valid numbers", () => {
-      const result = Schema.decodeUnknownEither(OptionalNumberFromString)(
-        "123",
-      );
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: "123" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBe(123);
+        expect(result.right.v).toBe(123);
       }
     });
 
     it("should handle decimal numbers", () => {
-      const result = Schema.decodeUnknownEither(OptionalNumberFromString)(
-        "123.45",
-      );
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: "123.45" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBe(123.45);
+        expect(result.right.v).toBe(123.45);
       }
     });
 
     it("should convert empty strings to undefined", () => {
-      const result = Schema.decodeUnknownEither(OptionalNumberFromString)("");
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: "" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should handle undefined", () => {
-      const result = Schema.decodeUnknownEither(OptionalNumberFromString)(
-        undefined,
-      );
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: undefined });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should encode numbers correctly", () => {
-      const encoded = Schema.encodeEither(OptionalNumberFromString)(123);
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const encoded = Schema.encodeEither(schema)({ v: 123 });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toBe("123");
+        expect(encoded.right.v).toBe("123");
       }
     });
 
     it("should encode undefined as empty string", () => {
-      const encoded = Schema.encodeEither(OptionalNumberFromString)(undefined);
+      const schema = Schema.Struct({ v: OptionalNumberFromString });
+      const encoded = Schema.encodeEither(schema)({ v: undefined });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toBe("");
+        expect(encoded.right.v).toBe("");
       }
     });
   });
@@ -125,52 +125,55 @@ describe.skip("Lib Schema Tests", () => {
   describe("OptionalDateFromString", () => {
     it("should handle Date objects", () => {
       const testDate = new Date("2023-01-15");
-      const result = Schema.decodeUnknownEither(OptionalDateFromString)(
-        testDate,
-      );
+      const schema = Schema.Struct({ v: OptionalDateFromString });
+      const result = Schema.decodeUnknownEither(schema)({
+        v: testDate.toISOString(),
+      });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toEqual(testDate);
+        expect(result.right.v).toEqual(testDate);
       }
     });
 
     it("should convert empty strings to undefined", () => {
-      const result = Schema.decodeUnknownEither(OptionalDateFromString)("");
+      const schema = Schema.Struct({ v: OptionalDateFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: "" });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should handle undefined", () => {
-      const result = Schema.decodeUnknownEither(OptionalDateFromString)(
-        undefined,
-      );
+      const schema = Schema.Struct({ v: OptionalDateFromString });
+      const result = Schema.decodeUnknownEither(schema)({ v: undefined });
 
       expect(Either.isRight(result)).toBe(true);
       if (Either.isRight(result)) {
-        expect(result.right).toBeUndefined();
+        expect(result.right.v).toBeUndefined();
       }
     });
 
     it("should encode Date objects correctly", () => {
       const testDate = new Date("2023-01-15");
-      const encoded = Schema.encodeEither(OptionalDateFromString)(testDate);
+      const schema = Schema.Struct({ v: OptionalDateFromString });
+      const encoded = Schema.encodeEither(schema)({ v: testDate });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toEqual(testDate);
+        expect(encoded.right.v).toBe(testDate.toISOString());
       }
     });
 
     it("should encode undefined as empty string", () => {
-      const encoded = Schema.encodeEither(OptionalDateFromString)(undefined);
+      const schema = Schema.Struct({ v: OptionalDateFromString });
+      const encoded = Schema.encodeEither(schema)({ v: undefined });
 
       expect(Either.isRight(encoded)).toBe(true);
       if (Either.isRight(encoded)) {
-        expect(encoded.right).toBe("");
+        expect(encoded.right.v).toBe("");
       }
     });
   });
