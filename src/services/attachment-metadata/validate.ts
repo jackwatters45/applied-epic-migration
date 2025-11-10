@@ -3,6 +3,7 @@ import {
   BooleanFromYN,
   OptionalDateFromString,
   OptionalNumberFromString,
+  TrimString,
 } from "../../lib/schema.js";
 
 export class AttachmentMetadataValidatorError extends Schema.TaggedError<AttachmentMetadataValidatorError>()(
@@ -58,9 +59,7 @@ export class AttachmentMetaData extends Schema.Class<AttachmentMetaData>(
   lookupCode: Schema.propertySignature(Schema.String).pipe(
     Schema.fromKey("LookupCode"),
   ),
-  nameOf: Schema.propertySignature(Schema.String).pipe(
-    Schema.fromKey("NameOf"),
-  ),
+  nameOf: Schema.propertySignature(TrimString).pipe(Schema.fromKey("NameOf")),
   agency: Schema.propertySignature(Schema.String).pipe(
     Schema.fromKey("Agency"),
   ),

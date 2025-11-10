@@ -1,25 +1,11 @@
 import { Effect, HashMap, List, Schema } from "effect";
+import type { AttachmentData, FormattedAttachment } from "../../lib/type.js";
 import type { AttachmentMetaData } from "./validate.js";
 
-export interface FormattedAttachment {
-  readonly fileId: string;
-  readonly nameOf: string;
-  readonly lookupCode: string;
-  readonly newPath: string;
-  readonly originalPath: string;
-  readonly attachedDate: Date;
-  readonly folder: string | undefined;
-  readonly description: string;
-  readonly fileExtension: string;
-  readonly policyType: string | undefined;
-}
-
-export interface Attachment {
-  readonly formatted: FormattedAttachment;
-  readonly raw: AttachmentMetaData;
-}
-
-export type TransformResult = HashMap.HashMap<string, List.List<Attachment>>;
+export type TransformResult = HashMap.HashMap<
+  string,
+  List.List<AttachmentData>
+>;
 
 export class AttachmentMetadataTransformerError extends Schema.TaggedError<AttachmentMetadataTransformerError>()(
   "AttachmentMetadataTransformerError",
@@ -39,12 +25,12 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
           Effect.sync(() => {
             let result: TransformResult = HashMap.empty<
               string,
-              List.List<Attachment>
+              List.List<AttachmentData>
             >();
 
             for (const attachment of rows) {
-              const lookupCode = attachment.lookupCode;
-              if (!lookupCode) {
+              const folderName = attachment.nameOf.trim();
+              if (!folderName) {
                 continue;
               }
 
@@ -61,22 +47,22 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
                 policyType: attachment.policyType,
               };
 
-              const attachmentRecord: Attachment = {
+              const attachmentRecord: AttachmentData = {
                 formatted,
                 raw: attachment,
               };
 
-              const existing = HashMap.get(result, lookupCode);
+              const existing = HashMap.get(result, folderName);
               if (existing._tag === "Some") {
                 result = HashMap.set(
                   result,
-                  lookupCode,
+                  folderName,
                   List.append(existing.value, attachmentRecord),
                 );
               } else {
                 result = HashMap.set(
                   result,
-                  lookupCode,
+                  folderName,
                   List.of(attachmentRecord),
                 );
               }

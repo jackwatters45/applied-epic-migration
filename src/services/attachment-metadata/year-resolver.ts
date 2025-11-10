@@ -1,12 +1,16 @@
-import { Effect } from "effect";
-import type { Attachment } from "./transform.js";
+import { Effect, HashMap, List } from "effect";
+import type {
+  Attachment,
+  AttachmentData,
+  OrganizedHashMap,
+} from "../../lib/type.js";
 import { DynamicYearMetricsService } from "./year-metrics.js";
 import type { PriorityConfig } from "./year-priority-config.js";
 import { PRIORITY_CONFIGS } from "./year-priority-config.js";
 
 // Helper function to resolve year for a single attachment
 const resolveYearForAttachment = (
-  attachment: Attachment,
+  attachment: AttachmentData,
   priorities: PriorityConfig[],
   metrics: DynamicYearMetricsService,
 ) =>
@@ -40,24 +44,29 @@ export class YearResolutionService extends Effect.Service<YearResolutionService>
       return {
         // Resolve year for a single attachment
         resolveYearForAttachment: (
-          attachment: Attachment,
+          attachment: AttachmentData,
           priorities: PriorityConfig[] = PRIORITY_CONFIGS,
         ) => resolveYearForAttachment(attachment, priorities, metrics),
 
         // Resolve years for all attachments in metadata
-        resolveYear: (metadata: Map<string, readonly Attachment[]>) =>
+        resolveYear: (
+          metadata: HashMap.HashMap<string, List.List<AttachmentData>>,
+        ) =>
           Effect.gen(function* () {
-            // Convert Map entries to array for processing
-            const entries = Array.from(metadata.entries());
+            // Convert HashMap entries to array for processing
+            const entries = Array.from(HashMap.entries(metadata));
 
             // Process each lookup code and its attachments
             const processedEntries = yield* Effect.forEach(
               entries,
               ([lookupCode, attachments]) =>
                 Effect.gen(function* () {
+                  // Convert List to array for processing
+                  const attachmentArray = List.toArray(attachments);
+
                   // Resolve years for all attachments in this group
                   const processedAttachments = yield* Effect.forEach(
-                    attachments,
+                    attachmentArray,
                     (attachment) =>
                       Effect.gen(function* () {
                         const year = yield* resolveYearForAttachment(
@@ -75,6 +84,7 @@ export class YearResolutionService extends Effect.Service<YearResolutionService>
                     .map(({ attachment, year }) => ({
                       ...attachment,
                       key: lookupCode,
+                      name: attachment.formatted.nameOf,
                       determinedYear: year!,
                     }));
 
@@ -82,8 +92,19 @@ export class YearResolutionService extends Effect.Service<YearResolutionService>
                 }),
             );
 
-            // Convert back to Map
-            return new Map(processedEntries);
+            // Convert back to HashMap
+            let result: OrganizedHashMap = HashMap.empty<
+              string,
+              List.List<Attachment>
+            >();
+            for (const [lookupCode, validAttachments] of processedEntries) {
+              result = HashMap.set(
+                result,
+                lookupCode,
+                List.fromIterable(validAttachments),
+              );
+            }
+            return result;
           }),
 
         // Get detailed metrics report

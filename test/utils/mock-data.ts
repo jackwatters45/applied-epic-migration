@@ -1,13 +1,13 @@
 import type {
-  Attachment,
+  AttachmentData,
   FormattedAttachment,
 } from "../../src/services/attachment-metadata/transform.js";
 import { AttachmentMetaData } from "../../src/services/attachment-metadata/validate.js";
 
 // Mock attachment factory for testing
 export const createMockAttachment = (
-  overrides: Partial<Attachment> = {},
-): Attachment => {
+  overrides: Partial<AttachmentData> = {},
+): AttachmentData => {
   const defaultFormatted: FormattedAttachment = {
     fileId: "file123",
     nameOf: "Test Document",

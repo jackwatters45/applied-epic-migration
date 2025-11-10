@@ -1,5 +1,5 @@
 import { Effect } from "effect";
-import type { Attachment } from "./transform.js";
+import type { AttachmentData } from "../../lib/type.js";
 import type { PriorityConfig } from "./year-priority-config.js";
 
 // Metrics interfaces
@@ -25,7 +25,7 @@ export interface YearDeterminationMetrics {
   };
   breakdown: Record<string, PriorityMetric>;
   failureBreakdown: Record<string, FailureBreakdown>;
-  failureSamples: Attachment[];
+  failureSamples: AttachmentData[];
 }
 
 // Dynamic metrics service
@@ -35,7 +35,7 @@ export class DynamicYearMetricsService extends Effect.Service<DynamicYearMetrics
     effect: Effect.gen(function* () {
       // Internal state
       const priorityMetrics = new Map<number, number>();
-      const failureSamples: Attachment[] = [];
+      const failureSamples: AttachmentData[] = [];
       const failureBreakdown = new Map<
         string,
         { count: number; nameOf: string }
@@ -56,7 +56,7 @@ export class DynamicYearMetricsService extends Effect.Service<DynamicYearMetrics
           }),
 
         // Record a failed year determination
-        recordFailure: (attachment: Attachment) =>
+        recordFailure: (attachment: AttachmentData) =>
           Effect.sync(() => {
             failures++;
 

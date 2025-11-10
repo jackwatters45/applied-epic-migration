@@ -1,5 +1,5 @@
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { FileSystem } from "@effect/platform";
+import { NodeContext } from "@effect/platform-node";
 import { Effect, Schema } from "effect";
 import { GoogleAuth } from "google-auth-library";
 import { ConfigService } from "../../lib/config.js";
@@ -19,44 +19,36 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
   {
     effect: Effect.gen(function* () {
       const config = yield* ConfigService;
+      const fs = yield* FileSystem.FileSystem;
       let authCache: GoogleAuth | null = null;
 
       const createGoogleAuth = () => {
         return new GoogleAuth({
           keyFile: config.googleDrive.serviceAccountKeyPath,
-          scopes: [...config.googleDrive.scopes], // Convert readonly array to mutable
+          scopes: [...config.googleDrive.scopes],
         });
       };
 
       return {
         getAuthenticatedClient: () =>
           Effect.gen(function* () {
-            // Validate service account key path is configured
-            if (!config.googleDrive.serviceAccountKeyPath) {
-              return yield* Effect.fail(
-                new GoogleDriveAuthError({
-                  message: "Google Drive service account key path is required",
-                  status: 500,
-                }),
-              );
-            }
-
             // Check if we have a cached auth client
             if (authCache) {
               return authCache;
             }
 
             // Validate that the service account key file exists and is readable
-            const keyPath = resolve(config.googleDrive.serviceAccountKeyPath);
+            const keyPath = config.googleDrive.serviceAccountKeyPath;
 
-            yield* Effect.tryPromise({
-              try: () => Promise.resolve(readFileSync(keyPath, "utf8")),
-              catch: () =>
-                new GoogleDriveAuthError({
-                  message: `Cannot read service account key file at: ${keyPath}`,
-                  status: 500,
-                }),
-            });
+            yield* fs.readFileString(keyPath).pipe(
+              Effect.mapError(
+                () =>
+                  new GoogleDriveAuthError({
+                    message: `Cannot read service account key file at: ${keyPath}`,
+                    status: 500,
+                  }),
+              ),
+            );
 
             // Create Google Auth instance
             const googleAuth = createGoogleAuth();
@@ -95,6 +87,6 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
           }),
       } as const;
     }),
-    dependencies: [ConfigService.Default],
+    dependencies: [ConfigService.Default, NodeContext.layer],
   },
 ) {}

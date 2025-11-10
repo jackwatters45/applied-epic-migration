@@ -1,80 +1,80 @@
+import type { AttachmentData } from "../../lib/type.js";
 import { validateFourDigitYear, validateTwoDigitYear } from "../../lib/util.js";
-import type { Attachment } from "./transform.js";
 
 // Priority configuration interface
 export interface PriorityConfig {
   id: number;
   name: string;
   description: string;
-  extractor: (attachment: Attachment) => number | null;
+  extractor: (attachment: AttachmentData) => number | null;
   validator: (year: number) => number | null;
 }
 
 // Year extraction functions
-const extractPathYearFolder = (attachment: Attachment): number | null => {
+const extractPathYearFolder = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.originalPath?.match(/\\(\d{4})\\/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractExplicitYear = (attachment: Attachment): number | null => {
+const extractExplicitYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/\b(20\d{2})\b/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractStartYear = (attachment: Attachment): number | null => {
+const extractStartYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/^(\d{2})\b/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractYearRange = (attachment: Attachment): number | null => {
+const extractYearRange = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/(\d{2})-(\d{2})\b/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractFilenameYear = (attachment: Attachment): number | null => {
+const extractFilenameYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/(\d{2})-\d{2}\s+CVLR/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractWCYear = (attachment: Attachment): number | null => {
+const extractWCYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/\b(\d{2})\s+WC\b/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractDateRangeYear = (attachment: Attachment): number | null => {
+const extractDateRangeYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(
     /\((\d{2})(\d{2})(\d{4})\s+to\s+\d{8}\)/,
   );
   return match ? Number.parseInt(match[3], 10) : null;
 };
 
-const extractPathYear = (attachment: Attachment): number | null => {
+const extractPathYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.originalPath?.match(/\/(\d{2})\s+/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractTimestampYear = (attachment: Attachment): number | null => {
+const extractTimestampYear = (attachment: AttachmentData): number | null => {
   const match =
     attachment.formatted.originalPath?.match(/(\d{4})-\d{2}-\d{2}T/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractUnderscoreYear = (attachment: Attachment): number | null => {
+const extractUnderscoreYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.originalPath?.match(/_(\d{4})_/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractDashYear = (attachment: Attachment): number | null => {
+const extractDashYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.originalPath?.match(/\.(\d{4})\./);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractDescDashYear = (attachment: Attachment): number | null => {
+const extractDescDashYear = (attachment: AttachmentData): number | null => {
   const match = attachment.formatted.description?.match(/-\s+(\d{2})\s+/);
   return match ? Number.parseInt(match[1], 10) : null;
 };
 
-const extractExpirationYear = (attachment: Attachment): number | null => {
+const extractExpirationYear = (attachment: AttachmentData): number | null => {
   const expirationDate = attachment.raw.expirationDate;
   if (expirationDate) {
     const expYear = new Date(expirationDate).getFullYear();
@@ -83,7 +83,7 @@ const extractExpirationYear = (attachment: Attachment): number | null => {
   return null;
 };
 
-const extractActivityDescYear = (attachment: Attachment): number | null => {
+const extractActivityDescYear = (attachment: AttachmentData): number | null => {
   const activityDesc = attachment.raw.activityDescription;
   if (activityDesc) {
     const match = activityDesc.match(/DOL:\s*\d{1,2}\/\d{1,2}\/(\d{2})\b/);
@@ -92,7 +92,9 @@ const extractActivityDescYear = (attachment: Attachment): number | null => {
   return null;
 };
 
-const extractActivityEnteredYear = (attachment: Attachment): number | null => {
+const extractActivityEnteredYear = (
+  attachment: AttachmentData,
+): number | null => {
   const activityEnteredDate = attachment.raw.activityEnteredDate;
   return activityEnteredDate
     ? new Date(activityEnteredDate).getFullYear()
@@ -100,7 +102,7 @@ const extractActivityEnteredYear = (attachment: Attachment): number | null => {
 };
 
 const extractAttachedDateAfterCutoff = (
-  attachment: Attachment,
+  attachment: AttachmentData,
 ): number | null => {
   const attachedDate = attachment.raw.attachedDate;
   if (attachedDate) {
@@ -114,7 +116,9 @@ const extractAttachedDateAfterCutoff = (
   return null;
 };
 
-const extractLookupCodeStartYear = (attachment: Attachment): number | null => {
+const extractLookupCodeStartYear = (
+  attachment: AttachmentData,
+): number | null => {
   const lookupCode = attachment.raw.lookupCode;
   const lookupCodeStartYears: Record<string, number> = {
     "TRULTRE-01": 2022,
@@ -131,7 +135,7 @@ const extractLookupCodeStartYear = (attachment: Attachment): number | null => {
 };
 
 const extractSpecificLookupCodeYear = (
-  attachment: Attachment,
+  attachment: AttachmentData,
 ): number | null => {
   const lookupCode = attachment.raw.lookupCode;
   const attachmentDateLookupCodes = ["BORDCIT-02", "TESTTRA-01"];
