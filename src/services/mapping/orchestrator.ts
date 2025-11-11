@@ -50,7 +50,9 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
       const runMapping = (_attachments: OrganizedHashMap) =>
         Effect.gen(function* () {
           // build a map of google drive file structure
-          const _hierarchyMap = yield* folderHierarchy.createHierarchyMap();
+          const _hierarchyMap = yield* folderHierarchy.buildHierarchyTree({
+            useCache: true,
+          });
 
           // Actually connect names of parent folders
           //

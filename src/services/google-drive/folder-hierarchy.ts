@@ -1,6 +1,6 @@
 import { FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
-import { Array as A, Effect, Option } from "effect";
+import { Array as A, Effect, Option, type Record } from "effect";
 import { ConfigService } from "src/lib/config.js";
 import { type GoogleDriveFile, GoogleDriveFileService } from "./file.js";
 
@@ -10,7 +10,22 @@ export interface FolderInfo {
   readonly parentId?: string;
 }
 
-// for each second level, repeat
+export interface FolderNode {
+  readonly id: string;
+  readonly name: string;
+  readonly parentId: string | undefined;
+  readonly level: number;
+  readonly children: FolderNode[];
+  readonly path: string[];
+}
+
+export interface HierarchyTree {
+  readonly roots: FolderNode[];
+  readonly totalFolders: number;
+  readonly maxDepth: number;
+  readonly folderMap: Record<string, FolderNode>;
+}
+
 // add reporting
 // add years
 // add files
@@ -30,7 +45,7 @@ export class FolderHierarchyService extends Effect.Service<FolderHierarchyServic
         folders.forEach((folder) => {
           const parentId = Option.getOrElse(
             A.head(folder.parents),
-            () => "root",
+            () => sharedDriveId, // Use shared drive ID as root
           );
           if (!groups[parentId]) {
             groups[parentId] = [];
@@ -41,33 +56,134 @@ export class FolderHierarchyService extends Effect.Service<FolderHierarchyServic
         return groups;
       };
 
+      const _logGroupedFolderCounts = (
+        grouped: Record<string, GoogleDriveFile[]>,
+      ) => {
+        console.log("Folder counts by parent:");
+        Object.entries(grouped).forEach(([parentId, folders]) => {
+          const parentName =
+            parentId === sharedDriveId ? "Shared Drive Root" : parentId;
+          console.log(`${parentName}: ${folders.length} folders`);
+        });
+
+        const totalFolders = Object.values(grouped).reduce(
+          (sum, folders) => sum + folders.length,
+          0,
+        );
+        console.log(`Total folders: ${totalFolders}`);
+      };
+
+      const buildFolderNode = (
+        folder: GoogleDriveFile,
+        level: number,
+        path: string[],
+      ): FolderNode => {
+        const parentId = Option.getOrElse(
+          A.head(folder.parents),
+          () => undefined,
+        );
+        return {
+          id: folder.id,
+          name: folder.name,
+          parentId,
+          level,
+          children: [],
+          path,
+        };
+      };
+
+      const buildHierarchyTree = (
+        grouped: Record<string, GoogleDriveFile[]>,
+      ): HierarchyTree => {
+        const folderMap: Record<string, FolderNode> = {};
+        const roots: FolderNode[] = [];
+
+        // First pass: create all folder nodes
+        Object.values(grouped)
+          .flat()
+          .forEach((folder) => {
+            const node = buildFolderNode(folder, 0, []);
+            folderMap[folder.id] = node;
+          });
+
+        // Second pass: build parent-child relationships and calculate paths
+        const calculatePathAndLevel = (
+          folderId: string,
+          visited = new Set<string>(),
+        ): { path: string[]; level: number } => {
+          if (visited.has(folderId)) {
+            console.warn(`Circular reference detected for folder: ${folderId}`);
+            return { path: [], level: 0 };
+          }
+          visited.add(folderId);
+
+          const node = folderMap[folderId];
+          if (!node) {
+            return { path: [], level: 0 };
+          }
+
+          if (!node.parentId || node.parentId === sharedDriveId) {
+            return { path: [node.name], level: 0 };
+          }
+
+          const parentResult = calculatePathAndLevel(node.parentId, visited);
+          return {
+            path: [...parentResult.path, node.name],
+            level: parentResult.level + 1,
+          };
+        };
+
+        // Build relationships and calculate paths/levels
+        Object.values(folderMap).forEach((node) => {
+          const { path, level } = calculatePathAndLevel(node.id);
+          folderMap[node.id] = { ...node, path, level };
+
+          if (node.parentId && folderMap[node.parentId]) {
+            folderMap[node.parentId].children.push(folderMap[node.id]);
+          } else if (!node.parentId || node.parentId === sharedDriveId) {
+            roots.push(folderMap[node.id]);
+          }
+        });
+
+        // Calculate max depth
+        const maxDepth = Math.max(
+          ...Object.values(folderMap).map((node) => node.level),
+        );
+
+        return {
+          roots,
+          totalFolders: Object.keys(folderMap).length,
+          maxDepth,
+          folderMap,
+        };
+      };
+
       return {
-        createHierarchyMap: () =>
+        buildHierarchyTree: ({ useCache }: { useCache: boolean }) =>
           Effect.gen(function* () {
             const files = yield* fileService.listFolders({
               sharedDriveId,
-              useCache: true,
+              useCache,
             });
 
-            // write files to fs
-            yield* fs.writeFileString(
-              "logs/folders.json",
-              JSON.stringify(files),
-            );
-
-            // group by parent
             const grouped = groupByParent(files);
-            console.log("Folders grouped by parent:");
-            Object.entries(grouped).forEach(([parentId, folders]) => {
-              console.log(`${parentId}: ${folders.length} folders`);
-            });
-
             yield* fs.writeFileString(
               "logs/folders-grouped.json",
-              JSON.stringify(grouped),
+              JSON.stringify(grouped, null, 2),
             );
 
-            return grouped;
+            const hierarchyTree = buildHierarchyTree(grouped);
+            yield* fs.writeFileString(
+              "logs/folder-hierarchy.json",
+              JSON.stringify(hierarchyTree, null, 2),
+            );
+
+            console.log("Hierarchy tree built:");
+            console.log(`- Total folders: ${hierarchyTree.totalFolders}`);
+            console.log(`- Root folders: ${hierarchyTree.roots.length}`);
+            console.log(`- Max depth: ${hierarchyTree.maxDepth}`);
+
+            return hierarchyTree;
           }),
       };
     }),
