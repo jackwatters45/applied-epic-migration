@@ -254,6 +254,24 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
               message: `Folder '${folderName}' created successfully`,
             } as const;
           }),
+
+        deleteFile: (fileId: string) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            yield* Effect.tryPromise({
+              try: async () => {
+                await drive.files.delete({
+                  fileId,
+                });
+              },
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to delete file/folder ${fileId}: ${error}`,
+                }),
+            });
+          }),
       } as const;
     }),
     dependencies: [GoogleDriveAuthService.Default],

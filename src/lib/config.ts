@@ -23,6 +23,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
       );
 
       const sharedClientDriveId = Config.succeed("0ADXTdKmRqwv7Uk9PVA");
+      const testSharedClientDriveId = Config.succeed("0AOulfXIJNYOzUk9PVA");
 
       const attachmentsFolderId = Config.succeed(
         "1-T0Lemwm8hxzmgfYPrZTaaYQnmRH1Qh4",
@@ -34,6 +35,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
           scopes,
         },
         metadataCsvPath,
+        testSharedClientDriveId,
         sharedClientDriveId,
         attachmentsFolderId,
       };
