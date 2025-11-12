@@ -46,6 +46,17 @@ export const OptionalDateFromString = S.optional(
 );
 
 /**
+ * Schema transformation for trimming strings
+ */
+export const TrimString = S.String.pipe(
+  S.transform(S.String, {
+    strict: false,
+    decode: (s) => s.trim(),
+    encode: (s) => s,
+  }),
+);
+
+/**
  * Schema transformation for Y/N boolean fields
  */
 export const BooleanFromYN = S.String.pipe(

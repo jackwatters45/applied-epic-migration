@@ -1,8 +1,9 @@
-import { FileSystem } from "@effect/platform";
-import { NodeContext } from "@effect/platform-node";
-import { Effect, HashMap, List, Option } from "effect";
+import { Effect } from "effect";
+import { ConfigService } from "src/lib/config.js";
 import { CsvExplorerService } from "../csv/explorer.js";
 import { CsvExtractorService } from "../csv/extract.js";
+import { LoggingService } from "../lib/log.js";
+import { AttachmentCacheService } from "./cache.js";
 import { DeduplicationService } from "./deduplication.js";
 import { AttachmentMetadataTransformerService } from "./transform.js";
 import { AttachmentMetadataValidatorService } from "./validate.js";
@@ -13,18 +14,27 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
   {
     effect: Effect.gen(function* () {
       const _explorer = yield* CsvExplorerService;
+      const logging = yield* LoggingService;
       const extractor = yield* CsvExtractorService;
       const validator = yield* AttachmentMetadataValidatorService;
       const transformer = yield* AttachmentMetadataTransformerService;
       const yearResolver = yield* YearResolutionService;
       const deduplicator = yield* DeduplicationService;
+      const config = yield* ConfigService;
+      const cache = yield* AttachmentCacheService;
 
       return {
-        run: () =>
+        run: ({ useCache = false }: { useCache: boolean }) =>
           Effect.gen(function* () {
-            const extracted = yield* extractor.extract(
-              "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
-            );
+            if (useCache) {
+              const cachedData = yield* cache.readCache();
+              if (cachedData) {
+                return cachedData;
+              }
+            }
+
+            const csvPath = yield* config.metadataCsvPath;
+            const extracted = yield* extractor.extract(csvPath);
 
             const validated =
               yield* validator.validateAttachmentMetadata(extracted);
@@ -32,48 +42,29 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
             const transformed =
               yield* transformer.transformAttachmentMetadata(validated);
 
-            yield* logSingleOutput(transformed, "transformed");
+            yield* logging.logSingleValueHM(transformed, "transformed");
 
-            const deduplicated = yield* deduplicator.deduplicateByFileId(
-              HashMap.map(transformed, List.toArray),
-            );
+            const deduplicated =
+              yield* deduplicator.deduplicateByFileId(transformed);
 
-            const deduplicatedTransformed = HashMap.map(
-              deduplicated,
-              List.fromIterable,
-            );
+            yield* logging.logSingleValueHM(deduplicated, "deduplicated");
 
-            yield* logSingleOutput(deduplicatedTransformed, "deduplicated");
+            const organized = yield* yearResolver.resolveYear(deduplicated);
 
-            const deduplicatedEntries = Array.from(
-              HashMap.entries(deduplicatedTransformed),
-            );
-            const deduplicatedMap = new Map(
-              deduplicatedEntries.map(([key, list]) => [
-                key,
-                List.toArray(list),
-              ]),
-            );
+            yield* logging.logSingleValueHM(organized, "organized");
 
-            const organized = yield* yearResolver.resolveYear(deduplicatedMap);
-
-            const organizedHashMap = HashMap.fromIterable(
-              Array.from(organized.entries()).map(([key, value]) => [
-                key,
-                List.fromIterable(value),
-              ]),
-            );
-            yield* logSingleOutput(organizedHashMap, "organized");
-
-            yield* logYearMetrics(yearResolver);
+            yield* logging.logYearMetrics(yearResolver);
 
             return organized;
           }),
       };
     }),
     dependencies: [
+      ConfigService.Default,
+      LoggingService.Default,
       CsvExplorerService.Default,
       CsvExtractorService.Default,
+      AttachmentCacheService.Default,
       AttachmentMetadataValidatorService.Default,
       AttachmentMetadataTransformerService.Default,
       YearResolutionService.Default,
@@ -81,34 +72,3 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
     ],
   },
 ) {}
-
-const logSingleOutput = (
-  hashMap: HashMap.HashMap<string, List.List<unknown>>,
-  name: string,
-) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem;
-    const option = HashMap.get(hashMap, "SUNDMON-01");
-    const values = Option.getOrThrow(option);
-    const arr = List.toArray(values);
-
-    const data = {
-      "SUNDMON-01": arr,
-    };
-
-    yield* fs.writeFileString(
-      `logs/${name}.json`,
-      JSON.stringify(data, null, 2),
-    );
-  }).pipe(Effect.provide(NodeContext.layer));
-
-const logYearMetrics = (yearResolver: YearResolutionService) =>
-  Effect.gen(function* () {
-    const fs = yield* FileSystem.FileSystem;
-    const metrics = yield* yearResolver.getMetrics();
-
-    yield* fs.writeFileString(
-      "logs/year-metrics.json",
-      JSON.stringify(metrics, null, 2),
-    );
-  }).pipe(Effect.provide(NodeContext.layer));

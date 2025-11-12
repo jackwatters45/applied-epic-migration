@@ -18,11 +18,24 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         ]),
       );
 
+      const metadataCsvPath = Config.succeed(
+        "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
+      );
+
+      const sharedClientDriveId = Config.succeed("0ADXTdKmRqwv7Uk9PVA");
+
+      const attachmentsFolderId = Config.succeed(
+        "1-T0Lemwm8hxzmgfYPrZTaaYQnmRH1Qh4",
+      );
+
       const config = {
         googleDrive: {
           serviceAccountKeyPath,
           scopes,
         },
+        metadataCsvPath,
+        sharedClientDriveId,
+        attachmentsFolderId,
       };
 
       return config;

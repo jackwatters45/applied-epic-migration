@@ -1,10 +1,10 @@
 import { Effect, Schema } from "effect";
-import type { Attachment } from "../attachment-metadata/transform.js";
+import type { AttachmentData } from "../../lib/type.js";
 import { GoogleDriveAuthService } from "./auth.js";
 import { GoogleDriveFileService } from "./file.js";
 
 // Extended attachment type with year resolution
-export interface OrganizedAttachment extends Attachment {
+export interface OrganizedAttachment extends AttachmentData {
   readonly key: string;
   readonly determinedYear: number;
 }
@@ -85,7 +85,7 @@ export class GoogleDriveReorganizationService extends Effect.Service<GoogleDrive
           for (const folderName of structure.folderPath) {
             // Check if folder already exists
             const existingFiles = yield* Effect.mapError(
-              fileService.listFiles(currentParentId),
+              fileService.listFiles({ parentId: currentParentId }),
               (error) =>
                 new GoogleDriveReorganizationError({
                   message: `Failed to list files in parent folder: ${error.message}`,

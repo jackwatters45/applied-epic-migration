@@ -1,5 +1,5 @@
-import { Effect, HashMap } from "effect";
-import type { Attachment } from "./transform.js";
+import { Effect, HashMap, List } from "effect";
+import type { AttachmentData } from "../../lib/type.js";
 
 // Duplicate analysis interface
 export interface DuplicateAnalysis {
@@ -12,7 +12,7 @@ export interface DuplicateAnalysis {
       count: number;
       lookupCodes: string[];
       nameOf: string[];
-      samples: Attachment[];
+      samples: AttachmentData[];
     }
   >;
 }
@@ -24,11 +24,11 @@ export class DeduplicationService extends Effect.Service<DeduplicationService>()
     effect: Effect.gen(function* () {
       return {
         analyzeDuplicates: (
-          metadata: HashMap.HashMap<string, readonly Attachment[]>,
+          metadata: HashMap.HashMap<string, readonly AttachmentData[]>,
         ) =>
           Effect.gen(function* () {
             // Convert HashMap to array of all attachments
-            const allAttachments: Attachment[] = [];
+            const allAttachments: AttachmentData[] = [];
             for (const [, attachments] of HashMap.entries(metadata)) {
               allAttachments.push(...attachments);
             }
@@ -36,7 +36,7 @@ export class DeduplicationService extends Effect.Service<DeduplicationService>()
             const totalRecords = allAttachments.length;
 
             // Group by fileId
-            const fileGroups = new Map<string, Attachment[]>();
+            const fileGroups = new Map<string, AttachmentData[]>();
 
             for (const attachment of allAttachments) {
               const fileId = attachment.raw.fileId;
@@ -56,7 +56,7 @@ export class DeduplicationService extends Effect.Service<DeduplicationService>()
                 count: number;
                 lookupCodes: string[];
                 nameOf: string[];
-                samples: Attachment[];
+                samples: AttachmentData[];
               }
             > = {};
 
@@ -118,18 +118,18 @@ export class DeduplicationService extends Effect.Service<DeduplicationService>()
           }),
 
         deduplicateByFileId: (
-          metadata: HashMap.HashMap<string, readonly Attachment[]>,
+          metadata: HashMap.HashMap<string, List.List<AttachmentData>>,
         ) =>
           Effect.sync(() => {
             // Convert HashMap to array of all attachments
-            const allAttachments: Attachment[] = [];
+            const allAttachments: AttachmentData[] = [];
             for (const [, attachments] of HashMap.entries(metadata)) {
               allAttachments.push(...attachments);
             }
 
             // Track seen fileIds and keep only first occurrence
             const seenFileIds = new Set<string>();
-            const uniqueAttachments: Attachment[] = [];
+            const uniqueAttachments: AttachmentData[] = [];
 
             for (const attachment of allAttachments) {
               const fileId = attachment.raw.fileId;
@@ -140,27 +140,28 @@ export class DeduplicationService extends Effect.Service<DeduplicationService>()
               }
             }
 
-            // Convert back to original structure grouped by lookupCode
-            const groupedByLookupCode = new Map<string, Attachment[]>();
+            // Convert back to original structure grouped by nameOf
+            const groupedByNameOf = new Map<string, AttachmentData[]>();
 
             for (const attachment of uniqueAttachments) {
-              const lookupCode = attachment.raw.lookupCode;
-              const existing = groupedByLookupCode.get(lookupCode);
+              const nameOf = attachment.raw.nameOf || "Unknown";
+              const existing = groupedByNameOf.get(nameOf);
 
               if (existing) {
                 existing.push(attachment);
               } else {
-                groupedByLookupCode.set(lookupCode, [attachment]);
+                groupedByNameOf.set(nameOf, [attachment]);
               }
             }
 
             // Convert Map back to HashMap
-            let result = HashMap.empty<string, readonly Attachment[]>();
-            for (const [
-              lookupCode,
-              attachments,
-            ] of groupedByLookupCode.entries()) {
-              result = HashMap.set(result, lookupCode, attachments);
+            let result = HashMap.empty<string, List.List<AttachmentData>>();
+            for (const [nameOf, attachments] of groupedByNameOf.entries()) {
+              result = HashMap.set(
+                result,
+                nameOf,
+                List.fromIterable(attachments),
+              );
             }
 
             return result;
