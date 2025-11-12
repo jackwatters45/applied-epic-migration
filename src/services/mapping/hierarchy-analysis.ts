@@ -5,6 +5,13 @@ import type {
   HierarchyTree,
 } from "../google-drive/folder-hierarchy.js";
 
+// Re-export DuplicateInfo for use by other services
+export interface DuplicateInfo {
+  readonly folderName: string;
+  readonly folderIds: readonly string[];
+  readonly parentId: string;
+}
+
 export type HierarchyAnalysis = {
   totalFolders: number;
   maxDepth: number;
@@ -474,6 +481,39 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
           } satisfies HierarchyValidationResult;
         });
 
+      const extractDuplicateFolders = (tree: HierarchyTree) =>
+        Effect.sync(() => {
+          const duplicates: DuplicateInfo[] = [];
+          const namesByParent: Record<string, Record<string, string[]>> = {};
+
+          // Group folder IDs by parent and name
+          Object.values(tree.folderMap).forEach((node) => {
+            const parentId = node.parentId || "root";
+            if (!namesByParent[parentId]) {
+              namesByParent[parentId] = {};
+            }
+            if (!namesByParent[parentId][node.name]) {
+              namesByParent[parentId][node.name] = [];
+            }
+            namesByParent[parentId][node.name].push(node.id);
+          });
+
+          // Extract duplicates
+          Object.entries(namesByParent).forEach(([parentId, names]) => {
+            Object.entries(names).forEach(([name, ids]) => {
+              if (ids.length > 1) {
+                duplicates.push({
+                  folderName: name,
+                  folderIds: ids,
+                  parentId,
+                });
+              }
+            });
+          });
+
+          return duplicates;
+        });
+
       return {
         // Analysis methods
         analyzeHierarchy,
@@ -496,6 +536,7 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
         generateLevelBasedGroupings,
         generateHierarchyReport,
         validateHierarchy,
+        extractDuplicateFolders,
       } as const;
     }),
     dependencies: [],

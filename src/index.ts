@@ -1,5 +1,5 @@
 import { NodeContext } from "@effect/platform-node";
-import { Effect, Layer } from "effect";
+import { Effect, Layer, ManagedRuntime } from "effect";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
 
@@ -39,9 +39,19 @@ const mainLayer = Layer.mergeAll(
   NodeContext.layer,
 );
 
+const runtime = ManagedRuntime.make(mainLayer);
+
+const testLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  MappingOrchestratorService.Default,
+  // GoogleDriveReorganizationService.Default,
+  NodeContext.layer,
+);
+const _testRuntime = ManagedRuntime.make(testLayer);
+
 // Main execution function
 export const run = (options: { dryRun?: boolean } = {}) =>
-  Effect.runPromise(program(options));
+  runtime.runPromise(program(options));
 
 // CLI execution for manual testing
 if (import.meta.main) {
