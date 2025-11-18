@@ -1,5 +1,6 @@
 import { FileSystem } from "@effect/platform";
 import { Effect, type Record } from "effect";
+import { ConfigService } from "src/lib/config.js";
 import type {
   FolderNode,
   HierarchyTree,
@@ -10,6 +11,7 @@ export interface DuplicateInfo {
   readonly folderName: string;
   readonly folderIds: readonly string[];
   readonly parentId: string;
+  readonly parentName?: string;
 }
 
 export type HierarchyAnalysis = {
@@ -49,6 +51,9 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
   "HierarchyAnalysisService",
   {
     effect: Effect.gen(function* () {
+      const config = yield* ConfigService;
+      const sharedDriveId = yield* config.sharedClientDriveId;
+
       const getFoldersAtLevel = (tree: HierarchyTree, level: number) =>
         Effect.gen(function* () {
           const result = yield* traverseBreadthFirst(tree, (node) => node);
@@ -57,7 +62,6 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
 
       const findOrphanFolders = (tree: HierarchyTree) =>
         Effect.gen(function* () {
-          const sharedDriveId = "0ADXTdKmRqwv7Uk9PVA"; // Shared drive root ID
           const orphans: FolderNode[] = [];
 
           Object.values(tree.folderMap).forEach((node) => {
@@ -498,18 +502,22 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
             namesByParent[parentId][node.name].push(node.id);
           });
 
-          // Extract duplicates
+          // Extract exact name duplicates
           Object.entries(namesByParent).forEach(([parentId, names]) => {
             Object.entries(names).forEach(([name, ids]) => {
               if (ids.length > 1) {
+                const parentName = tree.folderMap[parentId]?.name || "root";
                 duplicates.push({
                   folderName: name,
                   folderIds: ids,
                   parentId,
+                  parentName,
                 });
               }
             });
           });
+
+          console.log({ duplicates });
 
           return duplicates;
         });
@@ -539,7 +547,7 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
         extractDuplicateFolders,
       } as const;
     }),
-    dependencies: [],
+    dependencies: [ConfigService.Default],
   },
 ) {}
 

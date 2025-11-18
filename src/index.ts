@@ -1,6 +1,7 @@
 import { NodeContext } from "@effect/platform-node";
 import { Effect, Layer, ManagedRuntime } from "effect";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
+import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
 
 // Main reorganization execution
@@ -8,12 +9,12 @@ const program = (_options: { dryRun?: boolean } = {}) =>
   Effect.gen(function* () {
     const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
     const mappingOrchestrator = yield* MappingOrchestratorService;
+    const _reorgService = yield* GoogleDriveReorganizationService;
 
     const organized = yield* metadataOrchestrator.run({ useCache: true });
 
     yield* mappingOrchestrator.runMapping(organized);
 
-    // const reorgService = yield* GoogleDriveReorganizationService;
     // const result = yield* reorgService.processOrganizedAttachments(
     //   organizedAttachments,
     //   { dryRun: options.dryRun ?? false },
@@ -35,19 +36,11 @@ const program = (_options: { dryRun?: boolean } = {}) =>
 const mainLayer = Layer.mergeAll(
   AttachmentMetadataOrchestratorService.Default,
   MappingOrchestratorService.Default,
-  // GoogleDriveReorganizationService.Default,
+  GoogleDriveReorganizationService.Default,
   NodeContext.layer,
 );
 
 const runtime = ManagedRuntime.make(mainLayer);
-
-const testLayer = Layer.mergeAll(
-  AttachmentMetadataOrchestratorService.Default,
-  MappingOrchestratorService.Default,
-  // GoogleDriveReorganizationService.Default,
-  NodeContext.layer,
-);
-const _testRuntime = ManagedRuntime.make(testLayer);
 
 // Main execution function
 export const run = (options: { dryRun?: boolean } = {}) =>
