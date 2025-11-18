@@ -522,6 +522,55 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
           return duplicates;
         });
 
+      const extractAppleStyleDuplicates = (tree: HierarchyTree) =>
+        Effect.sync(() => {
+          const duplicates: DuplicateInfo[] = [];
+          const foldersByParent: Record<string, FolderNode[]> = {};
+
+          // Group folders by parent
+          Object.values(tree.folderMap).forEach((node) => {
+            const parentId = node.parentId || "root";
+            if (!foldersByParent[parentId]) {
+              foldersByParent[parentId] = [];
+            }
+            foldersByParent[parentId].push(node);
+          });
+
+          // For each parent, find Apple-style duplicates
+          Object.entries(foldersByParent).forEach(([parentId, folders]) => {
+            const baseNameGroups: Record<string, FolderNode[]> = {};
+
+            folders.forEach((folder) => {
+              // Match patterns: "folder", "folder (1)", "folder (2)", etc.
+              const match = folder.name.match(/^(.+?)(?: \((\d+)\))?$/);
+              if (match) {
+                const baseName = match[1].trim();
+                if (!baseNameGroups[baseName]) {
+                  baseNameGroups[baseName] = [];
+                }
+                baseNameGroups[baseName].push(folder);
+              }
+            });
+
+            // Extract groups with duplicates
+            Object.entries(baseNameGroups).forEach(([baseName, nodes]) => {
+              if (nodes.length > 1) {
+                const parentName = tree.folderMap[parentId]?.name || "root";
+                duplicates.push({
+                  folderName: baseName,
+                  folderIds: nodes.map((n) => n.id),
+                  parentId,
+                  parentName,
+                });
+              }
+            });
+          });
+
+          console.log({ appleDuplicates: duplicates });
+
+          return duplicates;
+        });
+
       return {
         // Analysis methods
         analyzeHierarchy,
@@ -545,6 +594,7 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
         generateHierarchyReport,
         validateHierarchy,
         extractDuplicateFolders,
+        extractAppleStyleDuplicates,
       } as const;
     }),
     dependencies: [ConfigService.Default],
