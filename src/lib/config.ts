@@ -11,19 +11,17 @@ export class ConfigService extends Effect.Service<ConfigService>()(
       const scopes = yield* Config.array(
         Config.string(),
         "GOOGLE_DRIVE_SCOPES",
-      ).pipe(
-        Config.withDefault([
-          "https://www.googleapis.com/auth/drive.metadata.readonly",
-          "https://www.googleapis.com/auth/drive.file",
-        ]),
-      );
+      ).pipe(Config.withDefault(["https://www.googleapis.com/auth/drive"]));
 
       const metadataCsvPath = Config.succeed(
         "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
       );
 
-      const sharedClientDriveId = Config.succeed("0ADXTdKmRqwv7Uk9PVA");
-      const testSharedClientDriveId = Config.succeed("0AOulfXIJNYOzUk9PVA");
+      const isDev = Config.succeed(true);
+
+      const sharedClientDriveId = isDev
+        ? Config.succeed("0AOulfXIJNYOzUk9PVA")
+        : Config.succeed("0ADXTdKmRqwv7Uk9PVA");
 
       const attachmentsFolderId = Config.succeed(
         "1-T0Lemwm8hxzmgfYPrZTaaYQnmRH1Qh4",
@@ -35,7 +33,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
           scopes,
         },
         metadataCsvPath,
-        testSharedClientDriveId,
+        isDev,
         sharedClientDriveId,
         attachmentsFolderId,
       };

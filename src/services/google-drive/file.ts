@@ -1,7 +1,8 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { Effect, Schema } from "effect";
+import { Effect, Schedule, Schema } from "effect";
 import { type drive_v3, google } from "googleapis";
+import { CacheMode } from "src/lib/type.js";
 import { GoogleDriveAuthService } from "./auth.js";
 import { fetchAllPages } from "./pagination.js";
 
@@ -45,7 +46,7 @@ export interface ListOptions {
 type ListParams = {
   sharedDriveId?: string;
   parentId?: string;
-  useCache?: boolean;
+  cacheMode?: CacheMode;
 };
 
 // Google Drive File Service
@@ -61,12 +62,15 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
             const {
               parentId = "root",
               sharedDriveId,
-              useCache = false,
+              cacheMode = CacheMode.READ_WRITE,
             } = params;
 
             const cacheKey = `list-files-${parentId || "root"}-${sharedDriveId || "default"}`;
 
-            if (useCache) {
+            if (
+              cacheMode === CacheMode.READ_WRITE ||
+              cacheMode === CacheMode.READ
+            ) {
               const cachedResult = yield* Effect.either(readCache(cacheKey));
               if (cachedResult._tag === "Right") {
                 return cachedResult.right;
@@ -79,7 +83,7 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
             const query =
               parentId === "root"
                 ? "trashed=false"
-                : `parents in '${parentId}' and trashed=false`;
+                : `'${parentId}' in parents and trashed=false`;
 
             const listParams: drive_v3.Params$Resource$Files$List = {
               q: query,
@@ -115,7 +119,10 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
               }),
             );
 
-            if (useCache) {
+            if (
+              cacheMode === CacheMode.READ_WRITE ||
+              cacheMode === CacheMode.WRITE
+            ) {
               yield* Effect.ignore(writeCache(cacheKey, result));
             }
 
@@ -124,11 +131,18 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
 
         listFolders: (params: ListParams = {}) =>
           Effect.gen(function* () {
-            const { parentId, sharedDriveId, useCache = false } = params;
+            const {
+              parentId,
+              sharedDriveId,
+              cacheMode = CacheMode.READ_WRITE,
+            } = params;
 
             const cacheKey = `list-folders-${parentId || "root"}-${sharedDriveId || "default"}`;
 
-            if (useCache) {
+            if (
+              cacheMode === CacheMode.READ_WRITE ||
+              cacheMode === CacheMode.READ
+            ) {
               const cachedResult = yield* Effect.either(readCache(cacheKey));
               if (cachedResult._tag === "Right") {
                 return cachedResult.right;
@@ -175,7 +189,10 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
               }),
             );
 
-            if (useCache) {
+            if (
+              cacheMode === CacheMode.READ_WRITE ||
+              cacheMode === CacheMode.WRITE
+            ) {
               yield* Effect.ignore(writeCache(cacheKey, result));
             }
 
@@ -192,6 +209,7 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
               try: () =>
                 drive.files.get({
                   fileId: fileId,
+                  supportsAllDrives: true,
                   fields: "parents",
                 }),
               catch: (error) =>
@@ -202,24 +220,28 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
 
             const previousParents = getResponse.data.parents?.join(",") || "";
 
-            // Move the file
-            const response = yield* Effect.tryPromise({
-              try: () =>
-                drive.files.update({
-                  fileId: fileId,
-                  addParents: newParentId,
-                  removeParents: previousParents,
-                  fields: "id",
-                }),
-              catch: (error) =>
-                new GoogleDriveFileError({
-                  message: `Failed to move file: ${error}`,
-                }),
-            });
+            // Move the file with retry policy for transient failures
+            const moveResponse = yield* Effect.retry(
+              Effect.tryPromise({
+                try: () =>
+                  drive.files.update({
+                    fileId: fileId,
+                    addParents: newParentId,
+                    removeParents: previousParents,
+                    supportsAllDrives: true,
+                    fields: "id",
+                  }),
+                catch: (error) =>
+                  new GoogleDriveFileError({
+                    message: `Failed to move file: ${error}`,
+                  }),
+              }),
+              Schedule.addDelay(Schedule.recurs(5), () => "1 second"),
+            );
 
             return {
               success: true,
-              fileId: response.data.id!,
+              fileId: moveResponse.data.id!,
               message: "File moved successfully",
             } as const;
           }),
@@ -255,17 +277,39 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
             } as const;
           }),
 
+        trashFile: (fileId: string) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            yield* Effect.tryPromise({
+              try: () =>
+                drive.files.update({
+                  fileId,
+                  requestBody: {
+                    trashed: true,
+                  },
+                  supportsAllDrives: true,
+                  fields: "id,name,trashed",
+                }),
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to trash file/folder ${fileId}: ${error}`,
+                }),
+            });
+          }),
+
         deleteFile: (fileId: string) =>
           Effect.gen(function* () {
             const authClient = yield* authService.getAuthenticatedClient();
             const drive = google.drive({ version: "v3", auth: authClient });
 
             yield* Effect.tryPromise({
-              try: async () => {
+              try: async () =>
                 await drive.files.delete({
                   fileId,
-                });
-              },
+                  supportsAllDrives: true,
+                }),
               catch: (error) =>
                 new GoogleDriveFileError({
                   message: `Failed to delete file/folder ${fileId}: ${error}`,

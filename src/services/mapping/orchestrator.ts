@@ -1,5 +1,5 @@
 import { Effect, Schema } from "effect";
-import type { OrganizedHashMap } from "../../lib/type.js";
+import { CacheMode, type OrganizedHashMap } from "../../lib/type.js";
 import { FolderHierarchyService } from "../google-drive/folder-hierarchy.js";
 import { FolderMergerService } from "./folder-merger.js";
 import { HierarchyAnalysisService } from "./hierarchy-analysis.js";
@@ -25,25 +25,21 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
       const runMapping = (_attachments: OrganizedHashMap) =>
         Effect.gen(function* () {
-          // build a map of google drive file structure
           const hierarchyTree = yield* folderHierarchy.buildHierarchyTree({
-            useCache: true,
+            cacheMode: CacheMode.WRITE,
           });
 
-          // analyze hierarchy tree
           yield* hierarchyAnalyzer.analyzeHierarchy(hierarchyTree);
 
-          // extract duplicate folders
           const duplicates =
             yield* hierarchyAnalyzer.extractDuplicateFolders(hierarchyTree);
 
-          // merge folders in existing drive
-          // Actually connect names of level 1/root drive and attachments folders
-          // add files to hierarchy tree
-          // drive
           yield* folderMerger.mergeDuplicateFolders(duplicates, {
-            useTestDrive: true,
+            // dryRun: true,
+            // deleteSourceAfterMerge: false,
           });
+          // Actually connect names of level 1/root drive and attachments folders
+          // drive
         });
 
       return {

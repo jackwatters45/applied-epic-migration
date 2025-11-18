@@ -2,6 +2,7 @@ import { FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import { Array as A, Effect, Option, type Record } from "effect";
 import { ConfigService } from "src/lib/config.js";
+import { CacheMode } from "src/lib/type.js";
 import { type GoogleDriveFile, GoogleDriveFileService } from "./file.js";
 
 export interface FolderInfo {
@@ -161,14 +162,28 @@ export class FolderHierarchyService extends Effect.Service<FolderHierarchyServic
         });
 
       return {
-        buildHierarchyTree: ({ useCache }: { useCache: boolean }) =>
+        buildHierarchyTree: ({
+          cacheMode = CacheMode.READ_WRITE,
+        }: {
+          cacheMode?: CacheMode;
+        }) =>
           Effect.gen(function* () {
             const files = yield* fileService.listFolders({
               sharedDriveId,
-              useCache,
+              cacheMode,
             });
 
-            const grouped = yield* groupByParent(files);
+            // clean all file names
+            const cleanedFiles = [];
+            for (const file of files) {
+              const cleanedFile = {
+                ...file,
+                name: file.name.trim(),
+              };
+              cleanedFiles.push(cleanedFile);
+            }
+
+            const grouped = yield* groupByParent(cleanedFiles);
             yield* fs.writeFileString(
               "logs/folders-grouped.json",
               JSON.stringify(grouped, null, 2),
