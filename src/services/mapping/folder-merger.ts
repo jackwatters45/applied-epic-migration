@@ -89,8 +89,37 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
           }
         });
 
+      const mergeAppleStyleDuplicates = (
+        duplicates: DuplicateInfo[],
+        options: Partial<MergeOptions> = {},
+      ): Effect.Effect<void, Error> =>
+        Effect.gen(function* () {
+          const opts: MergeOptions = {
+            dryRun: false,
+            deleteSourceAfterMerge: true,
+            ...options,
+          };
+
+          yield* progress.startTask(
+            "Merging Apple-style duplicate folders",
+            duplicates.length,
+          );
+
+          for (let i = 0; i < duplicates.length; i++) {
+            const duplicate = duplicates[i];
+            const displayName = duplicate.parentName
+              ? `${duplicate.parentName} / ${duplicate.folderName}`
+              : duplicate.folderName;
+            yield* progress.logProgress(i + 1, displayName);
+            yield* mergeSingleDuplicateGroup(duplicate, opts);
+          }
+
+          yield* progress.complete();
+        });
+
       return {
         mergeDuplicateFolders,
+        mergeAppleStyleDuplicates,
       } as const;
     }),
     dependencies: [
