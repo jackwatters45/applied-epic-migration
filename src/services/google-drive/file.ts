@@ -328,7 +328,7 @@ const readCache = (
 ): Effect.Effect<GoogleDriveFile[], GoogleDriveFileError> =>
   Effect.tryPromise({
     try: async () => {
-      const cachePath = join(process.cwd(), "cache", `${cacheKey}.json`);
+      const cachePath = join(process.cwd(), ".cache", `${cacheKey}.json`);
       const cachedData = await readFile(cachePath, "utf-8");
       return JSON.parse(cachedData) as GoogleDriveFile[];
     },
@@ -344,7 +344,7 @@ const writeCache = (
 ): Effect.Effect<void, GoogleDriveFileError> =>
   Effect.tryPromise({
     try: async () => {
-      const cachePath = join(process.cwd(), "cache", `${cacheKey}.json`);
+      const cachePath = join(process.cwd(), ".cache", `${cacheKey}.json`);
       await writeFile(cachePath, JSON.stringify(data, null, 2));
     },
     catch: (error) =>

@@ -3,6 +3,8 @@
 ## Instructions
 
 - When you are finished with a task, run our linting and typechecking commands to ensure code quality. `bun run typecheck` and `bun run check`. We need to resolve these issues in the files we have edited before the task is complete.
+- **Do not modify AGENTS.md or CLAUDE.md files** unless explicitly requested by the user.
+- **Do not use destructive git commands** (like `git reset`, `git rebase`, `git commit --amend`) unless explicitly instructed by the user.
 
 ## Build/Lint/Test Commands
 
