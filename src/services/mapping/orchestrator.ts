@@ -31,20 +31,21 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
           yield* hierarchyAnalyzer.analyzeHierarchy(hierarchyTree);
 
-          // Merge exact duplicate folders
-          const duplicates =
-            yield* hierarchyAnalyzer.extractDuplicateFolders(hierarchyTree);
-
-          yield* folderMerger.mergeDuplicateFolders(duplicates, {
-            // dryRun: true,
-            // deleteSourceAfterMerge: false,
-          });
-
+          // TODO: not sure working
           // Merge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)")
           const appleDuplicates =
             yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
+            // dryRun: true,
+            // deleteSourceAfterMerge: false,
+          });
+
+          // Merge exact duplicate folders
+          const duplicates =
+            yield* hierarchyAnalyzer.extractDuplicateFolders(hierarchyTree);
+
+          yield* folderMerger.mergeDuplicateFolders(duplicates, {
             // dryRun: true,
             // deleteSourceAfterMerge: false,
           });

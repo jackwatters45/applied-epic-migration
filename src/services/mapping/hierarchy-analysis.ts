@@ -1,4 +1,5 @@
 import { FileSystem } from "@effect/platform";
+import { NodeContext } from "@effect/platform-node";
 import { Effect, type Record } from "effect";
 import { ConfigService } from "src/lib/config.js";
 import type {
@@ -520,7 +521,18 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
           console.log({ duplicates });
 
           return duplicates;
-        });
+        }).pipe(
+          Effect.tap((duplicates) =>
+            FileSystem.FileSystem.pipe(
+              Effect.andThen((fileSystem) =>
+                fileSystem.writeFileString(
+                  "logs/exact-duplicates.json",
+                  JSON.stringify(duplicates, null, 2),
+                ),
+              ),
+            ),
+          ),
+        );
 
       const extractAppleStyleDuplicates = (tree: HierarchyTree) =>
         Effect.sync(() => {
@@ -541,8 +553,8 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
             const baseNameGroups: Record<string, FolderNode[]> = {};
 
             folders.forEach((folder) => {
-              // Match patterns: "folder", "folder (1)", "folder (2)", etc.
-              const match = folder.name.match(/^(.+?)(?: \((\d+)\))?$/);
+              // Match patterns: "folder (1)", "folder (2)", etc.
+              const match = folder.name.match(/^(.+?) \((\d+)\)$/);
               if (match) {
                 const baseName = match[1].trim();
                 if (!baseNameGroups[baseName]) {
@@ -552,13 +564,35 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
               }
             });
 
+            // Add base folders (without parentheses) if they exist
+            Object.keys(baseNameGroups).forEach((baseName) => {
+              const baseFolder = folders.find((f) => f.name === baseName);
+              if (baseFolder) {
+                baseNameGroups[baseName].unshift(baseFolder);
+              }
+            });
+
             // Extract groups with duplicates
             Object.entries(baseNameGroups).forEach(([baseName, nodes]) => {
               if (nodes.length > 1) {
                 const parentName = tree.folderMap[parentId]?.name || "root";
+
+                // Sort nodes so the base folder (without parentheses) comes first
+                const sortedNodes = [...nodes].sort((a, b) => {
+                  const aHasParens = / \(\d+\)$/.test(a.name);
+                  const bHasParens = / \(\d+\)$/.test(b.name);
+
+                  // Base folder (no parens) should come first
+                  if (!aHasParens && bHasParens) return -1;
+                  if (aHasParens && !bHasParens) return 1;
+
+                  // If both have parens or both don't, sort by number
+                  return a.name.localeCompare(b.name);
+                });
+
                 duplicates.push({
                   folderName: baseName,
-                  folderIds: nodes.map((n) => n.id),
+                  folderIds: sortedNodes.map((n) => n.id),
                   parentId,
                   parentName,
                 });
@@ -569,7 +603,18 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
           console.log({ appleDuplicates: duplicates });
 
           return duplicates;
-        });
+        }).pipe(
+          Effect.tap((duplicates) =>
+            FileSystem.FileSystem.pipe(
+              Effect.andThen((fileSystem) =>
+                fileSystem.writeFileString(
+                  "logs/apple-duplicates.json",
+                  JSON.stringify(duplicates, null, 2),
+                ),
+              ),
+            ),
+          ),
+        );
 
       return {
         // Analysis methods
@@ -597,7 +642,7 @@ export class HierarchyAnalysisService extends Effect.Service<HierarchyAnalysisSe
         extractAppleStyleDuplicates,
       } as const;
     }),
-    dependencies: [ConfigService.Default],
+    dependencies: [ConfigService.Default, NodeContext.layer],
   },
 ) {}
 

@@ -28,7 +28,7 @@ const program = (_options: { dryRun?: boolean } = {}) =>
       if ("status" in error && error.status) {
         console.error(`Status: ${error.status}`);
       }
-      return Effect.sync(() => {});
+      return Effect.exit(Effect.succeed(() => {}));
     }),
   );
 

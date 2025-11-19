@@ -59,33 +59,55 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       ): Effect.Effect<void, Error> =>
         Effect.gen(function* () {
           const { folderIds } = duplicate;
-          const [sourceId, targetId] = folderIds;
+          if (folderIds.length < 2) return;
 
-          const sourceItems = yield* googleDrive.listFiles({
-            parentId: sourceId,
-            sharedDriveId,
-          });
+          // Use the first folder as the target (usually the base folder without number)
+          const [targetId, ...sourceIds] = folderIds;
 
-          yield* progress.logItem(`Found ${sourceItems.length} items to move`);
+          let totalItemsMoved = 0;
+
+          // Move contents from all source folders to the target
+          for (const sourceId of sourceIds) {
+            const sourceItems = yield* googleDrive.listFiles({
+              parentId: sourceId,
+              sharedDriveId,
+            });
+
+            yield* progress.logItem(
+              `Found ${sourceItems.length} items in source folder ${sourceId}`,
+            );
+
+            if (options.dryRun) {
+              yield* progress.logItem(
+                `[DRY RUN] Would move ${sourceItems.length} items from ${sourceId}`,
+              );
+              totalItemsMoved += sourceItems.length;
+              continue;
+            }
+
+            // Move all items from this source folder to target
+            for (let i = 0; i < sourceItems.length; i++) {
+              const item = sourceItems[i];
+              yield* googleDrive.moveFile(item.id, targetId);
+              yield* progress.logItem(
+                `Moved ${i + 1}/${sourceItems.length}: ${item.name}`,
+              );
+            }
+
+            totalItemsMoved += sourceItems.length;
+
+            if (options.deleteSourceAfterMerge) {
+              yield* googleDrive.trashFile(sourceId);
+              yield* progress.logItem(`Deleted source folder ${sourceId}`);
+            }
+          }
 
           if (options.dryRun) {
             yield* progress.logItem(
-              `[DRY RUN] Would move ${sourceItems.length} items`,
+              `[DRY RUN] Would move ${totalItemsMoved} total items`,
             );
-            return;
-          }
-
-          for (let i = 0; i < sourceItems.length; i++) {
-            const item = sourceItems[i];
-            yield* googleDrive.moveFile(item.id, targetId);
-            yield* progress.logItem(
-              `Moved ${i + 1}/${sourceItems.length}: ${item.name}`,
-            );
-          }
-
-          if (options.deleteSourceAfterMerge) {
-            yield* googleDrive.trashFile(sourceId);
-            yield* progress.logItem("Deleted source folder");
+          } else {
+            yield* progress.logItem(`Moved ${totalItemsMoved} total items`);
           }
         });
 
