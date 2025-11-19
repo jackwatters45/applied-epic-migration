@@ -31,7 +31,6 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
           yield* hierarchyAnalyzer.analyzeHierarchy(hierarchyTree);
 
-          // TODO: not sure working
           // Merge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)")
           const appleDuplicates =
             yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
@@ -41,7 +40,6 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             // deleteSourceAfterMerge: false,
           });
 
-          // Merge exact duplicate folders
           const duplicates =
             yield* hierarchyAnalyzer.extractDuplicateFolders(hierarchyTree);
 
@@ -50,8 +48,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             // deleteSourceAfterMerge: false,
           });
 
-          // Actually connect names of level 1/root drive and attachments folders
-          // drive
+          // TODO: Actually connect names of level 1/root drive and attachments folders
         });
 
       return {
