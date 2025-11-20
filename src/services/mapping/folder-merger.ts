@@ -7,6 +7,7 @@ import {
 } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
 import { RollbackService } from "./rollback.js";
+import { type SoftDeleteOptions, SoftDeleteService } from "./soft-delete.js";
 import { VerificationService } from "./verification.js";
 
 // Types
@@ -21,6 +22,7 @@ export interface MergeOptions {
   readonly dryRun: boolean;
   readonly deleteSourceAfterMerge: boolean;
   readonly rollbackSessionId?: string;
+  readonly softDeleteOptions?: SoftDeleteOptions;
 }
 
 // Error type for folder merger operations
@@ -46,6 +48,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       const progress = yield* ProgressLoggerService;
       const verification = yield* VerificationService;
       const rollback = yield* RollbackService;
+      const softDelete = yield* SoftDeleteService;
       const sharedDriveId = yield* config.sharedClientDriveId;
 
       const mergeDuplicateFolders = (
@@ -218,8 +221,44 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
                 ),
               );
 
-              yield* googleDrive.trashFile(sourceId);
-              yield* progress.logItem(`Deleted source folder ${sourceId}`);
+              // Use soft delete if options provided, otherwise use regular trash
+              if (options.softDeleteOptions) {
+                const softDeleteResult = yield* softDelete.softDeleteFolder(
+                  sourceId,
+                  options.softDeleteOptions,
+                );
+
+                // Log soft delete operation for rollback
+                yield* rollback.logOperation(rollbackSessionId, {
+                  type: "trash",
+                  fileId: sourceId,
+                  fileName: `Source folder ${sourceId}`,
+                  sourceId,
+                  targetId: "trash",
+                });
+
+                if (softDeleteResult.success) {
+                  yield* progress.logItem(
+                    `Soft deleted source folder ${sourceId} using ${softDeleteResult.mode} mode`,
+                  );
+                } else {
+                  yield* progress.logItem(
+                    `Soft delete encountered errors for ${sourceId}: ${softDeleteResult.errors.join(", ")}`,
+                  );
+                }
+              } else {
+                // Log trash operation for rollback
+                yield* rollback.logOperation(rollbackSessionId, {
+                  type: "trash",
+                  fileId: sourceId,
+                  fileName: `Source folder ${sourceId}`,
+                  sourceId,
+                  targetId: "trash",
+                });
+
+                yield* googleDrive.trashFile(sourceId);
+                yield* progress.logItem(`Deleted source folder ${sourceId}`);
+              }
             }
           }
 
@@ -277,6 +316,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       ProgressLoggerService.Default,
       VerificationService.Default,
       RollbackService.Default,
+      SoftDeleteService.Default,
     ],
   },
 ) {}

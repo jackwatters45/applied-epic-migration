@@ -45,8 +45,12 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
-            // dryRun: true,
+            dryRun: false,
             rollbackSessionId,
+            softDeleteOptions: {
+              mode: "trash",
+              metadataPrefix: "__DELETED",
+            },
           });
 
           const hierarchyTreeAfterApple =
@@ -60,8 +64,12 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
           );
 
           yield* folderMerger.mergeDuplicateFolders(duplicates, {
-            // dryRun: true,
+            dryRun: false,
             rollbackSessionId,
+            softDeleteOptions: {
+              mode: "trash",
+              metadataPrefix: "__DELETED",
+            },
           });
 
           // Rebuild tree after exact duplicates merge
@@ -77,8 +85,12 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             );
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates2, {
-            // dryRun: true,
+            dryRun: false,
             rollbackSessionId,
+            softDeleteOptions: {
+              mode: "trash",
+              metadataPrefix: "__DELETED",
+            },
           });
 
           const hierarchyTreeNoDuplicates =
