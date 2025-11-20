@@ -1,0 +1,26 @@
+{
+  "mapping": [],
+  "unmapped": [
+    {
+      "agencyName": "_editable",
+      "possibleMatches": []
+    },
+    {
+      "agencyName": "_edit",
+      "possibleMatches": []
+    },
+    {
+      "agencyName": "_root",
+      "possibleMatches": []
+    },
+    {
+      "agencyName": "_size",
+      "possibleMatches": []
+    }
+  ],
+  "stats": {
+    "total": 4,
+    "mapped": 0,
+    "unmapped": 4
+  }
+}
