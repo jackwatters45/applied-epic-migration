@@ -1,5 +1,6 @@
-import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { FileSystem } from "@effect/platform";
+import { NodeContext } from "@effect/platform-node";
 import { Effect, Schema } from "effect";
 import { ProgressLoggerService } from "../lib/progress.js";
 
@@ -62,6 +63,7 @@ export class RollbackService extends Effect.Service<RollbackService>()(
   "RollbackService",
   {
     effect: Effect.gen(function* () {
+      const fs = yield* FileSystem.FileSystem;
       const progress = yield* ProgressLoggerService;
 
       // In-memory storage for active sessions
@@ -69,7 +71,12 @@ export class RollbackService extends Effect.Service<RollbackService>()(
 
       // File path for persistence
       const getRollbackFilePath = (sessionId: string) =>
-        join(process.cwd(), "logs", `rollback-session-${sessionId}.json`);
+        join(
+          process.cwd(),
+          "logs",
+          "rollback",
+          `rollback-session-${sessionId}.json`,
+        );
 
       // Generate unique IDs
       const generateId = () =>
@@ -88,6 +95,13 @@ export class RollbackService extends Effect.Service<RollbackService>()(
           };
 
           activeSessions.set(sessionId, session);
+
+          // Create rollback directory if it doesn't exist
+          yield* fs
+            .makeDirectory(join(process.cwd(), "logs", "rollback"), {
+              recursive: true,
+            })
+            .pipe(Effect.ignore);
 
           // Persist session immediately
           yield* persistSession(session);
@@ -143,16 +157,16 @@ export class RollbackService extends Effect.Service<RollbackService>()(
           const sessionData = JSON.stringify(session, null, 2);
 
           yield* Effect.catchAll(
-            Effect.tryPromise({
-              try: () => writeFile(filePath, sessionData, "utf-8"),
-              catch: (error) =>
+            Effect.mapError(
+              fs.writeFileString(filePath, sessionData),
+              (error) =>
                 new RollbackError({
                   message: `Failed to persist session ${session.id}: ${error}`,
                   type: "PERSISTENCE_ERROR",
                   sessionId: session.id,
                   details: String(error),
                 }),
-            }),
+            ),
             (error) =>
               progress.logItem(
                 `Warning: Failed to persist rollback session: ${error}`,
@@ -165,7 +179,7 @@ export class RollbackService extends Effect.Service<RollbackService>()(
         Effect.gen(function* () {
           const filePath = getRollbackFilePath(sessionId);
           const sessionData = yield* Effect.mapError(
-            Effect.tryPromise(() => readFile(filePath, "utf-8")),
+            fs.readFileString(filePath),
             (error) =>
               new RollbackError({
                 message: `Failed to read session file for ${sessionId}: ${error}`,
@@ -448,6 +462,6 @@ export class RollbackService extends Effect.Service<RollbackService>()(
         listSessions,
       } as const;
     }),
-    dependencies: [ProgressLoggerService.Default],
+    dependencies: [ProgressLoggerService.Default, NodeContext.layer],
   },
 ) {}
