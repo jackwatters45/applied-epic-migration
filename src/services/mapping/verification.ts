@@ -1,4 +1,5 @@
 import { Effect, Schema } from "effect";
+import { CacheMode } from "src/lib/type.js";
 import { GoogleDriveFileService } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
 
@@ -18,6 +19,8 @@ export interface VerifyMoveOptions {
   readonly sourceId: string;
   readonly targetId: string;
   readonly expectedItems: readonly { id: string; name: string }[];
+  readonly originalTargetItemCount?: number;
+  readonly sharedDriveId?: string;
 }
 
 // Error type for verification operations
@@ -42,7 +45,13 @@ export class VerificationService extends Effect.Service<VerificationService>()(
         options: VerifyMoveOptions,
       ): Effect.Effect<MoveVerificationResult, VerificationError> =>
         Effect.gen(function* () {
-          const { sourceId, targetId, expectedItems } = options;
+          const {
+            sourceId,
+            targetId,
+            expectedItems,
+            originalTargetItemCount,
+            sharedDriveId,
+          } = options;
           const errors: string[] = [];
           const missingItems: string[] = [];
           const extraItems: string[] = [];
@@ -51,9 +60,13 @@ export class VerificationService extends Effect.Service<VerificationService>()(
             `Starting verification of move from ${sourceId} to ${targetId}`,
           );
 
-          // 1. Get current items in target folder
+          // 1. Get current items in target folder (NO CACHE - must be fresh)
           const targetItems = yield* Effect.mapError(
-            googleDrive.listFiles({ parentId: targetId }),
+            googleDrive.listFiles({
+              parentId: targetId,
+              ...(sharedDriveId && { sharedDriveId }),
+              cacheMode: CacheMode.NONE,
+            }),
             (error) =>
               new VerificationError({
                 message: `Failed to list items in target folder ${targetId}: ${error}`,
@@ -61,9 +74,13 @@ export class VerificationService extends Effect.Service<VerificationService>()(
               }),
           );
 
-          // 2. Get remaining items in source folder
+          // 2. Get remaining items in source folder (NO CACHE - must be fresh)
           const sourceItems = yield* Effect.mapError(
-            googleDrive.listFiles({ parentId: sourceId }),
+            googleDrive.listFiles({
+              parentId: sourceId,
+              ...(sharedDriveId && { sharedDriveId }),
+              cacheMode: CacheMode.NONE,
+            }),
             (error) =>
               new VerificationError({
                 message: `Failed to list items in source folder ${sourceId}: ${error}`,
@@ -71,17 +88,22 @@ export class VerificationService extends Effect.Service<VerificationService>()(
               }),
           );
 
-          // 3. Verify expected count matches actual count in target
+          // 3. Count expected and actual items
           const expectedItemCount = expectedItems.length;
           const actualItemCount = targetItems.length;
 
-          if (actualItemCount !== expectedItemCount) {
-            errors.push(
-              `Item count mismatch: expected ${expectedItemCount}, found ${actualItemCount} in target folder`,
-            );
+          // 4. If we know the original target count, verify the exact count
+          if (originalTargetItemCount !== undefined) {
+            const expectedTotalCount =
+              originalTargetItemCount + expectedItemCount;
+            if (actualItemCount !== expectedTotalCount) {
+              errors.push(
+                `Item count mismatch: expected ${expectedTotalCount} (${originalTargetItemCount} original + ${expectedItemCount} moved), found ${actualItemCount} in target folder`,
+              );
+            }
           }
 
-          // 4. Verify each expected item exists in target
+          // 5. Verify each expected item exists in target
           for (const expectedItem of expectedItems) {
             const foundInTarget = targetItems.some(
               (item) => item.id === expectedItem.id,
@@ -89,12 +111,15 @@ export class VerificationService extends Effect.Service<VerificationService>()(
             if (!foundInTarget) {
               missingItems.push(expectedItem.name);
               errors.push(
-                `Expected item "${expectedItem.name}" not found in target folder`,
+                `Expected item "${expectedItem.name}" (ID: ${expectedItem.id}) not found in target folder`,
+              );
+              yield* progress.logItem(
+                `  DEBUG: Looking for ID ${expectedItem.id} in target with ${targetItems.length} items`,
               );
             }
           }
 
-          // 5. Check for unexpected items in target (optional warning)
+          // 6. Identify items in target that weren't moved (pre-existing or unexpected)
           const expectedItemIds = new Set(expectedItems.map((item) => item.id));
           for (const targetItem of targetItems) {
             if (!expectedItemIds.has(targetItem.id)) {
@@ -102,9 +127,9 @@ export class VerificationService extends Effect.Service<VerificationService>()(
             }
           }
 
-          if (extraItems.length > 0) {
+          if (extraItems.length > 0 && originalTargetItemCount === undefined) {
             yield* progress.logItem(
-              `Warning: Found ${extraItems.length} unexpected items in target folder: ${extraItems.join(", ")}`,
+              `Info: Found ${extraItems.length} pre-existing items in target folder: ${extraItems.join(", ")}`,
             );
           }
 
@@ -120,10 +145,15 @@ export class VerificationService extends Effect.Service<VerificationService>()(
 
           // 7. Log verification results
           yield* progress.logItem("Verification complete:");
-          yield* progress.logItem(`  Expected items: ${expectedItemCount}`);
+          yield* progress.logItem(`  Items moved: ${expectedItemCount}`);
           yield* progress.logItem(
-            `  Actual items in target: ${actualItemCount}`,
+            `  Target folder total: ${actualItemCount} items`,
           );
+          if (originalTargetItemCount !== undefined) {
+            yield* progress.logItem(
+              `  Target breakdown: ${originalTargetItemCount} original + ${expectedItemCount} moved = ${originalTargetItemCount + expectedItemCount} expected`,
+            );
+          }
           yield* progress.logItem(`  Missing items: ${missingItems.length}`);
           yield* progress.logItem(
             `  Source folder empty: ${sourceFolderEmpty}`,

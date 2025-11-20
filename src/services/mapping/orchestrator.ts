@@ -45,7 +45,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
-            dryRun: true,
+            // dryRun: true,
             rollbackSessionId,
           });
 
@@ -60,16 +60,24 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
           );
 
           yield* folderMerger.mergeDuplicateFolders(duplicates, {
-            dryRun: true,
+            // dryRun: true,
             rollbackSessionId,
           });
 
-          // Re-erge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)") to deal with any new duplicates
+          // Rebuild tree after exact duplicates merge
+          const hierarchyTreeAfterExact =
+            yield* folderHierarchy.buildHierarchyTree({
+              cacheMode: CacheMode.WRITE,
+            });
+
+          // Re-merge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)") to deal with any new duplicates
           const appleDuplicates2 =
-            yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
+            yield* hierarchyAnalyzer.extractAppleStyleDuplicates(
+              hierarchyTreeAfterExact,
+            );
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates2, {
-            dryRun: true,
+            // dryRun: true,
             rollbackSessionId,
           });
 

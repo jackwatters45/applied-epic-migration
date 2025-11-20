@@ -1,5 +1,6 @@
-import { Effect, Schema } from "effect";
+import { Effect, Schedule, Schema } from "effect";
 import { ConfigService } from "../../lib/config.js";
+import { CacheMode } from "../../lib/type.js";
 import {
   type GoogleDriveFile,
   GoogleDriveFileService,
@@ -96,6 +97,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
         sourceId: string,
         targetId: string,
         sourceItems: readonly GoogleDriveFile[],
+        originalTargetItemCount: number,
       ) =>
         Effect.gen(function* () {
           yield* progress.logItem(
@@ -109,6 +111,8 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               id: item.id,
               name: item.name,
             })),
+            originalTargetItemCount,
+            sharedDriveId,
           });
 
           if (!verificationResult.success) {
@@ -148,13 +152,12 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
           // Use the first folder as the target (usually the base folder without number)
           const [targetId, ...sourceIds] = folderIds;
 
-          let _totalItemsMoved = 0;
-
           // Move contents from all source folders to the target
           for (const sourceId of sourceIds) {
             const sourceItems = yield* googleDrive.listFiles({
               parentId: sourceId,
               sharedDriveId,
+              cacheMode: CacheMode.NONE,
             });
 
             yield* progress.logItem(
@@ -165,9 +168,16 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               yield* progress.logItem(
                 `[DRY RUN] Would move ${sourceItems.length} items from ${sourceId}`,
               );
-              _totalItemsMoved += sourceItems.length;
               continue;
             }
+
+            // Get current target item count before moving (NO CACHE - must be fresh!)
+            const targetItemsBeforeMove = yield* googleDrive.listFiles({
+              parentId: targetId,
+              sharedDriveId,
+              cacheMode: CacheMode.NONE,
+            });
+            const originalTargetItemCount = targetItemsBeforeMove.length;
 
             // Move all items from this source folder to target
             for (let i = 0; i < sourceItems.length; i++) {
@@ -188,20 +198,25 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               );
             }
 
-            _totalItemsMoved += sourceItems.length;
-
             // Verify move was successful before deleting source folder
             if (options.deleteSourceAfterMerge) {
-              yield* verifyMoveOperation(sourceId, targetId, sourceItems);
-
-              // Log trash operation for rollback
-              yield* rollback.logOperation(rollbackSessionId, {
-                type: "trash",
-                fileId: sourceId,
-                fileName: `Source folder ${sourceId}`,
-                sourceId,
-                targetId: "trash",
-              });
+              // Retry verification with exponential backoff if it fails (for API propagation delays)
+              yield* Effect.retry(
+                verifyMoveOperation(
+                  sourceId,
+                  targetId,
+                  sourceItems,
+                  originalTargetItemCount,
+                ),
+                Schedule.exponential("1 second").pipe(
+                  Schedule.intersect(Schedule.recurs(3)),
+                  Schedule.tapOutput(() =>
+                    progress.logItem(
+                      "Verification failed, retrying with exponential backoff...",
+                    ),
+                  ),
+                ),
+              );
 
               yield* googleDrive.trashFile(sourceId);
               yield* progress.logItem(`Deleted source folder ${sourceId}`);
