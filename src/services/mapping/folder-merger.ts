@@ -46,7 +46,10 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             const displayName = duplicate.parentName
               ? `${duplicate.parentName} / ${duplicate.folderName}`
               : duplicate.folderName;
-            yield* progress.logProgress(i + 1, displayName);
+            yield* progress.logProgress(
+              i + 1,
+              `${displayName} (${duplicates.length})`,
+            );
             yield* mergeSingleDuplicateGroup(duplicate, opts);
           }
 
@@ -132,7 +135,10 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             const displayName = duplicate.parentName
               ? `${duplicate.parentName} / ${duplicate.folderName}`
               : duplicate.folderName;
-            yield* progress.logProgress(i + 1, displayName);
+            yield* progress.logProgress(
+              i + 1,
+              `${displayName} (${duplicates.length})`,
+            );
             yield* mergeSingleDuplicateGroup(duplicate, opts);
           }
 
