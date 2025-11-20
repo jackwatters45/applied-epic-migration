@@ -5,6 +5,7 @@ import {
   GoogleDriveFileService,
 } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
+import { RollbackService } from "./rollback.js";
 import { VerificationService } from "./verification.js";
 
 // Types
@@ -18,6 +19,7 @@ export interface DuplicateInfo {
 export interface MergeOptions {
   readonly dryRun: boolean;
   readonly deleteSourceAfterMerge: boolean;
+  readonly rollbackSessionId?: string;
 }
 
 // Error type for folder merger operations
@@ -42,6 +44,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       const config = yield* ConfigService;
       const progress = yield* ProgressLoggerService;
       const verification = yield* VerificationService;
+      const rollback = yield* RollbackService;
       const sharedDriveId = yield* config.sharedClientDriveId;
 
       const mergeDuplicateFolders = (
@@ -54,6 +57,11 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             deleteSourceAfterMerge: true,
             ...options,
           };
+
+          // Create rollback session if not provided
+          const rollbackSessionId = opts.rollbackSessionId
+            ? opts.rollbackSessionId
+            : (yield* rollback.createSession("merge-duplicate-folders")).id;
 
           yield* progress.startTask(
             "Merging duplicate folders",
@@ -69,7 +77,16 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               i + 1,
               `${displayName} (${duplicates.length})`,
             );
-            yield* mergeSingleDuplicateGroup(duplicate, opts);
+            yield* mergeSingleDuplicateGroup(
+              duplicate,
+              opts,
+              rollbackSessionId,
+            );
+          }
+
+          // Complete rollback session if we created it
+          if (!opts.rollbackSessionId) {
+            yield* rollback.completeSession(rollbackSessionId);
           }
 
           yield* progress.complete();
@@ -122,6 +139,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       const mergeSingleDuplicateGroup = (
         duplicate: DuplicateInfo,
         options: MergeOptions,
+        rollbackSessionId: string,
       ) =>
         Effect.gen(function* () {
           const { folderIds } = duplicate;
@@ -130,7 +148,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
           // Use the first folder as the target (usually the base folder without number)
           const [targetId, ...sourceIds] = folderIds;
 
-          let totalItemsMoved = 0;
+          let _totalItemsMoved = 0;
 
           // Move contents from all source folders to the target
           for (const sourceId of sourceIds) {
@@ -147,36 +165,50 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               yield* progress.logItem(
                 `[DRY RUN] Would move ${sourceItems.length} items from ${sourceId}`,
               );
-              totalItemsMoved += sourceItems.length;
+              _totalItemsMoved += sourceItems.length;
               continue;
             }
 
             // Move all items from this source folder to target
             for (let i = 0; i < sourceItems.length; i++) {
               const item = sourceItems[i];
+
+              // Log move operation for rollback
+              yield* rollback.logOperation(rollbackSessionId, {
+                type: "move",
+                fileId: item.id,
+                fileName: item.name,
+                sourceId,
+                targetId,
+              });
+
               yield* googleDrive.moveFile(item.id, targetId);
               yield* progress.logItem(
                 `Moved ${i + 1}/${sourceItems.length}: ${item.name}`,
               );
             }
 
-            totalItemsMoved += sourceItems.length;
+            _totalItemsMoved += sourceItems.length;
 
             // Verify move was successful before deleting source folder
             if (options.deleteSourceAfterMerge) {
               yield* verifyMoveOperation(sourceId, targetId, sourceItems);
+
+              // Log trash operation for rollback
+              yield* rollback.logOperation(rollbackSessionId, {
+                type: "trash",
+                fileId: sourceId,
+                fileName: `Source folder ${sourceId}`,
+                sourceId,
+                targetId: "trash",
+              });
+
               yield* googleDrive.trashFile(sourceId);
               yield* progress.logItem(`Deleted source folder ${sourceId}`);
             }
           }
 
-          if (options.dryRun) {
-            yield* progress.logItem(
-              `[DRY RUN] Would move ${totalItemsMoved} total items`,
-            );
-          } else {
-            yield* progress.logItem(`Moved ${totalItemsMoved} total items`);
-          }
+          yield* progress.complete();
         });
 
       const mergeAppleStyleDuplicates = (
@@ -189,6 +221,11 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             deleteSourceAfterMerge: true,
             ...options,
           };
+
+          // Create rollback session if not provided
+          const rollbackSessionId = opts.rollbackSessionId
+            ? opts.rollbackSessionId
+            : (yield* rollback.createSession("merge-apple-duplicates")).id;
 
           yield* progress.startTask(
             "Merging Apple-style duplicate folders",
@@ -204,7 +241,11 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
               i + 1,
               `${displayName} (${duplicates.length})`,
             );
-            yield* mergeSingleDuplicateGroup(duplicate, opts);
+            yield* mergeSingleDuplicateGroup(
+              duplicate,
+              opts,
+              rollbackSessionId,
+            );
           }
 
           yield* progress.complete();
@@ -220,6 +261,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       ConfigService.Default,
       ProgressLoggerService.Default,
       VerificationService.Default,
+      RollbackService.Default,
     ],
   },
 ) {}

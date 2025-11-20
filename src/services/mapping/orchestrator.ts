@@ -4,6 +4,7 @@ import { FolderHierarchyService } from "../google-drive/folder-hierarchy.js";
 import { AttachmentFolderMapperService } from "./attachment-folder-mapper.js";
 import { FolderMergerService } from "./folder-merger.js";
 import { HierarchyAnalysisService } from "./hierarchy-analysis.js";
+import { RollbackService } from "./rollback.js";
 
 // Error type for mapping orchestrator operations
 export class MappingOrchestratorError extends Schema.TaggedError<MappingOrchestratorError>()(
@@ -24,9 +25,15 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
       const hierarchyAnalyzer = yield* HierarchyAnalysisService;
       const folderMerger = yield* FolderMergerService;
       const attachmentFolderMapper = yield* AttachmentFolderMapperService;
+      const rollback = yield* RollbackService;
 
       const runMapping = (attachments: OrganizedHashMap) =>
         Effect.gen(function* () {
+          // Create a rollback session for the entire mapping operation
+          const rollbackSessionId = (yield* rollback.createSession(
+            "folder-mapping",
+          )).id;
+
           const hierarchyTree = yield* folderHierarchy.buildHierarchyTree({
             cacheMode: CacheMode.WRITE,
           });
@@ -39,6 +46,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
             dryRun: true,
+            rollbackSessionId,
           });
 
           const hierarchyTreeAfterApple =
@@ -50,8 +58,10 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
           const duplicates = yield* hierarchyAnalyzer.extractDuplicateFolders(
             hierarchyTreeAfterApple,
           );
+
           yield* folderMerger.mergeDuplicateFolders(duplicates, {
             dryRun: true,
+            rollbackSessionId,
           });
 
           // Re-erge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)") to deal with any new duplicates
@@ -60,6 +70,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
           yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates2, {
             dryRun: true,
+            rollbackSessionId,
           });
 
           const hierarchyTreeNoDuplicates =
@@ -72,6 +83,9 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             attachments,
             gDriveTree: hierarchyTreeNoDuplicates,
           });
+
+          // Complete the rollback session if all operations succeeded
+          yield* rollback.completeSession(rollbackSessionId);
         });
 
       return {
@@ -83,6 +97,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
       FolderMergerService.Default,
       HierarchyAnalysisService.Default,
       AttachmentFolderMapperService.Default,
+      RollbackService.Default,
     ],
   },
 ) {}
