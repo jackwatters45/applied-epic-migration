@@ -316,6 +316,65 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
                 }),
             });
           }),
+
+        getFileMetadata: (fileId: string) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            const response = yield* Effect.tryPromise({
+              try: () =>
+                drive.files.get({
+                  fileId,
+                  supportsAllDrives: true,
+                  fields: "id,name,mimeType,parents,properties,appProperties",
+                }),
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to get file metadata: ${error}`,
+                }),
+            });
+
+            return {
+              id: response.data.id || "",
+              name: response.data.name || "",
+              mimeType: response.data.mimeType || "",
+              parents: response.data.parents || [],
+              properties: response.data.properties || {},
+              appProperties: response.data.appProperties || {},
+            };
+          }),
+
+        updateFileMetadata: (
+          fileId: string,
+          metadata: {
+            properties?: Record<string, string>;
+            name?: string;
+          },
+        ) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            yield* Effect.tryPromise({
+              try: () =>
+                drive.files.update({
+                  fileId,
+                  requestBody: {
+                    ...(metadata.properties && {
+                      properties: metadata.properties,
+                    }),
+                    ...(metadata.name && { name: metadata.name }),
+                  },
+                  supportsAllDrives: true,
+                  fields: "id,name,properties",
+                }),
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to update file metadata: ${error}`,
+                }),
+            });
+          }),
       } as const;
     }),
     dependencies: [GoogleDriveAuthService.Default],
