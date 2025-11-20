@@ -1,7 +1,11 @@
-import { Effect } from "effect";
+import { Effect, Schema } from "effect";
 import { ConfigService } from "../../lib/config.js";
-import { GoogleDriveFileService } from "../google-drive/file.js";
+import {
+  type GoogleDriveFile,
+  GoogleDriveFileService,
+} from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
+import { VerificationService } from "./verification.js";
 
 // Types
 export interface DuplicateInfo {
@@ -16,6 +20,20 @@ export interface MergeOptions {
   readonly deleteSourceAfterMerge: boolean;
 }
 
+// Error type for folder merger operations
+export class FolderMergerError extends Schema.TaggedError<FolderMergerError>()(
+  "FolderMergerError",
+  {
+    message: Schema.String,
+    type: Schema.String,
+    sourceId: Schema.optional(Schema.String),
+    targetId: Schema.optional(Schema.String),
+    missingItemsCount: Schema.optional(Schema.Number),
+    remainingItemsCount: Schema.optional(Schema.Number),
+    details: Schema.optional(Schema.String),
+  },
+) {}
+
 export class FolderMergerService extends Effect.Service<FolderMergerService>()(
   "FolderMergerService",
   {
@@ -23,12 +41,13 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       const googleDrive = yield* GoogleDriveFileService;
       const config = yield* ConfigService;
       const progress = yield* ProgressLoggerService;
+      const verification = yield* VerificationService;
       const sharedDriveId = yield* config.sharedClientDriveId;
 
       const mergeDuplicateFolders = (
         duplicates: DuplicateInfo[],
         options: Partial<MergeOptions> = {},
-      ): Effect.Effect<void, Error> =>
+      ) =>
         Effect.gen(function* () {
           const opts: MergeOptions = {
             dryRun: false,
@@ -56,10 +75,54 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
           yield* progress.complete();
         });
 
+      const verifyMoveOperation = (
+        sourceId: string,
+        targetId: string,
+        sourceItems: readonly GoogleDriveFile[],
+      ) =>
+        Effect.gen(function* () {
+          yield* progress.logItem(
+            `Verifying move from ${sourceId} to ${targetId} before deletion`,
+          );
+
+          const verificationResult = yield* verification.verifyMoveComplete({
+            sourceId,
+            targetId,
+            expectedItems: sourceItems.map((item) => ({
+              id: item.id,
+              name: item.name,
+            })),
+          });
+
+          if (!verificationResult.success) {
+            yield* progress.logItem(
+              `Verification failed for source folder ${sourceId}:`,
+            );
+            for (const error of verificationResult.errors) {
+              yield* progress.logItem(`  Error: ${error}`);
+            }
+
+            throw new FolderMergerError({
+              message: `Move verification failed for source folder ${sourceId}`,
+              type: "VERIFICATION_FAILED",
+              sourceId,
+              targetId,
+              missingItemsCount: verificationResult.missingItems.length,
+              remainingItemsCount:
+                verificationResult.remainingSourceItems.length,
+              details: `Missing items: [${verificationResult.missingItems.join(", ")}], Remaining items: [${verificationResult.remainingSourceItems.join(", ")}]`,
+            });
+          }
+
+          yield* progress.logItem(
+            `Verification successful for source folder ${sourceId}`,
+          );
+        });
+
       const mergeSingleDuplicateGroup = (
         duplicate: DuplicateInfo,
         options: MergeOptions,
-      ): Effect.Effect<void, Error> =>
+      ) =>
         Effect.gen(function* () {
           const { folderIds } = duplicate;
           if (folderIds.length < 2) return;
@@ -99,7 +162,9 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
 
             totalItemsMoved += sourceItems.length;
 
+            // Verify move was successful before deleting source folder
             if (options.deleteSourceAfterMerge) {
+              yield* verifyMoveOperation(sourceId, targetId, sourceItems);
               yield* googleDrive.trashFile(sourceId);
               yield* progress.logItem(`Deleted source folder ${sourceId}`);
             }
@@ -117,7 +182,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       const mergeAppleStyleDuplicates = (
         duplicates: DuplicateInfo[],
         options: Partial<MergeOptions> = {},
-      ): Effect.Effect<void, Error> =>
+      ) =>
         Effect.gen(function* () {
           const opts: MergeOptions = {
             dryRun: false,
@@ -154,6 +219,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
       GoogleDriveFileService.Default,
       ConfigService.Default,
       ProgressLoggerService.Default,
+      VerificationService.Default,
     ],
   },
 ) {}
