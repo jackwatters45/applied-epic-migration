@@ -32,3 +32,10 @@
 ## Folders
 
 - Use `scratchpad` for temporary code snippets and experiments.
+
+## Other
+
+- Always use Effects `FileService` service instead of `node:fs`
+- Use Effects `@effect/vitest` package in favor of `vitest` for testing
+- When possible, use effect. Always try to make things "Effectful"
+- Do not use try/catch blocks for error handling, use Effects error handling
