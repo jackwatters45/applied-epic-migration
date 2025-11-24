@@ -16,4 +16,4 @@ scratchpad/*
 .env.production.local
 .private_key.json
 .cache
-#logs
+logs
