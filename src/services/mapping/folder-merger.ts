@@ -23,6 +23,7 @@ export interface MergeOptions {
   readonly deleteSourceAfterMerge: boolean;
   readonly rollbackSessionId?: string;
   readonly softDeleteOptions?: SoftDeleteOptions;
+  readonly limitToFirstFolder?: boolean;
 }
 
 // Error type for folder merger operations
@@ -67,19 +68,30 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             ? opts.rollbackSessionId
             : (yield* rollback.createSession("merge-duplicate-folders")).id;
 
+          // Limit to first folder if flag is set
+          const duplicatesToProcess = opts.limitToFirstFolder
+            ? duplicates.slice(0, 1)
+            : duplicates;
+
+          if (opts.limitToFirstFolder && duplicates.length > 0) {
+            yield* progress.logItem(
+              `⚠️  LIMIT MODE: Processing only first folder group (1/${duplicates.length})`,
+            );
+          }
+
           yield* progress.startTask(
             "Merging duplicate folders",
-            duplicates.length,
+            duplicatesToProcess.length,
           );
 
-          for (let i = 0; i < duplicates.length; i++) {
-            const duplicate = duplicates[i];
+          for (let i = 0; i < duplicatesToProcess.length; i++) {
+            const duplicate = duplicatesToProcess[i];
             const displayName = duplicate.parentName
               ? `${duplicate.parentName} / ${duplicate.folderName}`
               : duplicate.folderName;
             yield* progress.logProgress(
               i + 1,
-              `${displayName} (${duplicates.length})`,
+              `${displayName} (${duplicatesToProcess.length})`,
             );
             yield* mergeSingleDuplicateGroup(
               duplicate,
@@ -182,9 +194,20 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             });
             const originalTargetItemCount = targetItemsBeforeMove.length;
 
+            // Limit to first file if flag is set
+            const itemsToMove = options.limitToFirstFolder
+              ? sourceItems.slice(0, 1)
+              : sourceItems;
+
+            if (options.limitToFirstFolder && sourceItems.length > 0) {
+              yield* progress.logItem(
+                `⚠️  LIMIT MODE: Moving only first file (1/${sourceItems.length})`,
+              );
+            }
+
             // Move all items from this source folder to target
-            for (let i = 0; i < sourceItems.length; i++) {
-              const item = sourceItems[i];
+            for (let i = 0; i < itemsToMove.length; i++) {
+              const item = itemsToMove[i];
 
               // Log move operation for rollback
               yield* rollback.logOperation(rollbackSessionId, {
@@ -197,7 +220,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
 
               yield* googleDrive.moveFile(item.id, targetId);
               yield* progress.logItem(
-                `Moved ${i + 1}/${sourceItems.length}: ${item.name}`,
+                `Moved ${i + 1}/${itemsToMove.length}: ${item.name}`,
               );
             }
 
@@ -208,7 +231,7 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
                 verifyMoveOperation(
                   sourceId,
                   targetId,
-                  sourceItems,
+                  itemsToMove,
                   originalTargetItemCount,
                 ),
                 Schedule.exponential("1 second").pipe(
@@ -281,19 +304,30 @@ export class FolderMergerService extends Effect.Service<FolderMergerService>()(
             ? opts.rollbackSessionId
             : (yield* rollback.createSession("merge-apple-duplicates")).id;
 
+          // Limit to first folder if flag is set
+          const duplicatesToProcess = opts.limitToFirstFolder
+            ? duplicates.slice(0, 1)
+            : duplicates;
+
+          if (opts.limitToFirstFolder && duplicates.length > 0) {
+            yield* progress.logItem(
+              `⚠️  LIMIT MODE: Processing only first folder group (1/${duplicates.length})`,
+            );
+          }
+
           yield* progress.startTask(
             "Merging Apple-style duplicate folders",
-            duplicates.length,
+            duplicatesToProcess.length,
           );
 
-          for (let i = 0; i < duplicates.length; i++) {
-            const duplicate = duplicates[i];
+          for (let i = 0; i < duplicatesToProcess.length; i++) {
+            const duplicate = duplicatesToProcess[i];
             const displayName = duplicate.parentName
               ? `${duplicate.parentName} / ${duplicate.folderName}`
               : duplicate.folderName;
             yield* progress.logProgress(
               i + 1,
-              `${displayName} (${duplicates.length})`,
+              `${displayName} (${duplicatesToProcess.length})`,
             );
             yield* mergeSingleDuplicateGroup(
               duplicate,

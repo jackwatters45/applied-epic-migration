@@ -31,6 +31,10 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         "1-T0Lemwm8hxzmgfYPrZTaaYQnmRH1Qh4",
       );
 
+      const limitToFirstFolder = yield* Config.boolean(
+        "LIMIT_TO_FIRST_FOLDER",
+      ).pipe(Config.withDefault(false));
+
       const config = {
         googleDrive: {
           serviceAccountKeyPath,
@@ -39,6 +43,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         metadataCsvPath,
         sharedClientDriveId,
         attachmentsFolderId,
+        limitToFirstFolder,
       };
 
       return config;
