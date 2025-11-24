@@ -34,71 +34,119 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             "folder-mapping",
           )).id;
 
-          const hierarchyTree = yield* folderHierarchy.buildHierarchyTree({
-            cacheMode: CacheMode.WRITE,
-          });
+          // Recursively merge duplicates until none remain
+          const maxIterations = 5;
+          let iteration = 0;
+          let previousDuplicateCount = -1;
 
-          yield* hierarchyAnalyzer.analyzeHierarchy(hierarchyTree);
+          console.log("\n🔄 Starting recursive duplicate resolution...\n");
 
-          // Merge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)")
-          const appleDuplicates =
-            yield* hierarchyAnalyzer.extractAppleStyleDuplicates(hierarchyTree);
+          while (iteration < maxIterations) {
+            iteration++;
 
-          yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
-            dryRun: false,
-            rollbackSessionId,
-            softDeleteOptions: {
-              mode: "trash",
-              metadataPrefix: "__DELETED",
-            },
-          });
-
-          const hierarchyTreeAfterApple =
-            yield* folderHierarchy.buildHierarchyTree({
+            // Build fresh hierarchy tree
+            const hierarchyTree = yield* folderHierarchy.buildHierarchyTree({
               cacheMode: CacheMode.WRITE,
             });
 
-          // Merge exact duplicate folders (e.g., "folder", "folder")
-          const duplicates = yield* hierarchyAnalyzer.extractDuplicateFolders(
-            hierarchyTreeAfterApple,
-          );
+            // Run analysis on first iteration
+            if (iteration === 1) {
+              yield* hierarchyAnalyzer.analyzeHierarchy(hierarchyTree);
+            }
 
-          yield* folderMerger.mergeDuplicateFolders(duplicates, {
-            dryRun: false,
-            rollbackSessionId,
-            softDeleteOptions: {
-              mode: "trash",
-              metadataPrefix: "__DELETED",
-            },
-          });
+            // Extract all types of duplicates
+            const appleDuplicates =
+              yield* hierarchyAnalyzer.extractAppleStyleDuplicates(
+                hierarchyTree,
+              );
+            const exactDuplicates =
+              yield* hierarchyAnalyzer.extractDuplicateFolders(hierarchyTree);
 
-          // Rebuild tree after exact duplicates merge
-          const hierarchyTreeAfterExact =
-            yield* folderHierarchy.buildHierarchyTree({
-              cacheMode: CacheMode.WRITE,
-            });
+            const totalDuplicates =
+              appleDuplicates.length + exactDuplicates.length;
 
-          // Re-merge Apple-style duplicate folders (e.g., "folder", "folder (1)", "folder (2)") to deal with any new duplicates
-          const appleDuplicates2 =
-            yield* hierarchyAnalyzer.extractAppleStyleDuplicates(
-              hierarchyTreeAfterExact,
+            console.log(
+              `📊 Iteration ${iteration}: Found ${appleDuplicates.length} Apple-style + ${exactDuplicates.length} exact duplicate groups (${totalDuplicates} total)`,
             );
 
-          yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates2, {
-            dryRun: false,
-            rollbackSessionId,
-            softDeleteOptions: {
-              mode: "trash",
-              metadataPrefix: "__DELETED",
-            },
-          });
+            // Exit if no duplicates found
+            if (totalDuplicates === 0) {
+              if (iteration === 1) {
+                console.log(
+                  "✅ No duplicates found in hierarchy - nothing to merge!\n",
+                );
+              } else {
+                console.log(
+                  `✅ All duplicates resolved after ${iteration - 1} iteration(s)!\n`,
+                );
+              }
+              break;
+            }
 
+            // Detect stuck state (no progress made)
+            if (totalDuplicates === previousDuplicateCount) {
+              console.log(
+                `⚠️  Warning: No progress made (still ${totalDuplicates} duplicates). Stopping to prevent infinite loop.\n`,
+              );
+              break;
+            }
+            previousDuplicateCount = totalDuplicates;
+
+            // Process Apple-style duplicates
+            if (appleDuplicates.length > 0) {
+              yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
+                dryRun: true,
+                rollbackSessionId,
+                softDeleteOptions: {
+                  mode: "trash",
+                  metadataPrefix: "__DELETED",
+                },
+              });
+            }
+
+            // Process exact duplicates
+            if (exactDuplicates.length > 0) {
+              // Rebuild tree after Apple merge to get fresh state
+              const treeAfterApple = yield* folderHierarchy.buildHierarchyTree({
+                cacheMode: CacheMode.WRITE,
+              });
+
+              // Re-extract exact duplicates (some might have been resolved by Apple merge)
+              const remainingExact =
+                yield* hierarchyAnalyzer.extractDuplicateFolders(
+                  treeAfterApple,
+                );
+
+              if (remainingExact.length > 0) {
+                yield* folderMerger.mergeDuplicateFolders(remainingExact, {
+                  dryRun: true,
+                  rollbackSessionId,
+                  softDeleteOptions: {
+                    mode: "trash",
+                    metadataPrefix: "__DELETED",
+                  },
+                });
+              }
+            }
+
+            console.log(`✅ Iteration ${iteration} complete\n`);
+          }
+
+          // Check if we hit max iterations
+          if (iteration >= maxIterations) {
+            console.log(
+              `⚠️  Reached maximum iterations (${maxIterations}). Some duplicates may remain.\n`,
+            );
+          }
+
+          // Build final clean tree
           const hierarchyTreeNoDuplicates =
             yield* folderHierarchy.buildHierarchyTree({
               cacheMode: CacheMode.WRITE,
             });
 
-          // map gDriveTree to metadata attachments
+          // Map gDriveTree to metadata attachments
+          // TODO:
           yield* attachmentFolderMapper.mergeAttachmentsToFolders({
             attachments,
             gDriveTree: hierarchyTreeNoDuplicates,
@@ -106,6 +154,8 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
           // Complete the rollback session if all operations succeeded
           yield* rollback.completeSession(rollbackSessionId);
+
+          console.log("✅ Mapping operation completed successfully!\n");
         });
 
       return {
