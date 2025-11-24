@@ -51,6 +51,15 @@ export const run = (options: { dryRun?: boolean } = {}) =>
 // CLI execution for manual testing
 if (import.meta.main) {
   const dryRun = process.argv.includes("--dry-run");
+  const limitFirst = process.argv.includes("--limit-first");
+
+  // Set environment variable if --limit-first flag is provided
+  if (limitFirst) {
+    process.env.LIMIT_TO_FIRST_FOLDER = "true";
+    console.log(
+      "🔍 Running in LIMIT MODE: Processing only first folder and one file\n",
+    );
+  }
 
   run({ dryRun })
     .then(() => {

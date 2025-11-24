@@ -1,4 +1,5 @@
 import { Effect, Schema } from "effect";
+import { ConfigService } from "../../lib/config.js";
 import { CacheMode, type OrganizedHashMap } from "../../lib/type.js";
 import { FolderHierarchyService } from "../google-drive/folder-hierarchy.js";
 import { AttachmentFolderMapperService } from "./attachment-folder-mapper.js";
@@ -21,6 +22,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
   "MappingOrchestratorService",
   {
     effect: Effect.gen(function* () {
+      const config = yield* ConfigService;
       const folderHierarchy = yield* FolderHierarchyService;
       const hierarchyAnalyzer = yield* HierarchyAnalysisService;
       const folderMerger = yield* FolderMergerService;
@@ -95,12 +97,12 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             // Process Apple-style duplicates
             if (appleDuplicates.length > 0) {
               yield* folderMerger.mergeAppleStyleDuplicates(appleDuplicates, {
-                dryRun: true,
                 rollbackSessionId,
                 softDeleteOptions: {
                   mode: "trash",
                   metadataPrefix: "__DELETED",
                 },
+                limitToFirstFolder: config.limitToFirstFolder,
               });
             }
 
@@ -119,12 +121,12 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
 
               if (remainingExact.length > 0) {
                 yield* folderMerger.mergeDuplicateFolders(remainingExact, {
-                  dryRun: true,
                   rollbackSessionId,
                   softDeleteOptions: {
                     mode: "trash",
                     metadataPrefix: "__DELETED",
                   },
+                  limitToFirstFolder: config.limitToFirstFolder,
                 });
               }
             }
@@ -163,6 +165,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
       } as const;
     }),
     dependencies: [
+      ConfigService.Default,
       FolderHierarchyService.Default,
       FolderMergerService.Default,
       HierarchyAnalysisService.Default,
