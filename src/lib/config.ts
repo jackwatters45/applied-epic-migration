@@ -25,7 +25,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
       );
 
-      const sharedClientDriveId = Config.succeed(SharedDriveId.TEST);
+      const sharedClientDriveId = Config.succeed(SharedDriveId.PROD);
 
       const attachmentsFolderId = Config.succeed(
         "1-T0Lemwm8hxzmgfYPrZTaaYQnmRH1Qh4",
