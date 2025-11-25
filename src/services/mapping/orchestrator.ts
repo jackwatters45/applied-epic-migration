@@ -36,6 +36,31 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             "folder-mapping",
           )).id;
 
+          // Skip duplicate merging if flag is set
+          if (config.skipDuplicateMerging) {
+            console.log(
+              "\n⏭️  SKIP MODE: Skipping duplicate merging, proceeding directly to attachment mapping...\n",
+            );
+
+            // Build hierarchy tree for attachment mapping
+            const hierarchyTreeNoDuplicates =
+              yield* folderHierarchy.buildHierarchyTree({
+                cacheMode: CacheMode.WRITE,
+              });
+
+            // Map gDriveTree to metadata attachments
+            yield* attachmentFolderMapper.mergeAttachmentsToFolders({
+              attachments,
+              gDriveTree: hierarchyTreeNoDuplicates,
+            });
+
+            // Complete the rollback session if all operations succeeded
+            yield* rollback.completeSession(rollbackSessionId);
+
+            console.log("✅ Mapping operation completed successfully!\n");
+            return;
+          }
+
           // Recursively merge duplicates until none remain
           const maxIterations = 5;
           let iteration = 0;
@@ -148,7 +173,6 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
             });
 
           // Map gDriveTree to metadata attachments
-          // TODO:
           yield* attachmentFolderMapper.mergeAttachmentsToFolders({
             attachments,
             gDriveTree: hierarchyTreeNoDuplicates,
