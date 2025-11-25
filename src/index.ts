@@ -1,38 +1,9 @@
-import { NodeContext } from "@effect/platform-node";
-import { Effect, Layer, ManagedRuntime } from "effect";
+import { Command, Options } from "@effect/cli";
+import { NodeContext, NodeRuntime } from "@effect/platform-node";
+import { Effect, Layer } from "effect";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
 import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
-
-// Main reorganization execution
-const program = (_options: { dryRun?: boolean } = {}) =>
-  Effect.gen(function* () {
-    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
-    const mappingOrchestrator = yield* MappingOrchestratorService;
-    const _reorgService = yield* GoogleDriveReorganizationService;
-
-    const organized = yield* metadataOrchestrator.run({ useCache: true });
-
-    yield* mappingOrchestrator.runMapping(organized);
-
-    // drive
-    //
-    // const result = yield* reorgService.processOrganizedAttachments(
-    //   organizedAttachments,
-    //   { dryRun: options.dryRun ?? false },
-    // );
-
-    // return result;
-  }).pipe(
-    Effect.provide(mainLayer),
-    Effect.catchAll((error) => {
-      console.error("Reorganization failed:", error.message);
-      if ("status" in error && error.status) {
-        console.error(`Status: ${error.status}`);
-      }
-      return Effect.exit(Effect.succeed(() => {}));
-    }),
-  );
 
 // Create complete layer
 const mainLayer = Layer.mergeAll(
@@ -42,40 +13,84 @@ const mainLayer = Layer.mergeAll(
   NodeContext.layer,
 );
 
-const runtime = ManagedRuntime.make(mainLayer);
+// Main reorganization execution
+const runProgram = (options: {
+  dryRun: boolean;
+  limitFirst: boolean;
+  skipMerge: boolean;
+}) =>
+  Effect.gen(function* () {
+    // Set environment variables based on options
+    if (options.limitFirst) {
+      process.env.LIMIT_TO_FIRST_FOLDER = "true";
+      yield* Effect.log(
+        "Running in LIMIT MODE: Processing only first folder and one file",
+      );
+    }
 
-// Main execution function
-export const run = (options: { dryRun?: boolean } = {}) =>
-  runtime.runPromise(program(options));
+    if (options.skipMerge) {
+      process.env.SKIP_DUPLICATE_MERGING = "true";
+      yield* Effect.log(
+        "Running in SKIP MODE: Skipping duplicate merging entirely",
+      );
+    }
 
-// CLI execution for manual testing
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const mappingOrchestrator = yield* MappingOrchestratorService;
+    yield* GoogleDriveReorganizationService;
+
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    yield* mappingOrchestrator.runMapping(organized);
+
+    // drive reorganization (commented out)
+    // const result = yield* reorgService.processOrganizedAttachments(
+    //   organizedAttachments,
+    //   { dryRun: options.dryRun },
+    // );
+  });
+
+// Define CLI options
+const dryRunOption = Options.boolean("dry-run").pipe(
+  Options.withAlias("d"),
+  Options.withDescription("Run without making actual changes"),
+  Options.withDefault(false),
+);
+
+const limitFirstOption = Options.boolean("limit-first").pipe(
+  Options.withAlias("l"),
+  Options.withDescription("Process only first folder and one file"),
+  Options.withDefault(false),
+);
+
+const skipMergeOption = Options.boolean("skip-merge").pipe(
+  Options.withAlias("s"),
+  Options.withDescription("Skip duplicate merging entirely"),
+  Options.withDefault(false),
+);
+
+// Define the main command
+const command = Command.make(
+  "run",
+  {
+    dryRun: dryRunOption,
+    limitFirst: limitFirstOption,
+    skipMerge: skipMergeOption,
+  },
+  runProgram,
+).pipe(
+  Command.withDescription(
+    "Execute the Applied Epic migration reorganization process",
+  ),
+);
+
+// Create the CLI runner
+const cli = Command.run(command, {
+  name: "Applied Epic Migration",
+  version: "0.0.0",
+});
+
+// CLI execution
 if (import.meta.main) {
-  const dryRun = process.argv.includes("--dry-run");
-  const limitFirst = process.argv.includes("--limit-first");
-  const skipMerge = process.argv.includes("--skip-merge");
-
-  // Set environment variable if --limit-first flag is provided
-  if (limitFirst) {
-    process.env.LIMIT_TO_FIRST_FOLDER = "true";
-    console.log(
-      "🔍 Running in LIMIT MODE: Processing only first folder and one file\n",
-    );
-  }
-
-  // Set environment variable if --skip-merge flag is provided
-  if (skipMerge) {
-    process.env.SKIP_DUPLICATE_MERGING = "true";
-    console.log(
-      "⏭️  Running in SKIP MODE: Skipping duplicate merging entirely\n",
-    );
-  }
-
-  run({ dryRun })
-    .then(() => {
-      process.exit(0);
-    })
-    .catch((error) => {
-      console.error("Reorganization failed:", error);
-      process.exit(1);
-    });
+  cli(process.argv).pipe(Effect.provide(mainLayer), NodeRuntime.runMain);
 }
