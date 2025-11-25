@@ -1,7 +1,7 @@
 import { FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import { Effect, type Record } from "effect";
-import { ConfigService } from "src/lib/config.js";
+import { ConfigService } from "../../lib/config.js";
 import type {
   FolderNode,
   HierarchyTree,

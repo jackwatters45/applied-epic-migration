@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FolderMergerError } from "../../../src/services/mapping/folder-merger.js";
+import { FolderMergerError } from "../../../src/services/merging/folder-merger.js";
 
 describe("FolderMergerError", () => {
   it("should create a verification failed error correctly", () => {

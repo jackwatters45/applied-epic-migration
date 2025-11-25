@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { RollbackService } from "../../../src/services/mapping/rollback.js";
+import { RollbackService } from "../../../src/services/merging/rollback.js";
 
 describe("RollbackService", () => {
   it("should be properly defined", () => {

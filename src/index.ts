@@ -1,15 +1,33 @@
 import { Command, Options } from "@effect/cli";
 import { NodeContext, NodeRuntime } from "@effect/platform-node";
-import { Effect, Layer } from "effect";
+import { ConfigProvider, Effect, Layer } from "effect";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
 import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
+import { MergingOrchestratorService } from "./services/merging/orchestrator.js";
+import { RollbackService } from "./services/merging/rollback.js";
 
-// Create complete layer
-const mainLayer = Layer.mergeAll(
+// Create a config layer from CLI options
+const makeConfigLayer = (options: {
+  limitFirst: boolean;
+  skipMerge: boolean;
+}) =>
+  Layer.setConfigProvider(
+    ConfigProvider.fromMap(
+      new Map([
+        ["LIMIT_TO_FIRST_FOLDER", options.limitFirst.toString()],
+        ["SKIP_DUPLICATE_MERGING", options.skipMerge.toString()],
+      ]),
+    ).pipe(ConfigProvider.orElse(() => ConfigProvider.fromEnv())),
+  );
+
+// Create base layer with all services
+const baseLayer = Layer.mergeAll(
   AttachmentMetadataOrchestratorService.Default,
   MappingOrchestratorService.Default,
+  MergingOrchestratorService.Default,
   GoogleDriveReorganizationService.Default,
+  RollbackService.Default,
   NodeContext.layer,
 );
 
@@ -20,35 +38,51 @@ const runProgram = (options: {
   skipMerge: boolean;
 }) =>
   Effect.gen(function* () {
-    // Set environment variables based on options
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const mergingOrchestrator = yield* MergingOrchestratorService;
+    const mappingOrchestrator = yield* MappingOrchestratorService;
+    const rollback = yield* RollbackService;
+    yield* GoogleDriveReorganizationService;
+
+    // Log runtime options
     if (options.limitFirst) {
-      process.env.LIMIT_TO_FIRST_FOLDER = "true";
       yield* Effect.log(
         "Running in LIMIT MODE: Processing only first folder and one file",
       );
     }
-
     if (options.skipMerge) {
-      process.env.SKIP_DUPLICATE_MERGING = "true";
       yield* Effect.log(
         "Running in SKIP MODE: Skipping duplicate merging entirely",
       );
     }
 
-    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
-    const mappingOrchestrator = yield* MappingOrchestratorService;
-    yield* GoogleDriveReorganizationService;
+    // Create rollback session for the entire operation
+    const session = yield* rollback.createSession("migration-workflow");
 
+    // Step 1: Process and organize metadata
     const organized = yield* metadataOrchestrator.run({ useCache: true });
 
-    yield* mappingOrchestrator.runMapping(organized);
+    // Step 2: Resolve duplicate folders (unless skipped)
+    if (!options.skipMerge) {
+      yield* mergingOrchestrator.resolveDuplicates(session.id);
+    } else {
+      yield* Effect.log("Skipping duplicate merging as requested");
+    }
+
+    // Step 3: Map attachments to folders
+    yield* mappingOrchestrator.mapAttachments(organized);
+
+    // Complete the rollback session
+    yield* rollback.completeSession(session.id);
+
+    yield* Effect.log("✅ Migration workflow completed successfully!");
 
     // drive reorganization (commented out)
     // const result = yield* reorgService.processOrganizedAttachments(
     //   organizedAttachments,
     //   { dryRun: options.dryRun },
     // );
-  });
+  }).pipe(Effect.provide(Layer.merge(makeConfigLayer(options), baseLayer)));
 
 // Define CLI options
 const dryRunOption = Options.boolean("dry-run").pipe(
@@ -92,5 +126,8 @@ const cli = Command.run(command, {
 
 // CLI execution
 if (import.meta.main) {
-  cli(process.argv).pipe(Effect.provide(mainLayer), NodeRuntime.runMain);
+  cli(process.argv).pipe(
+    Effect.provide(NodeContext.layer),
+    NodeRuntime.runMain,
+  );
 }
