@@ -35,6 +35,10 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         "LIMIT_TO_FIRST_FOLDER",
       ).pipe(Config.withDefault(false));
 
+      const skipDuplicateMerging = yield* Config.boolean(
+        "SKIP_DUPLICATE_MERGING",
+      ).pipe(Config.withDefault(false));
+
       const config = {
         googleDrive: {
           serviceAccountKeyPath,
@@ -44,6 +48,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         sharedClientDriveId,
         attachmentsFolderId,
         limitToFirstFolder,
+        skipDuplicateMerging,
       };
 
       return config;
