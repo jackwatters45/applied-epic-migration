@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { VerificationService } from "../../../src/services/mapping/verification.js";
+import { VerificationService } from "../../../src/services/merging/verification.js";
 
 describe("VerificationService", () => {
   it("should be properly defined", () => {

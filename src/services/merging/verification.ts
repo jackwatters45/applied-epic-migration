@@ -1,5 +1,5 @@
 import { Effect, Schema } from "effect";
-import { CacheMode } from "src/lib/type.js";
+import { CacheMode } from "../../lib/type.js";
 import { GoogleDriveFileService } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
 

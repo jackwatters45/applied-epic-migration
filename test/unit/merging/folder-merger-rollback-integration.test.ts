@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { FolderMergerService } from "../../../src/services/mapping/folder-merger.js";
-import { RollbackService } from "../../../src/services/mapping/rollback.js";
+import { FolderMergerService } from "../../../src/services/merging/folder-merger.js";
+import { RollbackService } from "../../../src/services/merging/rollback.js";
 
 describe("FolderMergerService Rollback Integration", () => {
   it("should have rollback service dependency", () => {

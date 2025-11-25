@@ -6,9 +6,12 @@ import {
   GoogleDriveFileService,
 } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
-import { RollbackService } from "./rollback.js";
-import { type SoftDeleteOptions, SoftDeleteService } from "./soft-delete.js";
-import { VerificationService } from "./verification.js";
+import { RollbackService } from "../merging/rollback.js";
+import {
+  type SoftDeleteOptions,
+  SoftDeleteService,
+} from "../merging/soft-delete.js";
+import { VerificationService } from "../merging/verification.js";
 
 // Types
 export interface DuplicateInfo {
