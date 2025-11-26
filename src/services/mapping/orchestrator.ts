@@ -1,5 +1,5 @@
 import { Effect, Schema } from "effect";
-import { CacheMode, type OrganizedHashMap } from "../../lib/type.js";
+import { CacheMode, type OrganizedByAgency } from "../../lib/type.js";
 import { FolderHierarchyService } from "../google-drive/folder-hierarchy.js";
 import { AttachmentFolderMapperService } from "./attachment-folder-mapper.js";
 
@@ -22,7 +22,7 @@ export class MappingOrchestratorService extends Effect.Service<MappingOrchestrat
       const attachmentFolderMapper = yield* AttachmentFolderMapperService;
 
       // Map attachments to folder hierarchy
-      const mapAttachments = (attachments: OrganizedHashMap) =>
+      const mapAttachments = (attachments: OrganizedByAgency) =>
         Effect.gen(function* () {
           console.log("\n📋 Starting attachment mapping...\n");
 
