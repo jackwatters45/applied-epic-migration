@@ -3,6 +3,11 @@ import { NodeContext } from "@effect/platform-node";
 import { Effect, HashMap, List } from "effect";
 import type { OrganizedByAgency } from "src/lib/type.js";
 import type { HierarchyTree } from "../google-drive/folder-hierarchy.js";
+import {
+  type AgencyMapping,
+  AgencyMappingStoreService,
+  type MatchType,
+} from "./agency-mapping-store.js";
 
 // Match confidence levels
 export type MatchConfidence = "exact" | "high" | "medium" | "low" | "none";
@@ -33,6 +38,7 @@ type MappingResult = {
   readonly folderName: string;
   readonly attachmentCount: number;
   readonly match: MatchDetails;
+  readonly source: "existing" | "new";
 };
 
 type UnmappedAgency = {
@@ -43,15 +49,15 @@ type UnmappedAgency = {
 
 type MappingStats = {
   readonly total: number;
-  readonly exactMatches: number;
-  readonly highConfidence: number;
-  readonly mediumConfidence: number;
-  readonly lowConfidence: number;
+  readonly fromStore: number;
+  readonly autoMatched: number;
+  readonly needsReview: number;
   readonly unmapped: number;
 };
 
 type MappingOutput = {
   readonly mapping: MappingResult[];
+  readonly needsReview: MappingResult[];
   readonly unmapped: UnmappedAgency[];
   readonly stats: MappingStats;
 };
@@ -199,8 +205,9 @@ const findMatches = (
     .filter((m) => m.details.score >= 40) // Only include reasonable matches
     .sort((a, b) => b.details.score - a.details.score);
 
+  // Only auto-accept if score >= 90%
   const best =
-    allMatches.length > 0 && allMatches[0].details.score >= 70
+    allMatches.length > 0 && allMatches[0].details.score >= 90
       ? allMatches[0]
       : null;
 
@@ -231,60 +238,53 @@ const logMappingResults = (
 ): Effect.Effect<void, Error> =>
   Effect.gen(function* () {
     yield* fs.writeFileString(
-      "logs/attachment-folder-mapping.json",
+      "logs/agency-mapping-report.json",
       JSON.stringify(output, null, 2),
     );
 
     console.log(`\n${"=".repeat(60)}`);
-    console.log("📊 ATTACHMENT FOLDER MAPPING REPORT");
+    console.log("📊 AGENCY MAPPING REPORT");
     console.log(`${"=".repeat(60)}\n`);
 
     // Stats summary
     console.log("📈 STATISTICS:");
     console.log(`   Total agencies: ${output.stats.total}`);
-    console.log(`   ✅ Exact matches: ${output.stats.exactMatches}`);
-    console.log(`   🟢 High confidence: ${output.stats.highConfidence}`);
-    console.log(`   🟡 Medium confidence: ${output.stats.mediumConfidence}`);
-    console.log(`   🟠 Low confidence: ${output.stats.lowConfidence}`);
+    console.log(`   📂 From store (existing): ${output.stats.fromStore}`);
+    console.log(`   ✅ Auto-matched (≥90%): ${output.stats.autoMatched}`);
+    console.log(`   🟡 Needs review (<90%): ${output.stats.needsReview}`);
     console.log(`   🔴 Unmapped: ${output.stats.unmapped}`);
     console.log("");
 
-    // Successful mappings by confidence
-    if (output.mapping.length > 0) {
-      console.log("📁 MAPPED AGENCIES:");
+    // Auto-matched agencies
+    const autoMatched = output.mapping.filter((m) => m.source === "new");
+    if (autoMatched.length > 0) {
+      console.log("✅ AUTO-MATCHED (saved to store):");
       console.log("-".repeat(60));
-
-      // Group by confidence
-      const byConfidence = {
-        exact: output.mapping.filter((m) => m.match.confidence === "exact"),
-        high: output.mapping.filter((m) => m.match.confidence === "high"),
-        medium: output.mapping.filter((m) => m.match.confidence === "medium"),
-        low: output.mapping.filter((m) => m.match.confidence === "low"),
-      };
-
-      for (const [confidence, mappings] of Object.entries(byConfidence)) {
-        if (mappings.length > 0) {
-          console.log(
-            `\n${getConfidenceEmoji(confidence as MatchConfidence)} ${confidence.toUpperCase()} CONFIDENCE (${mappings.length}):`,
-          );
-          for (const m of mappings) {
-            console.log(
-              `   "${m.agencyName}" → "${m.folderName}" (${m.attachmentCount} files)`,
-            );
-            console.log(
-              `      Score: ${m.match.score}% | ${m.match.reasoning}`,
-            );
-          }
-        }
+      for (const m of autoMatched) {
+        console.log(`   "${m.agencyName}" → "${m.folderName}"`);
+        console.log(`      Score: ${m.match.score}% | ${m.match.reasoning}`);
       }
+      console.log("");
+    }
+
+    // Needs review
+    if (output.needsReview.length > 0) {
+      console.log("🟡 NEEDS REVIEW (run 'review' command):");
+      console.log("-".repeat(60));
+      for (const m of output.needsReview) {
+        const emoji = getConfidenceEmoji(m.match.confidence);
+        console.log(
+          `   ${emoji} "${m.agencyName}" → "${m.folderName}" (${m.match.score}%)`,
+        );
+        console.log(`      ${m.match.reasoning}`);
+      }
+      console.log("");
     }
 
     // Unmapped agencies with candidates
     if (output.unmapped.length > 0) {
-      console.log(`\n${"=".repeat(60)}`);
-      console.log("🔴 UNMAPPED AGENCIES (need manual review):");
+      console.log("🔴 UNMAPPED (no match ≥40%):");
       console.log("-".repeat(60));
-
       for (const unmapped of output.unmapped) {
         console.log(
           `\n   "${unmapped.agencyName}" (${unmapped.attachmentCount} files)`,
@@ -306,11 +306,25 @@ const logMappingResults = (
     console.log(`\n${"=".repeat(60)}\n`);
   });
 
+// Convert MatchDetails to AgencyMapping
+const toAgencyMapping = (
+  match: MatchCandidate,
+  matchType: MatchType,
+): AgencyMapping => ({
+  folderId: match.folderId,
+  folderName: match.folderName,
+  confidence: match.details.score,
+  matchType,
+  reasoning: match.details.reasoning,
+  matchedAt: new Date().toISOString(),
+});
+
 export class AttachmentFolderMapperService extends Effect.Service<AttachmentFolderMapperService>()(
   "AttachmentFolderMapperService",
   {
     effect: Effect.gen(function* () {
       const fs = yield* FileSystem.FileSystem;
+      const store = yield* AgencyMappingStoreService;
 
       return {
         mergeAttachmentsToFolders: ({
@@ -318,35 +332,87 @@ export class AttachmentFolderMapperService extends Effect.Service<AttachmentFold
           gDriveTree,
         }: MergeAttachmentsToFolders) =>
           Effect.gen(function* () {
-            // 1. Extract top-level folders from hierarchy tree
+            // 1. Load existing mappings
+            const existingMappings = yield* store.getAll();
+
+            // 2. Extract top-level folders from hierarchy tree
             const topLevelFolders = gDriveTree.roots.map((root) => ({
               id: root.id,
               name: normalize(root.name),
               originalName: root.name,
             }));
 
-            // 2. Process attachments and find matches
+            // 3. Process attachments
             const mappingResults: MappingResult[] = [];
+            const needsReview: MappingResult[] = [];
             const unmappedAgencies: UnmappedAgency[] = [];
+            let fromStoreCount = 0;
+            let autoMatchedCount = 0;
 
             const entries = Array.from(HashMap.entries(attachments));
 
             for (const [agencyName, attachmentData] of entries) {
               const attachmentCount = List.size(attachmentData);
+
+              // Check if already mapped in store
+              const existing = existingMappings[agencyName];
+              if (existing) {
+                mappingResults.push({
+                  agencyName,
+                  folderId: existing.folderId,
+                  folderName: existing.folderName,
+                  attachmentCount,
+                  match: {
+                    confidence: existing.confidence === 100 ? "exact" : "high",
+                    score: existing.confidence,
+                    matchType: existing.matchType,
+                    reasoning: existing.reasoning,
+                  },
+                  source: "existing",
+                });
+                fromStoreCount++;
+                continue;
+              }
+
+              // Find matches
               const { best, candidates } = findMatches(
                 agencyName,
                 topLevelFolders,
               );
 
-              if (best) {
+              if (best && best.details.score >= 90) {
+                // Auto-accept and save to store
+                const mapping = toAgencyMapping(
+                  best,
+                  best.details.score === 100 ? "exact" : "auto",
+                );
+                yield* store.set(agencyName, mapping);
+
                 mappingResults.push({
                   agencyName,
                   folderId: best.folderId,
                   folderName: best.folderName,
                   attachmentCount,
                   match: best.details,
+                  source: "new",
+                });
+                autoMatchedCount++;
+              } else if (
+                candidates.length > 0 &&
+                candidates[0].details.score >= 40
+              ) {
+                // Has candidates but needs review
+                const topCandidate = candidates[0];
+                needsReview.push({
+                  agencyName,
+                  folderId: topCandidate.folderId,
+                  folderName: topCandidate.folderName,
+                  attachmentCount,
+                  match: topCandidate.details,
+                  source: "new",
                 });
               } else {
+                // No good matches
                 unmappedAgencies.push({
                   agencyName,
                   attachmentCount,
@@ -355,27 +421,22 @@ export class AttachmentFolderMapperService extends Effect.Service<AttachmentFold
               }
             }
 
-            // 3. Calculate detailed statistics
+            // 4. Save store
+            yield* store.save();
+
+            // 5. Calculate stats
             const stats: MappingStats = {
               total: entries.length,
-              exactMatches: mappingResults.filter(
-                (m) => m.match.confidence === "exact",
-              ).length,
-              highConfidence: mappingResults.filter(
-                (m) => m.match.confidence === "high",
-              ).length,
-              mediumConfidence: mappingResults.filter(
-                (m) => m.match.confidence === "medium",
-              ).length,
-              lowConfidence: mappingResults.filter(
-                (m) => m.match.confidence === "low",
-              ).length,
+              fromStore: fromStoreCount,
+              autoMatched: autoMatchedCount,
+              needsReview: needsReview.length,
               unmapped: unmappedAgencies.length,
             };
 
-            // 4. Create output and log results
+            // 6. Create output and log results
             const output: MappingOutput = {
               mapping: mappingResults,
+              needsReview,
               unmapped: unmappedAgencies,
               stats,
             };
@@ -386,6 +447,6 @@ export class AttachmentFolderMapperService extends Effect.Service<AttachmentFold
           }),
       } as const;
     }),
-    dependencies: [NodeContext.layer],
+    dependencies: [NodeContext.layer, AgencyMappingStoreService.Default],
   },
 ) {}
