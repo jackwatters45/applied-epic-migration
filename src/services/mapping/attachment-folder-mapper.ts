@@ -401,8 +401,11 @@ export class AttachmentFolderMapperService extends Effect.Service<AttachmentFold
                 candidates.length > 0 &&
                 candidates[0].details.score >= 40
               ) {
-                // Has candidates but needs review
+                // Has candidates but needs review - save to store with actual confidence
                 const topCandidate = candidates[0];
+                const mapping = toAgencyMapping(topCandidate, "auto");
+                yield* store.set(agencyName, mapping);
+
                 needsReview.push({
                   agencyName,
                   folderId: topCandidate.folderId,
@@ -412,7 +415,17 @@ export class AttachmentFolderMapperService extends Effect.Service<AttachmentFold
                   source: "new",
                 });
               } else {
-                // No good matches
+                // No good matches - still save to store with 0% confidence for review
+                const unmappedMapping: AgencyMapping = {
+                  folderId: "",
+                  folderName: "",
+                  confidence: 0,
+                  matchType: "auto",
+                  reasoning: "No matching folder found (needs manual entry)",
+                  matchedAt: new Date().toISOString(),
+                };
+                yield* store.set(agencyName, unmappedMapping);
+
                 unmappedAgencies.push({
                   agencyName,
                   attachmentCount,
