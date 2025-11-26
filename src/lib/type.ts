@@ -43,10 +43,19 @@ export type AttachmentData = {
 };
 
 export type Attachment = {
-  key: string;
-  name: string;
+  /** Agency name (from nameOf field) - used as key in OrganizedByAgency */
+  agencyName: string;
+  /** Lookup code (e.g., "MORGARE-01") */
+  lookupCode: string;
+  /** Determined year for the attachment */
   determinedYear: number;
 } & AttachmentData;
 
-// Hashmap with all data from attachment metadata
-export type OrganizedHashMap = HashMap.HashMap<string, List.List<Attachment>>;
+/**
+ * HashMap keyed by agency name (nameOf), containing all attachments for that agency.
+ * Example key: "Morgantown Area Private Duty, LLC"
+ */
+export type OrganizedByAgency = HashMap.HashMap<string, List.List<Attachment>>;
+
+/** @deprecated Use OrganizedByAgency instead */
+export type OrganizedHashMap = OrganizedByAgency;

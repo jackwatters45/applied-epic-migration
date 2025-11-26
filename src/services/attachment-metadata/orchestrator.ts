@@ -51,7 +51,7 @@ export class AttachmentMetadataOrchestratorService extends Effect.Service<Attach
 
             const organized = yield* yearResolver.resolveYear(deduplicated);
 
-            yield* logging.logSingleValueHM(organized, "organized");
+            yield* logging.logEntireHM(organized, "organized");
 
             yield* logging.logYearMetrics(yearResolver);
 

@@ -1,7 +1,7 @@
 import { FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import { Effect, HashMap, List } from "effect";
-import type { Attachment, OrganizedHashMap } from "src/lib/type.js";
+import type { Attachment, OrganizedByAgency } from "src/lib/type.js";
 
 export class AttachmentCacheService extends Effect.Service<AttachmentCacheService>()(
   "AttachmentCacheService",
@@ -19,13 +19,17 @@ export class AttachmentCacheService extends Effect.Service<AttachmentCacheServic
               Array<Attachment>
             >;
 
-            // Convert to OrganizedHashMap format
+            // Convert to OrganizedByAgency format (keyed by agency name)
             let hashMap = HashMap.empty<string, List.List<Attachment>>();
-            for (const [key, values] of Object.entries(parsed)) {
-              hashMap = HashMap.set(hashMap, key, List.fromIterable(values));
+            for (const [agencyName, values] of Object.entries(parsed)) {
+              hashMap = HashMap.set(
+                hashMap,
+                agencyName,
+                List.fromIterable(values),
+              );
             }
 
-            return hashMap as OrganizedHashMap;
+            return hashMap as OrganizedByAgency;
           }).pipe(Effect.catchAll(() => Effect.succeed(null))),
       };
     }),

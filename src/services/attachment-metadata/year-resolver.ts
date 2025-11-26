@@ -2,7 +2,7 @@ import { Effect, HashMap, List } from "effect";
 import type {
   Attachment,
   AttachmentData,
-  OrganizedHashMap,
+  OrganizedByAgency,
 } from "../../lib/type.js";
 import { DynamicYearMetricsService } from "./year-metrics.js";
 import type { PriorityConfig } from "./year-priority-config.js";
@@ -56,10 +56,10 @@ export class YearResolutionService extends Effect.Service<YearResolutionService>
             // Convert HashMap entries to array for processing
             const entries = Array.from(HashMap.entries(metadata));
 
-            // Process each lookup code and its attachments
+            // Process each agency and its attachments
             const processedEntries = yield* Effect.forEach(
               entries,
-              ([lookupCode, attachments]) =>
+              ([agencyName, attachments]) =>
                 Effect.gen(function* () {
                   // Convert List to array for processing
                   const attachmentArray = List.toArray(attachments);
@@ -83,24 +83,24 @@ export class YearResolutionService extends Effect.Service<YearResolutionService>
                     .filter(({ year }) => year !== null)
                     .map(({ attachment, year }) => ({
                       ...attachment,
-                      key: lookupCode,
-                      name: attachment.formatted.nameOf,
+                      agencyName,
+                      lookupCode: attachment.formatted.lookupCode,
                       determinedYear: year!,
                     }));
 
-                  return [lookupCode, validAttachments] as const;
+                  return [agencyName, validAttachments] as const;
                 }),
             );
 
-            // Convert back to HashMap
-            let result: OrganizedHashMap = HashMap.empty<
+            // Convert back to HashMap (keyed by agency name)
+            let result: OrganizedByAgency = HashMap.empty<
               string,
               List.List<Attachment>
             >();
-            for (const [lookupCode, validAttachments] of processedEntries) {
+            for (const [agencyName, validAttachments] of processedEntries) {
               result = HashMap.set(
                 result,
-                lookupCode,
+                agencyName,
                 List.fromIterable(validAttachments),
               );
             }

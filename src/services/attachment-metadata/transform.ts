@@ -2,6 +2,9 @@ import { Effect, HashMap, List, Schema } from "effect";
 import type { AttachmentData, FormattedAttachment } from "../../lib/type.js";
 import type { AttachmentMetaData } from "./validate.js";
 
+/**
+ * Result of transformation: HashMap keyed by agency name (nameOf)
+ */
 export type TransformResult = HashMap.HashMap<
   string,
   List.List<AttachmentData>
@@ -29,6 +32,7 @@ export class AttachmentMetadataTransformerService extends Effect.Service<Attachm
             >();
 
             for (const attachment of rows) {
+              // Key by agency folder name (nameOf field)
               const folderName = attachment.nameOf.trim();
               if (!folderName) {
                 continue;

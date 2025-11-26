@@ -60,7 +60,7 @@ const runProgram = (options: {
     const session = yield* rollback.createSession("migration-workflow");
 
     // Step 1: Process and organize metadata
-    const organized = yield* metadataOrchestrator.run({ useCache: true });
+    const organized = yield* metadataOrchestrator.run({ useCache: false });
 
     // Step 2: Resolve duplicate folders (unless skipped)
     if (!options.skipMerge) {
@@ -100,7 +100,7 @@ const limitFirstOption = Options.boolean("limit-first").pipe(
 const skipMergeOption = Options.boolean("skip-merge").pipe(
   Options.withAlias("s"),
   Options.withDescription("Skip duplicate merging entirely"),
-  Options.withDefault(false),
+  Options.withDefault(true),
 );
 
 // Define the main command
