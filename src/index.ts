@@ -4,6 +4,7 @@ import { Terminal } from "@effect/platform";
 import { NodeContext, NodeRuntime, NodeTerminal } from "@effect/platform-node";
 import { ConfigProvider, Effect, Layer } from "effect";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
+import { AttachmentMoverService } from "./services/attachment-mover/mover.js";
 import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import {
   type AgencyMapping,
@@ -302,6 +303,77 @@ const runStatus = () =>
   }).pipe(Effect.provide(reviewLayer));
 
 // ============================================================================
+// Move Command - Move attachments to mapped folders with year organization
+// ============================================================================
+
+const moveLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  AttachmentMoverService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const runMove = (options: {
+  dryRun: boolean;
+  limitAgencies: number | undefined;
+  limitFiles: number | undefined;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const mover = yield* AttachmentMoverService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("ATTACHMENT MOVER");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    if (options.dryRun) {
+      yield* display("DRY RUN MODE - No files will be moved\n");
+    }
+
+    // Step 1: Get organized attachments with years resolved
+    yield* display("Loading attachment metadata...");
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    // Step 2: Move attachments to mapped folders (organized by year)
+    yield* display("Moving attachments to mapped folders...\n");
+    const result = yield* mover.moveAttachmentsToMappedFolders(organized, {
+      dryRun: options.dryRun,
+      ...(options.limitAgencies !== undefined && {
+        limitAgencies: options.limitAgencies,
+      }),
+      ...(options.limitFiles !== undefined && {
+        limitFilesPerAgency: options.limitFiles,
+      }),
+    });
+
+    // Display summary
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("MOVE COMPLETE");
+    yield* display(`${"=".repeat(60)}`);
+    yield* display(`Success: ${result.success}`);
+    yield* display(`Total agencies: ${result.totalAgencies}`);
+    yield* display(`Processed: ${result.processedAgencies}`);
+    yield* display(`Skipped: ${result.skippedAgencies}`);
+    yield* display(`Total files: ${result.totalFiles}`);
+    yield* display(`Moved: ${result.movedFiles}`);
+    yield* display(`Failed: ${result.failedFiles}`);
+    yield* display(`Rollback session: ${result.rollbackSessionId}`);
+
+    if (result.errors.length > 0) {
+      yield* display(`\nErrors (${result.errors.length}):`);
+      for (const error of result.errors.slice(0, 10)) {
+        yield* display(`  - ${error}`);
+      }
+      if (result.errors.length > 10) {
+        yield* display(`  ... and ${result.errors.length - 10} more`);
+      }
+    }
+  }).pipe(Effect.provide(moveLayer));
+
+// ============================================================================
 // CLI Definition
 // ============================================================================
 
@@ -339,6 +411,45 @@ const runCommand = Command.make(
   ),
 );
 
+// Define CLI options for move command
+const limitAgenciesOption = Options.integer("limit-agencies").pipe(
+  Options.withAlias("a"),
+  Options.withDescription("Limit to N agencies (for testing)"),
+  Options.optional,
+);
+
+const limitFilesOption = Options.integer("limit-files").pipe(
+  Options.withAlias("f"),
+  Options.withDescription("Limit to N files per agency (for testing)"),
+  Options.optional,
+);
+
+// Define the move subcommand
+const moveCommand = Command.make(
+  "move",
+  {
+    dryRun: dryRunOption,
+    limitAgencies: limitAgenciesOption,
+    limitFiles: limitFilesOption,
+  },
+  (options) =>
+    runMove({
+      dryRun: options.dryRun,
+      limitAgencies:
+        options.limitAgencies._tag === "Some"
+          ? options.limitAgencies.value
+          : undefined,
+      limitFiles:
+        options.limitFiles._tag === "Some"
+          ? options.limitFiles.value
+          : undefined,
+    }),
+).pipe(
+  Command.withDescription(
+    "Move attachments to mapped agency folders, organized by year",
+  ),
+);
+
 // Define the review subcommand
 const reviewCommand = Command.make("review", {}, runReview).pipe(
   Command.withDescription(
@@ -353,7 +464,12 @@ const statusCommand = Command.make("status", {}, runStatus).pipe(
 
 // Root command that groups subcommands
 const rootCommand = Command.make("epic-migration").pipe(
-  Command.withSubcommands([runCommand, reviewCommand, statusCommand]),
+  Command.withSubcommands([
+    runCommand,
+    moveCommand,
+    reviewCommand,
+    statusCommand,
+  ]),
   Command.withDescription("Applied Epic Migration CLI"),
 );
 
