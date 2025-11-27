@@ -66,7 +66,7 @@ const runProgram = (options: {
     const session = yield* rollback.createSession("migration-workflow");
 
     // Step 1: Process and organize metadata
-    const organized = yield* metadataOrchestrator.run({ useCache: false });
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
 
     // Step 2: Resolve duplicate folders (unless skipped)
     if (!options.skipMerge) {
@@ -103,6 +103,7 @@ type PendingMapping = {
   reasoning: string;
   matchedAt: string;
   reviewedAt?: string;
+  skippedAt?: string;
 };
 
 const reviewLayer = Layer.mergeAll(
@@ -147,10 +148,22 @@ const runReview = () =>
       `\nFound ${pending.length} mapping(s) needing review (<90% confidence)\n`,
     );
 
+    const skippedCount = pending.filter((m) => m.skippedAt).length;
+    const unskippedCount = pending.length - skippedCount;
+    if (skippedCount > 0) {
+      yield* display(
+        `(${unskippedCount} new, ${skippedCount} previously skipped)\n`,
+      );
+    }
+
     for (const mapping of pending as PendingMapping[]) {
       const hasMatch = mapping.folderId !== "";
+      const wasSkipped = !!mapping.skippedAt;
 
       yield* display("-".repeat(60));
+      if (wasSkipped) {
+        yield* display("[PREVIOUSLY SKIPPED]");
+      }
       yield* display(`Agency: "${mapping.agencyName}"`);
 
       if (hasMatch) {
@@ -227,7 +240,18 @@ const runReview = () =>
           yield* display("No folder ID entered, skipping...\n");
         }
       } else if (normalizedChoice === "s") {
-        yield* display("Skipped for later review.\n");
+        // Mark as skipped with timestamp
+        const skippedMapping: AgencyMapping = {
+          folderId: mapping.folderId,
+          folderName: mapping.folderName,
+          confidence: mapping.confidence,
+          matchType: mapping.matchType as "exact" | "auto" | "manual",
+          reasoning: mapping.reasoning,
+          matchedAt: mapping.matchedAt,
+          skippedAt: new Date().toISOString(),
+        };
+        yield* store.set(mapping.agencyName, skippedMapping);
+        yield* display("Skipped - will appear at end of next review.\n");
       } else {
         yield* display(`Unknown option "${choice}", skipping...\n`);
       }
