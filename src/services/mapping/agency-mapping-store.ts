@@ -15,6 +15,7 @@ export interface AgencyMapping {
   readonly reasoning: string;
   readonly matchedAt: string;
   readonly reviewedAt?: string;
+  readonly skippedAt?: string;
 }
 
 export type AgencyMappings = Record<string, AgencyMapping>;
@@ -93,13 +94,20 @@ export class AgencyMappingStoreService extends Effect.Service<AgencyMappingStore
           return allAgencies.filter((agency) => !mappings[agency]);
         });
 
-      // Get mappings needing review (<90% confidence)
+      // Get mappings needing review (<90% confidence), sorted with skipped last
       const getPendingReview = () =>
         Effect.gen(function* () {
           const mappings = yield* load();
           return Object.entries(mappings)
             .filter(([_, mapping]) => mapping.confidence < 90)
-            .map(([agencyName, mapping]) => ({ agencyName, ...mapping }));
+            .map(([agencyName, mapping]) => ({ agencyName, ...mapping }))
+            .sort((a, b) => {
+              // Non-skipped first, skipped last
+              if (a.skippedAt && !b.skippedAt) return 1;
+              if (!a.skippedAt && b.skippedAt) return -1;
+              // Within same group, sort by confidence descending (higher first)
+              return b.confidence - a.confidence;
+            });
         });
 
       // Get all mappings

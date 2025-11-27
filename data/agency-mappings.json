@@ -826,10 +826,11 @@
   "Igocare, Inc. DBA Right At Home Shore Chicago Metro": {
     "folderId": "1ndB3U0bIhZ1uvusyXowYDyZ94hQLQxIb",
     "folderName": "Igocare, Inc. dba Right at Home Chicago Metro",
-    "confidence": 88,
-    "matchType": "auto",
-    "reasoning": "String similarity: 88%",
-    "matchedAt": "2025-11-26T05:34:37.097Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 88%",
+    "matchedAt": "2025-11-26T05:34:37.097Z",
+    "reviewedAt": "2025-11-27T03:54:06.170Z"
   },
   "Assisting Seniors At Home, LLC": {
     "folderId": "1bBUpYrK2HjSwl1t8hgq2caO-5ahdp57D",
@@ -841,12 +842,12 @@
     "reviewedAt": "2025-11-26T05:36:38.099Z"
   },
   "Pablo Test LLC": {
-    "folderId": "19wItciC8hmYv0lbUPt4czvUpPMcMh-sg",
-    "folderName": "Calla Health LLC",
-    "confidence": 56,
+    "folderId": "1TvCGG0c49hA0Gkex0qFCbC7L0a0i2a4N",
+    "folderName": "test client",
+    "confidence": 70,
     "matchType": "auto",
-    "reasoning": "String similarity: 56%",
-    "matchedAt": "2025-11-26T05:34:37.109Z"
+    "reasoning": "1 common words: \"test\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.144Z"
   },
   "JJD Senior Services LLC": {
     "folderId": "1Y-rw5CY2WdIroMCs_rw_El9YHeZk6UGp",
@@ -876,932 +877,999 @@
     "reviewedAt": "2025-11-26T05:37:25.148Z"
   },
   "Advanced Senior Care LLC": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 75,
+    "folderId": "1myto65QDEu5hSSsbhVo56BtKRfAzKKuj",
+    "folderName": "Advanced Senior Care dba Senior Helpers",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "3 common words: \"senior, care, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.130Z"
+    "reasoning": "All meaningful words match: \"advanced, senior\"",
+    "matchedAt": "2025-11-27T04:04:46.995Z"
   },
   "Purple Petals Homecare, LLC": {
     "folderId": "1QHYgP2mZ7FNuQA9jcAZ5nAnYbqaInXpz",
     "folderName": "Purple Petals Homecare, LLC - Shilpa Chakilam",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 62%)",
-    "matchedAt": "2025-11-26T05:34:37.134Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 62%)",
+    "matchedAt": "2025-11-26T05:34:37.134Z",
+    "reviewedAt": "2025-11-27T03:54:15.415Z"
   },
   "Truly Treasured Homecare, LLC": {
-    "folderId": "1VTC0KjiorQh9nvNZAPMVSJZwBcrJxzO7",
-    "folderName": "1776 Homecare, LLC",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"homecare, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.139Z"
+    "folderId": "1affpN2m4h3UXUbg6mBS8b4eiD7YXssFm",
+    "folderName": "Truly Treasured - Chiquita",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 2 common words: \"truly, treasured\" (67% overlap)",
+    "matchedAt": "2025-11-27T04:12:48.266Z",
+    "reviewedAt": "2025-11-27T04:19:17.753Z"
   },
   "Servants Of God LLC Dba Home Matters Caregiving 005": {
     "folderId": "1mRpyHT6p2_GsBNyNGhW-hF3B2oicI-j6",
     "folderName": "Servants of God dba home matters caregiving Tyler",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.147Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 82%",
+    "matchedAt": "2025-11-26T05:34:37.147Z",
+    "reviewedAt": "2025-11-27T03:58:29.367Z"
   },
   "God's Creation Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"home, care, llc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.153Z"
-  },
-  "Hylton Healthcare Solutions, LLC": {
-    "folderId": "1Yz5nfYiCa1O8G--0bI5uhEEUVAhBmwmQ",
-    "folderName": "Caring Hands Healthcare Services II, LLC - Celia Ogilvie",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"healthcare, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.158Z"
-  },
-  "HCA Of Naples, LLC DBA: Home Care Assistance of Naples": {
-    "folderId": "1eIASnhf_cbBljyQRIhO2ULVunj6CuiHe",
-    "folderName": "Caplan Homecare LLC dba Home Care Assistance of Dallas",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "String similarity: 72%",
-    "matchedAt": "2025-11-26T05:34:37.169Z"
-  },
-  "Mountain Mana Corp Dba Synergy Homecare Of Alta": {
-    "folderId": "1sMJnVLPd_u30L5tdpH-ZrPhOJs9iCH35",
-    "folderName": "Mountain Mana Corp  Dave Coleman",
-    "confidence": 55,
-    "matchType": "auto",
-    "reasoning": "String similarity: 55%",
-    "matchedAt": "2025-11-26T05:34:37.176Z"
-  },
-  "Miracle Home Care": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"home, care\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.179Z"
-  },
-  "Sabalcare, LLC": {
-    "folderId": "1fpkh3x5mHp4am7uNf960lPV8RSXqM6qT",
-    "folderName": "Sabalcare, LLC - Garth Camara",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 50%)",
-    "matchedAt": "2025-11-26T05:34:37.182Z"
-  },
-  "Agape Home Care, LLC": {
-    "folderId": "1wRfGAs8QTeObf9V4qo0l4oEpzjC3ZDFC",
-    "folderName": "Agape Home Care, LLC - Ed Becket",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 66%)",
-    "matchedAt": "2025-11-26T05:34:37.187Z"
-  },
-  "Heartland Care, LLC Dba Oasis In-Home Care": {
-    "folderId": "1I04VImhS7sXqy7BBlUWQmzuozrhZf7ZW",
-    "folderName": "ABSF, LLC Dba Family Tree In-home Care",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"care, llc, dba, inhome\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.193Z"
-  },
-  "GE Health, LLC Dba Comfort Keepers": {
-    "folderId": "1NLN8gaXXglaUvOOyZ36ebQ5zFrs1n3t7",
-    "folderName": "GE Health, LLC Dba Comfort Keepers - Garrett Sullivan & Eric Augustyn",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 52%)",
-    "matchedAt": "2025-11-26T05:34:37.199Z"
-  },
-  "N Solution LLC Dba: Senior Helpers Of Napa": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"llc, dba, senior\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.205Z"
-  },
-  "Nu Care San Jose, Inc.": {
-    "folderId": "1cJV0RKveto_meGHeDpncaPAs0bvU_upE",
-    "folderName": "Nu Care San Jose, Inc. - Edward Lee",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 65%)",
-    "matchedAt": "2025-11-26T05:34:37.210Z"
-  },
-  "Game Day Care": {
-    "folderId": "1sJHQcVLSil60c644zro1ETSWBLN82qzh",
-    "folderName": "Arbor Day Care LLC - Aziz Issa",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"day, care\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.213Z"
-  },
-  "Capital Region Home Care LLC Dba Right At Home Albany": {
-    "folderId": "1DF9-1L02gC7hd9xokn-xsjWXNRKatlBE",
-    "folderName": "Capital Region Home Care",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 45%)",
-    "matchedAt": "2025-11-26T05:34:37.221Z"
-  },
-  "KWD Enterprise Inc.": {
-    "folderId": "1-rTpKfPo-CZYQ-9VDm445JMS7KZN5S3N",
-    "folderName": "KWD Enterprise Inc - HCA of Green Valley",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 47%)",
-    "matchedAt": "2025-11-26T05:34:37.224Z"
-  },
-  "Ready To Care Home Care Agency, LLC": {
-    "folderId": "1QKFiGA_eLdv8RxSSF49oirQ6T68XCb9E",
-    "folderName": "Cassiopeia_s Home Care Agency LLC",
-    "confidence": 76,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"care, home, agency, llc\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.230Z"
-  },
-  "Assisting Seniors MD 001, LLC": {
-    "folderId": "19IXy_-AvmtU7R5PiTfJfDP-6LCInreqP",
-    "folderName": "Assisting Seniors MD 001, LLC - Howard Walsh",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 68%)",
-    "matchedAt": "2025-11-26T05:34:37.235Z"
-  },
-  "Suncoast Home Care Professionals, Inc.": {
-    "folderId": "1JyChJWGfhnZYVtppdFSghayhf9Mq_nr0",
-    "folderName": "CE Professionals Inc Dba Advocate Home Care Inc",
-    "confidence": 76,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"home, care, professionals, inc\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.241Z"
-  },
-  "Empbrace Care Management, LLC": {
-    "folderId": "1SKko2faAm-oVCjRWeJD8LBalSP5yNTv2",
-    "folderName": "GSCS Management LLC Dba Griswold Home Care",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"care, management, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.246Z"
-  },
-  "Sunshine Solutions Group LLC Dba Senior Helpers East San Diego": {
-    "folderId": "1-b1Hp1GGI4TRrV85HRyG_emz007E9OIq",
-    "folderName": "Inspirada Generations LLC DBA Dignity Helpers At Home",
-    "confidence": 45,
-    "matchType": "auto",
-    "reasoning": "String similarity: 45%",
-    "matchedAt": "2025-11-26T05:34:37.256Z"
-  },
-  "Northern Home Health LLC": {
-    "folderId": "1zHa2U00CnVeu1bfS50_M9vm94i-ZZwSw",
-    "folderName": "Northern Home Health LLC Preferred Care Alaska- Suzanne Hickel",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 39%)",
-    "matchedAt": "2025-11-26T05:34:37.261Z"
-  },
-  "Murco Eldercare, LLC": {
-    "folderId": "1Pd8hFmt09A-XhlHi_VnNR_RfUGO8b120",
-    "folderName": "Murco Eldercare",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 79%)",
-    "matchedAt": "2025-11-26T05:34:37.264Z"
-  },
-  "HG Health LLC Dba Comfort Keepers": {
-    "folderId": "1BVS3TCwB0HT9KkcuuxdX4e5G9F5yCV1_",
-    "folderName": "HG Health",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 27%)",
-    "matchedAt": "2025-11-26T05:34:37.270Z"
-  },
-  "Curry Jackson & Associates, LLC Dba Comfortkeepers": {
-    "folderId": "1X7BfqXhlnjNBfDOm2aNiaa8iIaptleG9",
-    "folderName": "Curry Jackson & Associates, LLC Dba Comfortkeepers - Sheriolyn Curry",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 75%)",
-    "matchedAt": "2025-11-26T05:34:37.277Z"
-  },
-  "Crawford Health Services, LLC Dba Stay At Home Of Knoxville": {
-    "folderId": "1dHyWKkznNut4czJbxvMq3jMZqnl_IpWc",
-    "folderName": "EZRI, LLC dba Helpful Hands Home Care Services, LLC",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"services, llc, dba, home\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.286Z"
-  },
-  "The G & L Family Of Caregivers LLC": {
-    "folderId": "1I04VImhS7sXqy7BBlUWQmzuozrhZf7ZW",
-    "folderName": "ABSF, LLC Dba Family Tree In-home Care",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"family, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.291Z"
-  },
-  "Leeds Nursing Services Corporation": {
-    "folderId": "1MON1yKedpzlKRh-Wl-ew2NhZ1avzjDkp",
-    "folderName": "Angels Homecare Services, Inc. - Al Estacion",
-    "confidence": 45,
-    "matchType": "auto",
-    "reasoning": "String similarity: 45%",
-    "matchedAt": "2025-11-26T05:34:37.297Z"
-  },
-  "Grace Care Services, Inc": {
-    "folderId": "1PGqySuuvJejgFNYccf-dm12zCjsJN77X",
-    "folderName": "Grace Care Services",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 83%)",
-    "matchedAt": "2025-11-26T05:34:37.301Z"
-  },
-  "Family Matters In-home Care, LLC": {
-    "folderId": "1gXZ_ZfnHtj6GOR5cxmfc3bWW600C_zmc",
-    "folderName": "Family Matters In-Home Care LLC - Matt Niemic",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 71%)",
-    "matchedAt": "2025-11-26T05:34:37.306Z"
-  },
-  "Scripter Enterprises Corp. Dba Senior Helpers": {
-    "folderId": "1IbbQ1uH4LVCZMG0DA3GzxefksP1jBOlc",
-    "folderName": "Advanced Senior Care dba Senior Helpers",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"dba, senior, helpers\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.312Z"
-  },
-  "A Place Called Home LLC Dba Thriving At Home Senior Care": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 86,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 86%)",
-    "matchedAt": "2025-11-26T05:34:37.321Z"
-  },
-  "Premier Comfort Care, LLC": {
-    "folderId": "1nL7DV7awfSdexukLWOl8qMxQ1b_K4YN6",
-    "folderName": "Premier Comfort Care, LLC - Mariam Dawood",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 63%)",
-    "matchedAt": "2025-11-26T05:34:37.325Z"
-  },
-  "Angels Among Us Homecare Inc": {
-    "folderId": "1m_m92nHYkI2VrMNaN046uwAGlLJh-BAl",
-    "folderName": "Angel_s Among Us Homecare Inc - Nicole Richardson",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:37.330Z"
-  },
-  "Central Coast In-home Senior Care LLC Dba Seniors Helping Seniors": {
-    "folderId": "1LzRJXhNaD2md9HQ9mSAgkZUgHNyhGSeS",
-    "folderName": "Central Coast In-Home Senior Care LLC - Ronald Torres",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "6 common words: \"central, coast, inhome, senior, care, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.340Z"
-  },
-  "SF Homecare, LLC": {
-    "folderId": "16R7KAsvkJ2lH7KLcg4EOIo3bIccRYDHa",
-    "folderName": "SF Homecare, LLC - Daoud Salameh",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 52%)",
-    "matchedAt": "2025-11-26T05:34:37.344Z"
-  },
-  "Bella Home Healthcare LLC": {
-    "folderId": "1BfMVg2x8TGZ7SX3HXeEYPt4ZCIr1PNT-",
-    "folderName": "Skilled Home Health Care LLC",
-    "confidence": 79,
-    "matchType": "auto",
-    "reasoning": "String similarity: 79%",
-    "matchedAt": "2025-11-26T05:34:37.348Z"
-  },
-  "Buena Vida Hospice, LLC": {
-    "folderId": "1KEK7oPhO816fkzVyN5Zur2d0eJ3hVmuq",
-    "folderName": "Buena Vida Hospice, LLC - Dr. Francisco Medrano",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 51%)",
-    "matchedAt": "2025-11-26T05:34:37.352Z"
-  },
-  "De Sousa PCAH LLC": {
-    "folderId": "1V28mkTAnBitjTh2lSJwVyK3MNdz9NRfc",
-    "folderName": "De Sousa PCAH LLC - Geoffrey Sousa",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 53%)",
-    "matchedAt": "2025-11-26T05:34:37.356Z"
-  },
-  "Loving Arms Home Dba Cinnamon Garden Home": {
-    "folderId": "1qBXy4sa-n5FvaTfobV__zFcwfzbH6VSX",
-    "folderName": "Loving Homecare, Inc. - Tanner Gish",
-    "confidence": 44,
-    "matchType": "auto",
-    "reasoning": "String similarity: 44%",
-    "matchedAt": "2025-11-26T05:34:37.362Z"
-  },
-  "Dara Homecare, LLC": {
-    "folderId": "1vqzq7-FDffSztfte4MhzJ_2KuRRp-fzN",
-    "folderName": "Haze Homecare LLC",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.367Z"
-  },
-  "Pure Touch Home Care, LLC": {
-    "folderId": "1284a0uanYDhxIiOBRrczuItaobGH1yZw",
-    "folderName": "Pure Touch Home Care LLC - Angela Jackson",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 62%)",
-    "matchedAt": "2025-11-26T05:34:37.371Z"
-  },
-  "RTA Care Group Corp Dba Homewell Care Services": {
-    "folderId": "11611S7LzZ-dUNJSdplQpR5VRdPnrI6hX",
-    "folderName": "RTA Care Group Corp Dba Homewell Care Services - Ronnie",
-    "confidence": 87,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 87%)",
-    "matchedAt": "2025-11-26T05:34:37.377Z"
-  },
-  "TLC Home Health Inc.": {
-    "folderId": "1hKXXS-8jaQFfY7gsp_7k8EqIdA1dKzmf",
-    "folderName": "TLC Home Health Inc. - Tamara Blow",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:37.381Z"
-  },
-  "Angels Homecare Services Inc": {
-    "folderId": "1MON1yKedpzlKRh-Wl-ew2NhZ1avzjDkp",
-    "folderName": "Angels Homecare Services, Inc. - Al Estacion",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 70%)",
-    "matchedAt": "2025-11-26T05:34:37.386Z"
-  },
-  "Great Point, LLC Dba Visiting Angels": {
-    "folderId": "165LTpYGFT9HrcIhtqkxGoycVmI5NbOAi",
-    "folderName": "DBRZ LLC Dba Visiting Angels - Richelle Coffey",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"llc, dba, visiting, angels\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.392Z"
-  },
-  "G & F Senior Services, LLC Dba: Seniors Helping Seniors - Guilford, NC": {
-    "folderId": "1UgN5B8apssNeeUfFmpAPR81tX6c4lmqw",
-    "folderName": "G & F Senior Services LLC dba Seniors Helping Seniors - Michael Greth",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.401Z"
-  },
-  "Overture Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"home, care, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.405Z"
-  },
-  "Wetters & Associates, Inc. Dba RAH": {
-    "folderId": "1SYDLYF4fakpRJ9EW_kdFTps23Wm16EAz",
-    "folderName": "Heartland Care Inc-CA dba OASIS",
-    "confidence": 40,
-    "matchType": "auto",
-    "reasoning": "String similarity: 40%",
-    "matchedAt": "2025-11-26T05:34:37.411Z"
-  },
-  "Michels Angels Corporation Dba Visiting Angels": {
-    "folderId": "1iE8jWDTYML7GDXdgs55EmvWTlvYffjsD",
-    "folderName": "A-1 Adult Home Care Inc. dba Visiting Angels",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"angels, dba, visiting\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.418Z"
-  },
-  "High Plains HCA": {
-    "folderId": "1WTxhgcAiiK2s3CFh7PoggM9n7GmaFjcs",
-    "folderName": "High Plains LLC Kim May",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"high, plains\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.421Z"
-  },
-  "Gift Of Help Home Health Care, LLC": {
-    "folderId": "1xodOGTmK1GpAwCSdMgkj6xmC1Kv4CH1q",
-    "folderName": "Blessed Hands Home Health Care, LLC",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"home, health, care, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.426Z"
-  },
-  "Avalon Care LLC": {
-    "folderId": "1LSQ8u2rN36949YuU_RJiflssym5vP5SG",
-    "folderName": "Avalon Care LLC - Eileen Buison",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 52%)",
-    "matchedAt": "2025-11-26T05:34:37.430Z"
-  },
-  "New Horizons 21, Inc.": {
-    "folderId": "1Brmpv5_Jp9ISCk0joob2FxKJ4T816P4d",
-    "folderName": "New Horizons 21 Inc Touching Hearts At Home",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 44%)",
-    "matchedAt": "2025-11-26T05:34:37.434Z"
-  },
-  "Assistance At Home Care Inc": {
-    "folderId": "1wTrye3v0H_eKLWAN9sKTpK_EPMaBS1Bk",
-    "folderName": "JNM Senior Services, Inc. dba Home Care Assistance",
-    "confidence": 80,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"assistance, home, care, inc\" (100% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.438Z"
-  },
-  "Jennifer & Dean Watters": {
     "folderId": "",
     "folderName": "",
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-26T05:34:37.442Z"
+    "matchedAt": "2025-11-27T04:52:16.148Z"
   },
-  "Wellness At Home, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 73,
+  "Hylton Healthcare Solutions, LLC": {
+    "folderId": "10fC2RNaHvBc9ooOEVGkHdN0l1N22ZtKd",
+    "folderName": "N Solutions",
+    "confidence": 75,
     "matchType": "auto",
-    "reasoning": "2 common words: \"home, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.445Z"
+    "reasoning": "Meaningful containment: \"hylton solutions\" in \"solutions\"",
+    "matchedAt": "2025-11-27T04:52:16.151Z"
   },
-  "Wilou Health Care Services LLC": {
-    "folderId": "1OgCO4yPBjQhdS-pcL9byEdUrnWbZuROr",
-    "folderName": "Dove Health Care Services, LLC",
-    "confidence": 83,
+  "HCA Of Naples, LLC DBA: Home Care Assistance of Naples": {
+    "folderId": "155LaojXKMkPI678OCYbRV2t3O0Q07UFv",
+    "folderName": "HCA Naples",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Meaningful prefix match: \"hca naples assistance\" ~ \"hca naples\"",
+    "matchedAt": "2025-11-27T04:04:47.012Z",
+    "reviewedAt": "2025-11-27T04:05:20.102Z"
+  },
+  "Mountain Mana Corp Dba Synergy Homecare Of Alta": {
+    "folderId": "1IwqALmb9TVUagj58wt0dSOhKR7lvAmK5",
+    "folderName": "Mountain Mana Corp  Dave Coleman",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 2 common words: \"mountain, mana\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:48:57.702Z",
+    "reviewedAt": "2025-11-27T04:50:01.312Z"
+  },
+  "Miracle Home Care": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 83%",
-    "matchedAt": "2025-11-26T05:34:37.451Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.153Z"
   },
-  "Movine Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"care, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.456Z"
+  "Sabalcare, LLC": {
+    "folderId": "1fpkh3x5mHp4am7uNf960lPV8RSXqM6qT",
+    "folderName": "Sabalcare, LLC - Garth Camara",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 50%)",
+    "matchedAt": "2025-11-26T05:34:37.182Z",
+    "reviewedAt": "2025-11-27T03:54:16.794Z"
   },
-  "Complete Homecare Of America, Inc.": {
-    "folderId": "1m_m92nHYkI2VrMNaN046uwAGlLJh-BAl",
-    "folderName": "Angel_s Among Us Homecare Inc - Nicole Richardson",
+  "Agape Home Care, LLC": {
+    "folderId": "1wRfGAs8QTeObf9V4qo0l4oEpzjC3ZDFC",
+    "folderName": "Agape Home Care, LLC - Ed Becket",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 66%)",
+    "matchedAt": "2025-11-26T05:34:37.187Z",
+    "reviewedAt": "2025-11-27T03:54:18.488Z"
+  },
+  "Heartland Care, LLC Dba Oasis In-Home Care": {
+    "folderId": "1eee5Q-9L5PtKwb8AAnMaNQXnhnYULLOc",
+    "folderName": "Heartland Care Inc-CA dba OASIS",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 2 common words: \"heartland, oasis\" (67% overlap)",
+    "matchedAt": "2025-11-27T04:12:48.282Z",
+    "reviewedAt": "2025-11-27T04:19:21.663Z"
+  },
+  "GE Health, LLC Dba Comfort Keepers": {
+    "folderId": "1NLN8gaXXglaUvOOyZ36ebQ5zFrs1n3t7",
+    "folderName": "GE Health, LLC Dba Comfort Keepers - Garrett Sullivan & Eric Augustyn",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 52%)",
+    "matchedAt": "2025-11-26T05:34:37.199Z",
+    "reviewedAt": "2025-11-27T03:54:21.556Z"
+  },
+  "N Solution LLC Dba: Senior Helpers Of Napa": {
+    "folderId": "1WzW-ZjkJk9MOSt5G4cvwINK3wPVkPCfh",
+    "folderName": "Magnusson Enterprises LLC Senior Helpers - Nick Magnusson",
     "confidence": 70,
     "matchType": "auto",
-    "reasoning": "2 common words: \"homecare, inc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.461Z"
+    "reasoning": "2 common words: \"senior, helpers\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.157Z"
   },
-  "Homecare Transitions Inc.": {
+  "Nu Care San Jose, Inc.": {
+    "folderId": "1cJV0RKveto_meGHeDpncaPAs0bvU_upE",
+    "folderName": "Nu Care San Jose, Inc. - Edward Lee",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 65%)",
+    "matchedAt": "2025-11-26T05:34:37.210Z",
+    "reviewedAt": "2025-11-27T03:54:24.095Z"
+  },
+  "Game Day Care": {
+    "folderId": "1RQQpkj6QZNCVxbAc0lWz7atfHD3sb299",
+    "folderName": "Arbor Day Care LLC - Aziz Issa",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"day\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.160Z"
+  },
+  "Capital Region Home Care LLC Dba Right At Home Albany": {
+    "folderId": "1DF9-1L02gC7hd9xokn-xsjWXNRKatlBE",
+    "folderName": "Capital Region Home Care",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 45%)",
+    "matchedAt": "2025-11-26T05:34:37.221Z",
+    "reviewedAt": "2025-11-27T03:54:26.656Z"
+  },
+  "KWD Enterprise Inc.": {
+    "folderId": "1-rTpKfPo-CZYQ-9VDm445JMS7KZN5S3N",
+    "folderName": "KWD Enterprise Inc - HCA of Green Valley",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 47%)",
+    "matchedAt": "2025-11-26T05:34:37.224Z",
+    "reviewedAt": "2025-11-27T03:54:28.387Z"
+  },
+  "Ready To Care Home Care Agency, LLC": {
+    "folderId": "1QrSDFKZd5Pm7Q3acA42cf3VYiyhDMgVb",
+    "folderName": "Ready 2 Serve Home Healthcare LLC",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"ready\"",
+    "matchedAt": "2025-11-27T04:04:47.031Z"
+  },
+  "Assisting Seniors MD 001, LLC": {
+    "folderId": "19IXy_-AvmtU7R5PiTfJfDP-6LCInreqP",
+    "folderName": "Assisting Seniors MD 001, LLC - Howard Walsh",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 68%)",
+    "matchedAt": "2025-11-26T05:34:37.235Z",
+    "reviewedAt": "2025-11-27T03:54:30.058Z"
+  },
+  "Suncoast Home Care Professionals, Inc.": {
+    "folderId": "17B8Oc7Sv69LCOw4UNDN0vkClLDo_mP8V",
+    "folderName": "CE Professionals Inc Dba Advocate Home Care Inc",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"professionals\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.163Z"
+  },
+  "Empbrace Care Management, LLC": {
+    "folderId": "1-nsfT9tNNTmPswaNtfh-3x4oq9fmrDOP",
+    "folderName": "T5 Management",
+    "confidence": 75,
+    "matchType": "auto",
+    "reasoning": "Meaningful containment: \"empbrace management\" in \"management\"",
+    "matchedAt": "2025-11-27T04:52:16.166Z"
+  },
+  "Sunshine Solutions Group LLC Dba Senior Helpers East San Diego": {
+    "folderId": "13z-fIEhhVnaT6aBfx_SzpbanrkLNL7hJ",
+    "folderName": "Sunshine Care Solutions",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Meaningful prefix match: \"sunshine solutions group senior helpers east san diego\" ~ \"sunshine solutions\"",
+    "matchedAt": "2025-11-27T04:04:47.043Z",
+    "reviewedAt": "2025-11-27T04:05:27.505Z"
+  },
+  "Northern Home Health LLC": {
+    "folderId": "1zHa2U00CnVeu1bfS50_M9vm94i-ZZwSw",
+    "folderName": "Northern Home Health LLC Preferred Care Alaska- Suzanne Hickel",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 39%)",
+    "matchedAt": "2025-11-26T05:34:37.261Z",
+    "reviewedAt": "2025-11-27T03:54:33.179Z"
+  },
+  "Murco Eldercare, LLC": {
+    "folderId": "1Pd8hFmt09A-XhlHi_VnNR_RfUGO8b120",
+    "folderName": "Murco Eldercare",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 79%)",
+    "matchedAt": "2025-11-26T05:34:37.264Z",
+    "reviewedAt": "2025-11-27T03:54:35.232Z"
+  },
+  "HG Health LLC Dba Comfort Keepers": {
+    "folderId": "1BVS3TCwB0HT9KkcuuxdX4e5G9F5yCV1_",
+    "folderName": "HG Health",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 27%)",
+    "matchedAt": "2025-11-26T05:34:37.270Z",
+    "reviewedAt": "2025-11-27T03:54:37.011Z"
+  },
+  "Curry Jackson & Associates, LLC Dba Comfortkeepers": {
+    "folderId": "1X7BfqXhlnjNBfDOm2aNiaa8iIaptleG9",
+    "folderName": "Curry Jackson & Associates, LLC Dba Comfortkeepers - Sheriolyn Curry",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 75%)",
+    "matchedAt": "2025-11-26T05:34:37.277Z",
+    "reviewedAt": "2025-11-27T03:54:39.715Z"
+  },
+  "Crawford Health Services, LLC Dba Stay At Home Of Knoxville": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.169Z"
+  },
+  "The G & L Family Of Caregivers LLC": {
+    "folderId": "1nQ4bqZz-B_ZS706gLpIFYD2RYlWCUecd",
+    "folderName": "G & L Family of Caregivers - Surecare Bruce Gratland",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"family, caregivers\"",
+    "matchedAt": "2025-11-27T04:04:47.051Z"
+  },
+  "Leeds Nursing Services Corporation": {
+    "folderId": "1wbxzWKCaz00DlrHoAimE3X5sY5pdgrrm",
+    "folderName": "Certified Home Nursing Solutions, LLC",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"nursing\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.171Z"
+  },
+  "Grace Care Services, Inc": {
+    "folderId": "1PGqySuuvJejgFNYccf-dm12zCjsJN77X",
+    "folderName": "Grace Care Services",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 83%)",
+    "matchedAt": "2025-11-26T05:34:37.301Z",
+    "reviewedAt": "2025-11-27T03:54:42.399Z"
+  },
+  "Family Matters In-home Care, LLC": {
+    "folderId": "1gXZ_ZfnHtj6GOR5cxmfc3bWW600C_zmc",
+    "folderName": "Family Matters In-Home Care LLC - Matt Niemic",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 71%)",
+    "matchedAt": "2025-11-26T05:34:37.306Z",
+    "reviewedAt": "2025-11-27T03:54:46.036Z"
+  },
+  "Scripter Enterprises Corp. Dba Senior Helpers": {
+    "folderId": "1WzW-ZjkJk9MOSt5G4cvwINK3wPVkPCfh",
+    "folderName": "Magnusson Enterprises LLC Senior Helpers - Nick Magnusson",
+    "confidence": 85,
+    "matchType": "auto",
+    "reasoning": "3/4 meaningful words match: \"enterprises, senior, helpers\"",
+    "matchedAt": "2025-11-27T04:52:16.176Z"
+  },
+  "A Place Called Home LLC Dba Thriving At Home Senior Care": {
+    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
+    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 86%)",
+    "matchedAt": "2025-11-26T05:34:37.321Z",
+    "reviewedAt": "2025-11-27T03:54:08.619Z"
+  },
+  "Premier Comfort Care, LLC": {
+    "folderId": "1nL7DV7awfSdexukLWOl8qMxQ1b_K4YN6",
+    "folderName": "Premier Comfort Care, LLC - Mariam Dawood",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 63%)",
+    "matchedAt": "2025-11-26T05:34:37.325Z",
+    "reviewedAt": "2025-11-27T03:54:47.758Z"
+  },
+  "Angels Among Us Homecare Inc": {
     "folderId": "1m_m92nHYkI2VrMNaN046uwAGlLJh-BAl",
     "folderName": "Angel_s Among Us Homecare Inc - Nicole Richardson",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:37.330Z",
+    "reviewedAt": "2025-11-27T03:54:49.019Z"
+  },
+  "Central Coast In-home Senior Care LLC Dba Seniors Helping Seniors": {
+    "folderId": "1LzRJXhNaD2md9HQ9mSAgkZUgHNyhGSeS",
+    "folderName": "Central Coast In-Home Senior Care LLC - Ronald Torres",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 6 common words: \"central, coast, inhome, senior, care, llc\" (67% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.340Z",
+    "reviewedAt": "2025-11-27T04:00:54.865Z"
+  },
+  "SF Homecare, LLC": {
+    "folderId": "16R7KAsvkJ2lH7KLcg4EOIo3bIccRYDHa",
+    "folderName": "SF Homecare, LLC - Daoud Salameh",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 52%)",
+    "matchedAt": "2025-11-26T05:34:37.344Z",
+    "reviewedAt": "2025-11-27T03:54:49.880Z"
+  },
+  "Bella Home Healthcare LLC": {
+    "folderId": "1vxiXwkK8VUQvN5sC60H_lunlYg8aH4Dl",
+    "folderName": "Bella Home Healthcare  - MIchelle Campbell",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"bella\"",
+    "matchedAt": "2025-11-27T04:04:47.060Z"
+  },
+  "Buena Vida Hospice, LLC": {
+    "folderId": "1KEK7oPhO816fkzVyN5Zur2d0eJ3hVmuq",
+    "folderName": "Buena Vida Hospice, LLC - Dr. Francisco Medrano",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 51%)",
+    "matchedAt": "2025-11-26T05:34:37.352Z",
+    "reviewedAt": "2025-11-27T03:54:50.895Z"
+  },
+  "De Sousa PCAH LLC": {
+    "folderId": "1V28mkTAnBitjTh2lSJwVyK3MNdz9NRfc",
+    "folderName": "De Sousa PCAH LLC - Geoffrey Sousa",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 53%)",
+    "matchedAt": "2025-11-26T05:34:37.356Z",
+    "reviewedAt": "2025-11-27T03:54:52.152Z"
+  },
+  "Loving Arms Home Dba Cinnamon Garden Home": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.180Z"
+  },
+  "Dara Homecare, LLC": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.181Z"
+  },
+  "Pure Touch Home Care, LLC": {
+    "folderId": "1284a0uanYDhxIiOBRrczuItaobGH1yZw",
+    "folderName": "Pure Touch Home Care LLC - Angela Jackson",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 62%)",
+    "matchedAt": "2025-11-26T05:34:37.371Z",
+    "reviewedAt": "2025-11-27T03:54:53.506Z"
+  },
+  "RTA Care Group Corp Dba Homewell Care Services": {
+    "folderId": "11611S7LzZ-dUNJSdplQpR5VRdPnrI6hX",
+    "folderName": "RTA Care Group Corp Dba Homewell Care Services - Ronnie",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 87%)",
+    "matchedAt": "2025-11-26T05:34:37.377Z",
+    "reviewedAt": "2025-11-27T03:54:07.010Z"
+  },
+  "TLC Home Health Inc.": {
+    "folderId": "1hKXXS-8jaQFfY7gsp_7k8EqIdA1dKzmf",
+    "folderName": "TLC Home Health Inc. - Tamara Blow",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:37.381Z",
+    "reviewedAt": "2025-11-27T03:54:55.108Z"
+  },
+  "Angels Homecare Services Inc": {
+    "folderId": "1MON1yKedpzlKRh-Wl-ew2NhZ1avzjDkp",
+    "folderName": "Angels Homecare Services, Inc. - Al Estacion",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 70%)",
+    "matchedAt": "2025-11-26T05:34:37.386Z",
+    "reviewedAt": "2025-11-27T03:55:01.011Z"
+  },
+  "Great Point, LLC Dba Visiting Angels": {
+    "folderId": "1Wql__Iy5k4AE62TgTjKpgqSVVKPaYpIT",
+    "folderName": "Great Point Visiting Angels Brighton & Fairfield",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"great, point, visiting, angels\"",
+    "matchedAt": "2025-11-27T04:04:47.072Z"
+  },
+  "G & F Senior Services, LLC Dba: Seniors Helping Seniors - Guilford, NC": {
+    "folderId": "1UgN5B8apssNeeUfFmpAPR81tX6c4lmqw",
+    "folderName": "G & F Senior Services LLC dba Seniors Helping Seniors - Michael Greth",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 82%",
+    "matchedAt": "2025-11-26T05:34:37.401Z",
+    "reviewedAt": "2025-11-27T03:58:35.502Z"
+  },
+  "Overture Home Care, LLC": {
+    "folderId": "1kmCGljK7ZQKX2alkFu2fuSfyYPrBZoxf",
+    "folderName": "Overture Home Care-Rob Helms TX",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"overture\"",
+    "matchedAt": "2025-11-27T04:04:47.074Z"
+  },
+  "Wetters & Associates, Inc. Dba RAH": {
+    "folderId": "1UT6e64EIlhHZASw5qD4gedAGEMaAeOv1",
+    "folderName": "Wetters & Associates, Inc. Dba RAH -  Kathy Wetters",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"wetters, associates, rah\"",
+    "matchedAt": "2025-11-27T04:04:47.077Z"
+  },
+  "Michels Angels Corporation Dba Visiting Angels": {
+    "folderId": "1OcRYML0NCElbS1ilS0274s6OOjfQLkPN",
+    "folderName": "A-1 Adult Home Care Inc. dba Visiting Angels",
     "confidence": 73,
     "matchType": "auto",
-    "reasoning": "2 common words: \"homecare, inc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.465Z"
+    "reasoning": "2 common words: \"angels, visiting\" (67% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.184Z"
+  },
+  "High Plains HCA": {
+    "folderId": "1WTxhgcAiiK2s3CFh7PoggM9n7GmaFjcs",
+    "folderName": "High Plains LLC Kim May",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 2 common words: \"high, plains\" (67% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.421Z",
+    "reviewedAt": "2025-11-27T04:00:57.674Z"
+  },
+  "Gift Of Help Home Health Care, LLC": {
+    "folderId": "16pQQXLXIxtrBP4YuTACcVqDVEthslrmc",
+    "folderName": "Help & Care In Home Services",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"help\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.186Z"
+  },
+  "Avalon Care LLC": {
+    "folderId": "1LSQ8u2rN36949YuU_RJiflssym5vP5SG",
+    "folderName": "Avalon Care LLC - Eileen Buison",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 52%)",
+    "matchedAt": "2025-11-26T05:34:37.430Z",
+    "reviewedAt": "2025-11-27T03:55:02.199Z"
+  },
+  "New Horizons 21, Inc.": {
+    "folderId": "1Brmpv5_Jp9ISCk0joob2FxKJ4T816P4d",
+    "folderName": "New Horizons 21 Inc Touching Hearts At Home",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 44%)",
+    "matchedAt": "2025-11-26T05:34:37.434Z",
+    "reviewedAt": "2025-11-27T03:55:03.657Z"
+  },
+  "Assistance At Home Care Inc": {
+    "folderId": "1jxj5rKrLo-ByfgmZ5Mu5CQH5PlCrK7zW",
+    "folderName": "Assistance at Home Care Corp- Steph Aguilar",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"assistance\"",
+    "matchedAt": "2025-11-27T04:04:47.085Z"
+  },
+  "Jennifer & Dean Watters": {
+    "folderId": "1deGIk3_IZsxyVLu_3qyKu2Zgszgr-w-s",
+    "folderName": "Jennifer & Dean Watters",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.088Z"
+  },
+  "Wellness At Home, LLC": {
+    "folderId": "1h3DjS0kk4bbFrhED92RL30GDWRW1B_6U",
+    "folderName": "Wellness At Home, LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.090Z"
+  },
+  "Wilou Health Care Services LLC": {
+    "folderId": "1-IOzdRQQ5-ZAA_uTuHjSyTSJ3NKdpuCL",
+    "folderName": "Wilou Health Care Services LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.091Z"
+  },
+  "Movine Care, LLC": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.187Z"
+  },
+  "Complete Homecare Of America, Inc.": {
+    "folderId": "1rJUALMuU8OTzU2p2oCgBKHpKr9knnp-1",
+    "folderName": "CompleteHomecare of America, Inc. - Thomas Tom Haas",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 1 common words: \"america\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:48:57.736Z",
+    "reviewedAt": "2025-11-27T04:50:18.176Z"
+  },
+  "Homecare Transitions Inc.": {
+    "folderId": "1C7tv9xLZyXXrQZkXQBaFwv0JLNJiocY1",
+    "folderName": "HomeCare Transitions - Thomas Unger",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"homecare, transitions\"",
+    "matchedAt": "2025-11-27T04:04:47.098Z"
   },
   "Quality Palliative Care Hospice, Inc": {
-    "folderId": "16wrPTBPClwkEcand-UKB1SNivlRoad8S",
-    "folderName": "Hope And Mercy Hospice Care, Inc.",
-    "confidence": 72,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "3 common words: \"care, hospice, inc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.471Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.190Z"
   },
   "Sunday Money LLC DBA Home Instead": {
     "folderId": "1V64_PGJxRtC8sYdnQdXMAWCmY2z80oWO",
     "folderName": "Sunday Money, LLC",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 48%)",
-    "matchedAt": "2025-11-26T05:34:37.477Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 48%)",
+    "matchedAt": "2025-11-26T05:34:37.477Z",
+    "reviewedAt": "2025-11-27T03:55:06.252Z"
   },
   "Livwell Home Care, Inc. And Livwell Academy Corp": {
     "folderId": "1cAfFFPjnvmegSCV-a9S5_3oReWAY6JjY",
     "folderName": "Livwell Home Care",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 37%)",
-    "matchedAt": "2025-11-26T05:34:37.484Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 37%)",
+    "matchedAt": "2025-11-26T05:34:37.484Z",
+    "reviewedAt": "2025-11-27T03:55:09.437Z"
   },
   "LaMaison Homecare, LLC": {
-    "folderId": "1VTC0KjiorQh9nvNZAPMVSJZwBcrJxzO7",
-    "folderName": "1776 Homecare, LLC",
-    "confidence": 73,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "2 common words: \"homecare, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.487Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.192Z"
   },
   "Believe Home Care Services, LLC": {
-    "folderId": "10pOpwlRRc4mWZdmP73392c9Rj3vgePA4",
-    "folderName": "Paragon Home Care Services LLC",
-    "confidence": 77,
+    "folderId": "1IzMFX8chgalLze-Sn_ZDNoJMlRJsrmKv",
+    "folderName": "Believe Home Care Services - Cindy Key",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "String similarity: 77%",
-    "matchedAt": "2025-11-26T05:34:37.492Z"
+    "reasoning": "All meaningful words match: \"believe\"",
+    "matchedAt": "2025-11-27T04:04:47.106Z"
   },
   "Qualicare Orange Coast": {
     "folderId": "1FLxnV_FJWjDkRuaK9sTffA6oFnldOZGo",
     "folderName": "Qualicare of Orange Coast  - Scott Miller",
-    "confidence": 80,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"qualicare, orange, coast\" (100% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.497Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 3 common words: \"qualicare, orange, coast\" (100% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.497Z",
+    "reviewedAt": "2025-11-27T03:58:49.331Z"
   },
   "Collaborative Home Care, Inc": {
     "folderId": "1Y9F6_WduWT9a8NAP4CotTn0oqTA1Etd8",
     "folderName": "Collaborative Home Care",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 85%)",
-    "matchedAt": "2025-11-26T05:34:37.502Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 85%)",
+    "matchedAt": "2025-11-26T05:34:37.502Z",
+    "reviewedAt": "2025-11-27T03:55:11.505Z"
   },
   "KTK Home Care, Inc. Dba: Right At Home": {
-    "folderId": "14akZZM5aKmDMKAGpf2ZL5bsrTgncAfx_",
-    "folderName": "South Shore Eldercare, Inc. dba Right at Home",
-    "confidence": 74,
+    "folderId": "1U4-I-5nV6Eon8RLRX1LPw_DqohWP_iaj",
+    "folderName": "KTK Home Care, Inc. Ken",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "String similarity: 74%",
-    "matchedAt": "2025-11-26T05:34:37.508Z"
+    "reasoning": "All meaningful words match: \"ktk\"",
+    "matchedAt": "2025-11-27T04:04:47.108Z"
   },
   "Nu Care Long Beach, Inc.": {
     "folderId": "1mpLggeiWOOVKkmQm-EiqCEGZviUl7Liw",
     "folderName": "Nu Care Long Beach Inc. - Ed Lee",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 76%)",
-    "matchedAt": "2025-11-26T05:34:37.512Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 76%)",
+    "matchedAt": "2025-11-26T05:34:37.512Z",
+    "reviewedAt": "2025-11-27T03:55:14.793Z"
   },
   "A Plus Home Care Services": {
     "folderId": "1nRCWCKnggKhvLm-iINQfc4PKG6AEAIvk",
     "folderName": "A Plus Home Care Services LLC - Anne Porter or Lori",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 51%)",
-    "matchedAt": "2025-11-26T05:34:37.516Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 51%)",
+    "matchedAt": "2025-11-26T05:34:37.516Z",
+    "reviewedAt": "2025-11-27T03:55:18.620Z"
   },
   "Clear Path Home Care": {
     "folderId": "1RiQof8ozRfxnlobpSq0m3r5QZsMfW18P",
     "folderName": "Clear Path Home Care - JM Simmonds",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 63%)",
-    "matchedAt": "2025-11-26T05:34:37.520Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 63%)",
+    "matchedAt": "2025-11-26T05:34:37.520Z",
+    "reviewedAt": "2025-11-27T03:55:21.287Z"
   },
   "Nu Care Inland Empire, Inc.": {
     "folderId": "1ElWWKBXw4FvGE1od93k2Y6iSQCMporgK",
     "folderName": "Nu Care Inland Empire - Edward Lee.  10-2",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"care, inland, empire\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.524Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 3 common words: \"care, inland, empire\" (75% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.524Z",
+    "reviewedAt": "2025-11-27T04:00:09.882Z"
   },
   "Halois Home Care Nursing, APC": {
-    "folderId": "1cgSwePja1irWBxOVZiOpOXsgzLhi8DoP",
-    "folderName": "Caldicott Home Care Partners LLC",
-    "confidence": 53,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 53%",
-    "matchedAt": "2025-11-26T05:34:37.529Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.195Z"
   },
   "Celestial Caregiving, LLC": {
     "folderId": "1iP1LwUPnHDUgKj_O1m4WG2e9QGYDW0mt",
     "folderName": "Celestial Caregiving, LLC - Diane Stohr",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 67%)",
-    "matchedAt": "2025-11-26T05:34:37.534Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 67%)",
+    "matchedAt": "2025-11-26T05:34:37.534Z",
+    "reviewedAt": "2025-11-27T03:55:26.143Z"
   },
   "JLKZ Inc Dba Right At Home": {
     "folderId": "1afmc-l9wYDwAS8PwTlRRFbCk_VSkVAp4",
     "folderName": "JLKZ Inc Dba Right At Home - Jeff Guinn",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 70%)",
-    "matchedAt": "2025-11-26T05:34:37.538Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 70%)",
+    "matchedAt": "2025-11-26T05:34:37.538Z",
+    "reviewedAt": "2025-11-27T03:55:27.464Z"
   },
   "GJ Home Care LLC DBA Nightingales Home Care": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 76,
+    "folderId": "1CfDSuqavf2ryEujxAg2yqBS-Av_H0RpP",
+    "folderName": "Nightingale",
+    "confidence": 92,
     "matchType": "auto",
-    "reasoning": "4 common words: \"home, care, llc, dba\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.545Z"
+    "reasoning": "Meaningful prefix match: \"nightingales\" ~ \"nightingale\"",
+    "matchedAt": "2025-11-27T04:04:47.113Z"
   },
   "Montebello Home Care, Inc.": {
     "folderId": "1uXKCWAwYgmW2x7PXDNUSbqWmeoRqUm11",
     "folderName": "Montebello Home Care Inc. - Mark Montebello",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 60%)",
-    "matchedAt": "2025-11-26T05:34:37.549Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 60%)",
+    "matchedAt": "2025-11-26T05:34:37.549Z",
+    "reviewedAt": "2025-11-27T03:55:29.030Z"
   },
   "Arbor Day Guardian Care, LLC": {
     "folderId": "1sJHQcVLSil60c644zro1ETSWBLN82qzh",
     "folderName": "Arbor Day Care LLC - Aziz Issa",
-    "confidence": 76,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"arbor, day, care, llc\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.554Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 4 common words: \"arbor, day, care, llc\" (80% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.554Z",
+    "reviewedAt": "2025-11-27T03:59:44.584Z"
   },
   "Compassion1 Ventures, Inc.  Dba Home Matters Caregiving #022": {
-    "folderId": "1aUwijuXLw7Q5BsrtUzbXCInnvALjbpBQ",
-    "folderName": "Castle Ventures, Inc Dba Right At Home Northwest - Jeanette Palmer",
-    "confidence": 70,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "4 common words: \"ventures, inc, dba, home\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.563Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.199Z"
   },
   "Dare To Care Home Care, LLC": {
-    "folderId": "17bSDdKC-UhxjGOxKloaKHMKk6GXnQ1r-",
-    "folderName": "Partners In Care Home Care LLC",
-    "confidence": 77,
-    "matchType": "auto",
-    "reasoning": "String similarity: 77%",
-    "matchedAt": "2025-11-26T05:34:37.568Z"
+    "folderId": "17dj_hYJYSFbVjpBeoQQJY3Ynat0IsuGL",
+    "folderName": "Dare To Care Home Care, LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.120Z"
   },
   "Insurance BCX Inc.": {
-    "folderId": "1_C6_6bHX8l9EutgisfBqL8QrM-QWN6Rz",
-    "folderName": "Sundance Home Care Inc",
-    "confidence": 45,
-    "matchType": "auto",
-    "reasoning": "String similarity: 45%",
-    "matchedAt": "2025-11-26T05:34:37.572Z"
+    "folderId": "17c4uf60144EhS8E-6REZehyB26ZvwmB0",
+    "folderName": "Insurance BCX Inc.",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.122Z"
   },
   "Care Mesa, Inc.": {
     "folderId": "1kXHGr3tBAP9WFF48qE_TZz7qNG7ZxYFn",
     "folderName": "Care Mesa, Inc.- Scott Chiv & Gideon Abraham",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 33%)",
-    "matchedAt": "2025-11-26T05:34:37.575Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 33%)",
+    "matchedAt": "2025-11-26T05:34:37.575Z",
+    "reviewedAt": "2025-11-27T03:55:31.710Z"
   },
   "DBRZ LLC Dba Visiting Angels": {
     "folderId": "165LTpYGFT9HrcIhtqkxGoycVmI5NbOAi",
     "folderName": "DBRZ LLC Dba Visiting Angels - Richelle Coffey",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 64%)",
-    "matchedAt": "2025-11-26T05:34:37.580Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 64%)",
+    "matchedAt": "2025-11-26T05:34:37.580Z",
+    "reviewedAt": "2025-11-27T03:55:32.889Z"
   },
   "Prime Line Care, LLC Dba Home Matter Caregiving": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 70,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "4 common words: \"care, llc, dba, home\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.586Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.202Z"
   },
   "Loving Homecare, Inc.": {
     "folderId": "1qBXy4sa-n5FvaTfobV__zFcwfzbH6VSX",
     "folderName": "Loving Homecare, Inc. - Tanner Gish",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:37.591Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:37.591Z",
+    "reviewedAt": "2025-11-27T03:55:34.131Z"
   },
   "Test Transportation": {
-    "folderId": "1mEYZllmOhpEbrcQRP3c6PzO_LLUnacV1",
-    "folderName": "Zoom Assist Transportation, Inc",
-    "confidence": 70,
+    "folderId": "1iwNYdSxx6TMBCbOx04jW39zcMPHrb-M7",
+    "folderName": "Nu Care Transport Inc",
+    "confidence": 75,
     "matchType": "auto",
-    "reasoning": "1 common words: \"transportation\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.594Z"
+    "reasoning": "Meaningful containment: \"test transportation\" in \"transport\"",
+    "matchedAt": "2025-11-27T04:52:16.205Z"
   },
   "TRCA Services LLC DBA Homewell Care Services": {
     "folderId": "1l9gzD--n_q9IVvYGHUtWV2qr3Z6aTCSk",
     "folderName": "TRCA Services LLC - HomeWell Senior Care - Leslie Reese",
-    "confidence": 77,
-    "matchType": "auto",
-    "reasoning": "5 common words: \"trca, services, llc, homewell, care\" (83% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.601Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 5 common words: \"trca, services, llc, homewell, care\" (83% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.601Z",
+    "reviewedAt": "2025-11-27T03:59:23.362Z"
   },
   "Nu Care, Inc.": {
     "folderId": "1yoeFyuGwzGTVL6oOApdGsYqbS3b-rDRy",
     "folderName": "Nu Care, Inc. - Edward Lee",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 50%)",
-    "matchedAt": "2025-11-26T05:34:37.603Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 50%)",
+    "matchedAt": "2025-11-26T05:34:37.603Z",
+    "reviewedAt": "2025-11-27T03:55:35.223Z"
   },
   "Mae's Senior Home Care LLC": {
     "folderId": "1Mwk7QbpzA8QXqN6z6Udbio1KcH00G5MG",
     "folderName": "Mae_s Senior Home Care LLC - Luann Barron",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 66%)",
-    "matchedAt": "2025-11-26T05:34:37.608Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 66%)",
+    "matchedAt": "2025-11-26T05:34:37.608Z",
+    "reviewedAt": "2025-11-27T03:55:38.826Z"
   },
   "J5 Therapy Inc DBA J5 Caring Support Agency": {
-    "folderId": "1YPQW7fJlzLGYO6jEuAgUpKVmnbj8mlah",
-    "folderName": "Healing Hands Caring Hearts LLC",
-    "confidence": 42,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 42%",
-    "matchedAt": "2025-11-26T05:34:37.615Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.208Z"
   },
   "Green Tree Home Care, LLC": {
     "folderId": "12orIgIUve3hOCSeTeAjOJxlI63lSylbR",
     "folderName": "Green Tree Home Care",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 83%)",
-    "matchedAt": "2025-11-26T05:34:37.619Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 83%)",
+    "matchedAt": "2025-11-26T05:34:37.619Z",
+    "reviewedAt": "2025-11-27T03:55:41.546Z"
   },
   "Always Best Care Fresno, LLC": {
     "folderId": "1naZONyubskRi0g__3OImmh2un7SQXxO1",
     "folderName": "Always Best Care Fresno LLC - Merian Castellano",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 60%)",
-    "matchedAt": "2025-11-26T05:34:37.624Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 60%)",
+    "matchedAt": "2025-11-26T05:34:37.624Z",
+    "reviewedAt": "2025-11-27T03:55:44.771Z"
   },
   "A Helping Hand Home Care Services, LLC": {
     "folderId": "1Z1bfN5kejEEzEYNqV-3hYL7giUIkrWZx",
     "folderName": "A Helping Hand Home Care Services, LLC - Jessica Ott",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 76%)",
-    "matchedAt": "2025-11-26T05:34:37.630Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 76%)",
+    "matchedAt": "2025-11-26T05:34:37.630Z",
+    "reviewedAt": "2025-11-27T03:55:47.894Z"
   },
   "Alpha Home Health, LLC": {
-    "folderId": "1oeCt-4otj0ZixQ9OOwU0agYTROfDD2JV",
-    "folderName": "AccessiCare Home Health, LLC - WC Prospect",
-    "confidence": 75,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "3 common words: \"home, health, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.634Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.210Z"
   },
   "Stay In Home Care Inc.": {
     "folderId": "16z-MZFndJRw5MDOJuZYKJSf8UqKbwxvf",
     "folderName": "Stay In Home Care Inc. - Allie McCarty, Allie Fletcher",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 42%)",
-    "matchedAt": "2025-11-26T05:34:37.638Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 42%)",
+    "matchedAt": "2025-11-26T05:34:37.638Z",
+    "reviewedAt": "2025-11-27T03:55:49.840Z"
   },
   "BHM Home Health, Inc. Dba: Right At Home Palm Beach": {
-    "folderId": "140Qd7Ee5sEIqm-_9HK2rbp0R97g9zHG5",
+    "folderId": "1g5mT18WNnhkaRU7F8Ja0V6_YYHcMNS03",
     "folderName": "BHM dba Right at Home",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"bhm, home, dba, right\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.644Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Meaningful prefix match: \"bhm palm beach\" ~ \"bhm\"",
+    "matchedAt": "2025-11-27T04:04:47.135Z",
+    "reviewedAt": "2025-11-27T04:05:28.578Z"
   },
   "Accessicare Home Health": {
     "folderId": "1oeCt-4otj0ZixQ9OOwU0agYTROfDD2JV",
     "folderName": "AccessiCare Home Health, LLC - WC Prospect",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 59%)",
-    "matchedAt": "2025-11-26T05:34:37.650Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 59%)",
+    "matchedAt": "2025-11-26T05:34:37.650Z",
+    "reviewedAt": "2025-11-27T03:55:52.873Z"
   },
   "Extended Family Care, LLC": {
-    "folderId": "1I04VImhS7sXqy7BBlUWQmzuozrhZf7ZW",
-    "folderName": "ABSF, LLC Dba Family Tree In-home Care",
-    "confidence": 75,
+    "folderId": "1b4RcspLyB5wjKH8Z4x9C8PRnJweQql3B",
+    "folderName": "Extended Family Care - Paulo Rosario",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "3 common words: \"family, care, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.654Z"
+    "reasoning": "All meaningful words match: \"extended, family\"",
+    "matchedAt": "2025-11-27T04:04:47.138Z"
   },
   "Coastal Companion Care, LLC": {
-    "folderId": "1qn0_5ZmNehbEryuQkazl7ktC1kstyMi-",
-    "folderName": "Arial Home Care, LLC dba_ Bloom Companion Care",
-    "confidence": 75,
+    "folderId": "17cEU85ENA3lZRs7JyoTH_niD2NYIbvIY",
+    "folderName": "Coastal Companion Care Home Instead Senior Care Hollywood",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "3 common words: \"companion, care, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.658Z"
+    "reasoning": "All meaningful words match: \"coastal, companion\"",
+    "matchedAt": "2025-11-27T04:04:47.141Z"
   },
   "Doyle Gregory HTRN LLC": {
-    "folderId": "1t4YiaRR_MifwYa0Q45pIvURpBVYNdlg1",
-    "folderName": "Omega Home Care LLC",
-    "confidence": 45,
-    "matchType": "auto",
-    "reasoning": "String similarity: 45%",
-    "matchedAt": "2025-11-26T05:34:37.662Z"
+    "folderId": "1q1fvWvaK-itbLb6O86BpPXXWu4y9CBTM",
+    "folderName": "Doyle Gregory HTRN LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.144Z"
   },
   "Nurses Plus Ii, Dba Nurses Plus": {
-    "folderId": "15uSppW2KClE_pZG20yzLTKfN_5bll6ka",
-    "folderName": "Lyle Fester Inc dba A Plus In Home Care",
-    "confidence": 73,
+    "folderId": "1P2W3RufMNu6gLc3u_w5Um_gkE2A2Uc-V",
+    "folderName": "Nurses Plus 11 Inc",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "2 common words: \"plus, dba\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.668Z"
+    "reasoning": "All meaningful words match: \"nurses, plus\"",
+    "matchedAt": "2025-11-27T04:04:47.146Z"
   },
   "Saky Homecare, Inc. Dba: Right At Home Of Longwood": {
     "folderId": "1QXWBsJ8eNtVFZO8YCN8bETN6TjXMD1qj",
     "folderName": "Saky HomeCare, Inc",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 36%)",
-    "matchedAt": "2025-11-26T05:34:37.675Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 36%)",
+    "matchedAt": "2025-11-26T05:34:37.675Z",
+    "reviewedAt": "2025-11-27T03:56:03.825Z"
   },
   "Affinial LLC Dba: Affinialcare": {
     "folderId": "1SpUG_aubzDYIC6tzj8X1RLgKbLYsP-MZ",
     "folderName": "Affinial LLC DBA Affinialcare - Mark Naghsh",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 71%)",
-    "matchedAt": "2025-11-26T05:34:37.680Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 71%)",
+    "matchedAt": "2025-11-26T05:34:37.680Z",
+    "reviewedAt": "2025-11-27T03:56:07.387Z"
   },
   "Home Care Business Advisors, LLC Dba Senior Care Business Advisors": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 74,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "5 common words: \"home, care, llc, dba, senior\" (71% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.689Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.213Z"
   },
   "Glenwood Homecare LLC": {
     "folderId": "1Hvd3Oo8HZAW_3ZG28KWINKmmXLkAdawM",
     "folderName": "Glenwood Home Care Al Wyn",
-    "confidence": 76,
-    "matchType": "auto",
-    "reasoning": "String similarity: 76%",
-    "matchedAt": "2025-11-26T05:34:37.695Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 76%",
+    "matchedAt": "2025-11-26T05:34:37.695Z",
+    "reviewedAt": "2025-11-27T03:59:47.810Z"
   },
   "Ageless Senior In Home Care Inc;  DBA: Ageless Senior Care": {
     "folderId": "1ErAEAQcpQ4lBTi_e6yLYrOd53dwpCwdO",
     "folderName": "Ageless Senior In Home Care Inc. dba Ageless Senior Care - Frank Quarato",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 80%)",
-    "matchedAt": "2025-11-26T05:34:37.704Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 80%)",
+    "matchedAt": "2025-11-26T05:34:37.704Z",
+    "reviewedAt": "2025-11-27T03:56:09.791Z"
   },
   "At Home Support Senior Care, Inc.": {
-    "folderId": "11z9he7VgYdllVkCeqLB6FEW1U1ztpsbv",
-    "folderName": "1212 Senior Care Inc dba Home Instead Senior Care #435",
-    "confidence": 76,
+    "folderId": "1Zharr9JpAhU0IW8MZI7MwFZDQMQgkIb0",
+    "folderName": "At Home Support Senior Care - Victoria Tuvilla",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "4 common words: \"home, senior, care, inc\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.709Z"
+    "reasoning": "All meaningful words match: \"support, senior\"",
+    "matchedAt": "2025-11-27T04:04:47.152Z"
   },
   "Cove Home Care, LLC": {
-    "folderId": "1tqzVAZmCmzDwqej2v6JQqKOzRUE6xFDZ",
-    "folderName": "Trove Home Care LLC",
-    "confidence": 89,
+    "folderId": "1JDHCwoVaVk2lnCKKVUYSEs36y0VyUz5H",
+    "folderName": "Cove Home Care Amber Dick",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "String similarity: 89%",
-    "matchedAt": "2025-11-26T05:34:37.712Z"
+    "reasoning": "All meaningful words match: \"cove\"",
+    "matchedAt": "2025-11-27T04:04:47.154Z"
   },
   "Look Up We Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 73,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "2 common words: \"care, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.717Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.216Z"
   },
   "The Sjoberg Group, LLC Dba: Right At Home": {
     "folderId": "1_qpaN-wcuvvaNqY8jIFvos4dfVmmWjeF",
     "folderName": "Sjoberg Group",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "One name contains the other (similarity: 33%)",
-    "matchedAt": "2025-11-26T05:34:37.723Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: One name contains the other (similarity: 33%)",
+    "matchedAt": "2025-11-26T05:34:37.723Z",
+    "reviewedAt": "2025-11-27T04:00:17.874Z"
   },
   "Iconhearts Care Services LLC": {
-    "folderId": "1OgCO4yPBjQhdS-pcL9byEdUrnWbZuROr",
-    "folderName": "Dove Health Care Services, LLC",
-    "confidence": 76,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 76%",
-    "matchedAt": "2025-11-26T05:34:37.728Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.218Z"
   },
   "Abacares LLC DBA Abacares Services": {
     "folderId": "1lGkb0kJX7ek6oZRGpL7Shev6OzHWcT0z",
     "folderName": "Abacares",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 24%)",
-    "matchedAt": "2025-11-26T05:34:37.733Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 24%)",
+    "matchedAt": "2025-11-26T05:34:37.733Z",
+    "reviewedAt": "2025-11-27T03:56:11.153Z"
   },
   "NAJGET Llc. Dba PAYPRO Senior Placements": {
     "folderId": "1Xew2t98JInTBc-EQtby_5FEMka4Ga1WI",
     "folderName": "NAJGET, LLC",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 26%)",
-    "matchedAt": "2025-11-26T05:34:37.740Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 26%)",
+    "matchedAt": "2025-11-26T05:34:37.740Z",
+    "reviewedAt": "2025-11-27T03:56:12.326Z"
   },
   "Jeremy Dick Dba JLD Drywall": {
     "folderId": "",
@@ -1809,287 +1877,307 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-26T05:34:37.745Z"
+    "matchedAt": "2025-11-27T04:52:16.221Z"
   },
   "JUCE Services, Inc.dba Visiting Angels": {
     "folderId": "1Offyn4KaSWWhoa5s_xKSHKt8-A_raIU3",
     "folderName": "Juce Services, Inc. dba Visiting Angels of SLC",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.750Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 82%",
+    "matchedAt": "2025-11-26T05:34:37.750Z",
+    "reviewedAt": "2025-11-27T03:58:37.384Z"
   },
   "Calming Palms Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 72,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "3 common words: \"home, care, llc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.756Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.223Z"
   },
   "Anointed Angels Home Care, LLC": {
     "folderId": "14kkG6525eZJWI1XWgBt7bsuygUesVAf0",
     "folderName": "Anointed Angels",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 52%)",
-    "matchedAt": "2025-11-26T05:34:37.763Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 52%)",
+    "matchedAt": "2025-11-26T05:34:37.763Z",
+    "reviewedAt": "2025-11-27T03:56:15.163Z"
   },
   "Rowe-Clarke, LLC DBA Meadow Springs Home Care": {
-    "folderId": "1Xxdv3jcuzBirJA9Pir4DR8IukyZ5nqfe",
-    "folderName": "A & M",
-    "confidence": 75,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "One name contains the other (similarity: 7%)",
-    "matchedAt": "2025-11-26T05:34:37.770Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.226Z"
   },
   "Divine Hands Home Health, LLC": {
     "folderId": "1lNos9fmKRAVf9Sx1avUc7yPPBvLijdHg",
     "folderName": "Divine Hands Home Health, LLC - Ella Mensah",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 70%)",
-    "matchedAt": "2025-11-26T05:34:37.775Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 70%)",
+    "matchedAt": "2025-11-26T05:34:37.775Z",
+    "reviewedAt": "2025-11-27T03:56:20.083Z"
   },
   "Southern Arizona Home Care LLC": {
     "folderId": "1uvgxa1662QzC7HRcCFp4jU3e1nYhJOYk",
     "folderName": "Southern Arizona Home Care - Carrie",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.780Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 82%",
+    "matchedAt": "2025-11-26T05:34:37.780Z",
+    "reviewedAt": "2025-11-27T03:58:38.612Z"
   },
   "Rondha's After Care, LLC": {
     "folderId": "1XG8yn-iJfPoSLK08yqtyZZjj1esuLBa9",
     "folderName": "Rhonda_s After Care",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "String similarity: 73%",
-    "matchedAt": "2025-11-26T05:34:37.785Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 73%",
+    "matchedAt": "2025-11-26T05:34:37.785Z",
+    "reviewedAt": "2025-11-27T04:01:10.993Z"
   },
   "Nu Care San Diego, Inc.": {
     "folderId": "14z4AYsU7O_MST1JViorVM3xy0uMwMT0H",
     "folderName": "Nu Care San Diego, Inc. - Edward Lee",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 66%)",
-    "matchedAt": "2025-11-26T05:34:37.789Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 66%)",
+    "matchedAt": "2025-11-26T05:34:37.789Z",
+    "reviewedAt": "2025-11-27T03:56:21.731Z"
   },
   "Gaddiel Home Care Services, Inc.": {
     "folderId": "1A9vbqFVsTD3L0Tz8NwuIclYRzEXoLq2I",
     "folderName": "Gaddiel Home Care Services, Inc. - Josephine Apuri",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 65%)",
-    "matchedAt": "2025-11-26T05:34:37.793Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 65%)",
+    "matchedAt": "2025-11-26T05:34:37.793Z",
+    "reviewedAt": "2025-11-27T03:56:23.093Z"
   },
   "Danster, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 70,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "1 common words: \"llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.796Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.228Z"
   },
   "D'mission Home Health Services, Inc.": {
-    "folderId": "1Mlgy7yASLIalSPbVvMBXege9y6MZwPYs",
-    "folderName": "Traditions Home Health Services, LLC",
-    "confidence": 74,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 74%",
-    "matchedAt": "2025-11-26T05:34:37.801Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.230Z"
   },
   "Lovewell Home Care, LLC": {
-    "folderId": "13e8b6QuXL5Wwt8Ee87XGW-nkx65mOa7x",
-    "folderName": "Roswell Home Care LLC",
-    "confidence": 86,
+    "folderId": "1xPjk0jGdVbk1velTopQi3pps8pd830OD",
+    "folderName": "LoveWell - formerly - Kindred Spirits Kristin Kolasa",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "String similarity: 86%",
-    "matchedAt": "2025-11-26T05:34:37.806Z"
+    "reasoning": "All meaningful words match: \"lovewell\"",
+    "matchedAt": "2025-11-27T04:04:47.174Z"
   },
   "Toria LLC Dba Griswold Prince Georges": {
     "folderId": "1VXfiRVOAHSAnL3_-Hu0GNBw7GuGH5Oza",
     "folderName": "Naomi Turner - Toria, LLC dba Griswold Prince George",
-    "confidence": 71,
-    "matchType": "auto",
-    "reasoning": "String similarity: 71%",
-    "matchedAt": "2025-11-26T05:34:37.812Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 71%",
+    "matchedAt": "2025-11-26T05:34:37.812Z",
+    "reviewedAt": "2025-11-27T04:03:15.008Z"
   },
   "Alternative Hospice Care, Inc.": {
-    "folderId": "16wrPTBPClwkEcand-UKB1SNivlRoad8S",
-    "folderName": "Hope And Mercy Hospice Care, Inc.",
-    "confidence": 75,
+    "folderId": "13E_ee2UbifyEocPXmcs3GAduTpOrn9sD",
+    "folderName": "Buena Vida Hospice, LLC - Dr. Francisco Medrano",
+    "confidence": 70,
     "matchType": "auto",
-    "reasoning": "3 common words: \"hospice, care, inc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.817Z"
+    "reasoning": "1 common words: \"hospice\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.232Z"
   },
   "The Master Caregiver Company, LLC": {
     "folderId": "1ljssjibGeWH0ChnrvqvLmWwXnS8lAZ9g",
     "folderName": "The Master Caregiver",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 63%)",
-    "matchedAt": "2025-11-26T05:34:37.822Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 63%)",
+    "matchedAt": "2025-11-26T05:34:37.822Z",
+    "reviewedAt": "2025-11-27T03:56:26.316Z"
   },
   "Casa Companion Homecare Solutions, Llc.": {
     "folderId": "19k0JnGE2fTuwZd2WhKyZEgJGWbNwP61o",
     "folderName": "Casa Companion Homecare Solutions",
-    "confidence": 89,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 89%)",
-    "matchedAt": "2025-11-26T05:34:37.829Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 89%)",
+    "matchedAt": "2025-11-26T05:34:37.829Z",
+    "reviewedAt": "2025-11-27T03:54:05.361Z"
   },
   "RT Care Services, LLC dba Tru In-Home Care": {
     "folderId": "1uBqle0-QgiEBI6UEQpe13aQzckjc5oMI",
     "folderName": "RT Care Services LLC",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 50%)",
-    "matchedAt": "2025-11-26T05:34:37.835Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 50%)",
+    "matchedAt": "2025-11-26T05:34:37.835Z",
+    "reviewedAt": "2025-11-27T03:56:29.358Z"
   },
   "Home Care Assistance Of RI LLC Dba Home Care Assistance": {
-    "folderId": "1eIASnhf_cbBljyQRIhO2ULVunj6CuiHe",
-    "folderName": "Caplan Homecare LLC dba Home Care Assistance of Dallas",
-    "confidence": 80,
+    "folderId": "1jxj5rKrLo-ByfgmZ5Mu5CQH5PlCrK7zW",
+    "folderName": "Assistance at Home Care Corp- Steph Aguilar",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "5 common words: \"home, care, assistance, llc, dba\" (100% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.843Z"
+    "reasoning": "All meaningful words match: \"assistance\"",
+    "matchedAt": "2025-11-27T04:04:47.180Z"
   },
   "Woodrow Michel Associates Corporation Dba Visiting Angels - Newton": {
-    "folderId": "1p5-8Nqf57TjvhspYhGahBqeq7OdiWS9Z",
-    "folderName": "Woodrow Michael Associates Corporation  Karen & Larry",
-    "confidence": 64,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "String similarity: 64%",
-    "matchedAt": "2025-11-26T05:34:37.853Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.237Z"
   },
   "Kalyani Senior Services Co Dba Always Best Care Senior Services": {
-    "folderId": "184eF_vU_KHV4n7MvRyPHUid1ppTCBON8",
-    "folderName": "4 Lakes Health Services dba Always Best Care Madison Ernie Agne",
-    "confidence": 74,
+    "folderId": "1781rzOKLlECyBNI0xZpNprR1yA9_v4o6",
+    "folderName": "ARG Senior Care LLC dba Always Best Care - Robin Henoch",
+    "confidence": 85,
     "matchType": "auto",
-    "reasoning": "5 common words: \"services, dba, always, best, care\" (71% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.863Z"
+    "reasoning": "3/4 meaningful words match: \"senior, always, best\"",
+    "matchedAt": "2025-11-27T04:52:16.241Z"
   },
   "William & Oliver, LLC Dba First Choice Senior Care": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"llc, dba, senior, care\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.871Z"
+    "folderId": "1r0lkh6gHiWWojLg-_WmgJLdqLCAnEhoo",
+    "folderName": "William & Oliver, LLC",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Meaningful prefix match: \"william oliver first choice senior\" ~ \"william oliver\"",
+    "matchedAt": "2025-11-27T04:04:47.192Z",
+    "reviewedAt": "2025-11-27T04:05:32.647Z"
   },
   "Washington Oak Care Partners, LLC Dba Firstlight Home Care Of Plano": {
-    "folderId": "18KDozhw5ydGAZ7vChHBGn7nHdCBAKj6h",
-    "folderName": "Anne Mark Enterprises, Inc. dba Griswold Home Care",
-    "confidence": 42,
+    "folderId": "1JIbPHQ0sVVhi39y1avS_c0NOQA1XDYVX",
+    "folderName": "Washington Oak Care Partners, LLC Dba Firstlight Home Care Of Plano - Brendon Riley",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "String similarity: 42%",
-    "matchedAt": "2025-11-26T05:34:37.881Z"
+    "reasoning": "All meaningful words match: \"washington, oak, partners, firstlight, plano\"",
+    "matchedAt": "2025-11-27T04:04:47.197Z"
   },
   "Total Care Connections Inc": {
     "folderId": "1_goTaKnIHPsWTm2IkSoaGQ5VIVA1JG41",
     "folderName": "Total Care Connections",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 85%)",
-    "matchedAt": "2025-11-26T05:34:37.885Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 85%)",
+    "matchedAt": "2025-11-26T05:34:37.885Z",
+    "reviewedAt": "2025-11-27T03:56:31.152Z"
   },
   "Adels Healthcare Coordination, LLC": {
-    "folderId": "1Yz5nfYiCa1O8G--0bI5uhEEUVAhBmwmQ",
-    "folderName": "Caring Hands Healthcare Services II, LLC - Celia Ogilvie",
-    "confidence": 70,
+    "folderId": "1l1sGVPhsdRVHTDUbg6i1edxP5MpTfJ31",
+    "folderName": "HomeCare Nation, LLC",
+    "confidence": 75,
     "matchType": "auto",
-    "reasoning": "2 common words: \"healthcare, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.891Z"
+    "reasoning": "Meaningful containment: \"adels coordination\" in \"nation\"",
+    "matchedAt": "2025-11-27T04:52:16.244Z"
   },
   "Wings Of An Angel In Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"home, care, llc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.897Z"
+    "folderId": "1Kp-K5LjLf3zZdEZHJkxzTfFg2SY2V8RB",
+    "folderName": "Wings Of An Angel In Home Care, LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.203Z"
   },
   "Helping Hands Group,  LLC": {
     "folderId": "1yfguQPN7mv0HeauQI5_IqArZk3897Cc0",
     "folderName": "Helping Hands Group LLC - Rick Olds",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 70%)",
-    "matchedAt": "2025-11-26T05:34:37.900Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 70%)",
+    "matchedAt": "2025-11-26T05:34:37.900Z",
+    "reviewedAt": "2025-11-27T03:56:33.282Z"
   },
   "Mykala Enterprises, Inc Dba Right At Home Of South Central Michigan": {
-    "folderId": "14akZZM5aKmDMKAGpf2ZL5bsrTgncAfx_",
-    "folderName": "South Shore Eldercare, Inc. dba Right at Home",
-    "confidence": 71,
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
     "matchType": "auto",
-    "reasoning": "5 common words: \"inc, dba, right, home, south\" (56% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.910Z"
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.248Z"
   },
   "Allpro StaffNet Limited Liability Company DBA Allpro Homecare": {
     "folderId": "1FRRUzW2W0iiXOQCJt0PV9kQvstERzlTf",
     "folderName": "AllPro StaffNet",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 25%)",
-    "matchedAt": "2025-11-26T05:34:37.920Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 25%)",
+    "matchedAt": "2025-11-26T05:34:37.920Z",
+    "reviewedAt": "2025-11-27T03:56:36.705Z"
   },
   "James & Rebecca Prouty Enterprises Inc": {
     "folderId": "1luY3JAhGq-44qw5iGIyG4xdhubnoA-XV",
     "folderName": "James and Rebecca Prouty Enterprises, Inc - Rebecca Prouty",
-    "confidence": 80,
-    "matchType": "auto",
-    "reasoning": "5 common words: \"james, rebecca, prouty, enterprises, inc\" (100% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.925Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 5 common words: \"james, rebecca, prouty, enterprises, inc\" (100% overlap)",
+    "matchedAt": "2025-11-26T05:34:37.925Z",
+    "reviewedAt": "2025-11-27T03:59:07.600Z"
   },
   "HSH Senior Services, Inc. Dba Home Sweet Home In-home Care": {
-    "folderId": "1wTrye3v0H_eKLWAN9sKTpK_EPMaBS1Bk",
-    "folderName": "JNM Senior Services, Inc. dba Home Care Assistance",
-    "confidence": 73,
+    "folderId": "1TVDBEYGblf_65UReTKZAHMdEA7ccIDYS",
+    "folderName": "Central Coast In-Home Senior Care LLC - Ronald Torres",
+    "confidence": 70,
     "matchType": "auto",
-    "reasoning": "6 common words: \"senior, services, inc, dba, home, care\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.934Z"
+    "reasoning": "2 common words: \"senior, inhome\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.250Z"
   },
   "Pierce Unit 1, LLC Dba Home Matters": {
     "folderId": "13Lk21pr8KkpZqqW1RlKYu8SHafKZUDys",
     "folderName": "Pierce Unit 1, LLC Dba Home Matters - Brad Pierce",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 74%)",
-    "matchedAt": "2025-11-26T05:34:37.940Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 74%)",
+    "matchedAt": "2025-11-26T05:34:37.940Z",
+    "reviewedAt": "2025-11-27T03:56:37.969Z"
   },
   "Divine Duty Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"home, care, llc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.944Z"
+    "folderId": "1Paka4IKRKmZvW9MOL1SkWjctWsnUoZkJ",
+    "folderName": "Divine Duty Home Care, LLC",
+    "confidence": 100,
+    "matchType": "exact",
+    "reasoning": "Names match exactly (case-insensitive)",
+    "matchedAt": "2025-11-27T04:04:47.213Z"
   },
   "MD Services, Inc. DBA Home Instead Senior Care": {
     "folderId": "1eey2Z65HrOrXAPIkhVf8Vu183cIetUJX",
     "folderName": "MD Services, Inc",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 34%)",
-    "matchedAt": "2025-11-26T05:34:37.951Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 34%)",
+    "matchedAt": "2025-11-26T05:34:37.951Z",
+    "reviewedAt": "2025-11-27T03:56:40.382Z"
   },
   "ARS RN, LLC": {
     "folderId": "19c62L00COSwftc9TAAPqrpud2K8sfP1I",
     "folderName": "ARS RN, LLC - Amanda Caperton",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 38%)",
-    "matchedAt": "2025-11-26T05:34:37.953Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 38%)",
+    "matchedAt": "2025-11-26T05:34:37.953Z",
+    "reviewedAt": "2025-11-27T03:56:42.816Z"
   },
   "A Caring Touch For Seniors LLC": {
     "folderId": "1lz7SANcE7RgZfGW1-y41uNRq2Q3L-FmA",
     "folderName": "A Caring Touch For Seniors LLC - Charity Burnside",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 64%)",
-    "matchedAt": "2025-11-26T05:34:37.960Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 64%)",
+    "matchedAt": "2025-11-26T05:34:37.960Z",
+    "reviewedAt": "2025-11-27T03:56:45.546Z"
   },
   "Anonymous": {
     "folderId": "",
@@ -2097,470 +2185,512 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-26T05:34:37.963Z"
+    "matchedAt": "2025-11-27T04:52:16.252Z"
   },
   "Absf, LLC Dba Family Tree In-home Private Care": {
     "folderId": "1I04VImhS7sXqy7BBlUWQmzuozrhZf7ZW",
     "folderName": "ABSF, LLC Dba Family Tree In-home Care",
-    "confidence": 82,
-    "matchType": "auto",
-    "reasoning": "String similarity: 82%",
-    "matchedAt": "2025-11-26T05:34:37.970Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 82%",
+    "matchedAt": "2025-11-26T05:34:37.970Z",
+    "reviewedAt": "2025-11-27T03:58:42.620Z"
   },
   "Walter/McCann, Inc. Dba: Right at Home Of Northern Colorado": {
     "folderId": "1be4MmYZXPP94BOrsRnMHKB2cOwLnH_b1",
     "folderName": "Walter_McCann, Inc. dba Right at Home at of Northern CO",
-    "confidence": 84,
-    "matchType": "auto",
-    "reasoning": "String similarity: 84%",
-    "matchedAt": "2025-11-26T05:34:37.978Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 84%",
+    "matchedAt": "2025-11-26T05:34:37.978Z",
+    "reviewedAt": "2025-11-27T03:58:09.470Z"
   },
   "Horizon Pcah, LLC": {
     "folderId": "1OrPcF0ofZkRx7iQXfsoTAT9MZCx6Adrt",
     "folderName": "Horizon PCAH LLC - Sandy & Sara",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 59%)",
-    "matchedAt": "2025-11-26T05:34:37.982Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 59%)",
+    "matchedAt": "2025-11-26T05:34:37.982Z",
+    "reviewedAt": "2025-11-27T03:56:48.324Z"
   },
   "Turtledove, LLC DBA Turtledove Home Care": {
-    "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
-    "folderName": "A Place Called Home LLC Dba Thriving At Home Senior Care - Lee Anne",
-    "confidence": 76,
+    "folderId": "1oWr0bnxFr_JV_Sm4bj4HIFu0P8ubq7EL",
+    "folderName": "Turtledove Home Infusion Nurses LLC -  Debbie Bowley",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "4 common words: \"llc, dba, home, care\" (80% overlap)",
-    "matchedAt": "2025-11-26T05:34:37.988Z"
+    "reasoning": "All meaningful words match: \"turtledove\"",
+    "matchedAt": "2025-11-27T04:04:47.218Z"
   },
   "Morgantown Area Private Duty, LLC & Wheeling Area Private Duty, LLC Dba Right At Home": {
-    "folderId": "1wychIv8nwGz_XSX101o4eYbJRP8nVejL",
+    "folderId": "1h5OEInsvb0i6OttdxhN6UDLc_BIRUKxh",
     "folderName": "Morgantown Area Private Duty - April Wintermoyer",
-    "confidence": 47,
+    "confidence": 90,
     "matchType": "auto",
-    "reasoning": "String similarity: 47%",
-    "matchedAt": "2025-11-26T05:34:37.999Z"
+    "reasoning": "4/5 meaningful words match: \"morgantown, area, private, duty\"",
+    "matchedAt": "2025-11-27T04:04:47.222Z"
   },
   "Always Caring Of Connecticut, LLC": {
     "folderId": "1_60ERaHl1G815Trso9LimplnucHGVrXK",
     "folderName": "Always Caring of Connecticut, LLC  - Mark Basler",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 73%)",
-    "matchedAt": "2025-11-26T05:34:38.005Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 73%)",
+    "matchedAt": "2025-11-26T05:34:38.005Z",
+    "reviewedAt": "2025-11-27T03:56:50.436Z"
   },
   "Consider It Done Lehigh Valley, Inc": {
     "folderId": "1sf3SCpHjNTt1WcncyQ3rokHwnFStF199",
     "folderName": "Consider it Done Lehigh",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 68%)",
-    "matchedAt": "2025-11-26T05:34:38.011Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 68%)",
+    "matchedAt": "2025-11-26T05:34:38.011Z",
+    "reviewedAt": "2025-11-27T03:56:52.378Z"
   },
   "Donegan Senior Care, Inc Dba Griswold Home Care Silver Spring &  Montgomery County North": {
     "folderId": "11HC72iTQ5XMad7zqmoW-E5ujxGQVaDdQ",
     "folderName": "Donegan Senior Care, Inc dba griswold Home Care - Mirza Donegan",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "7 common words: \"donegan, senior, care, inc, dba, griswold, home\" (58% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.021Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 7 common words: \"donegan, senior, care, inc, dba, griswold, home\" (58% overlap)",
+    "matchedAt": "2025-11-26T05:34:38.021Z",
+    "reviewedAt": "2025-11-27T04:03:03.894Z"
   },
   "Answers Health Care Inc DBA Qualicare Big Sky": {
     "folderId": "1Xmu2VAd7Qo5KWhqpGHLw-n8FgLmkz7aI",
     "folderName": "Answers Health Care Inc DBA Qualicare Big Sky- Jen Krum",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 83%)",
-    "matchedAt": "2025-11-26T05:34:38.030Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 83%)",
+    "matchedAt": "2025-11-26T05:34:38.030Z",
+    "reviewedAt": "2025-11-27T03:56:57.778Z"
   },
   "Caring For You Home Care, LLC": {
     "folderId": "1VkvyMCzSwk8vUQsIAC_QLJit4NZ-H29q",
     "folderName": "Caring For You Home Care, LLC - Alexandrea Savage",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:38.035Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:38.035Z",
+    "reviewedAt": "2025-11-27T03:57:05.326Z"
   },
   "Flourish In Place Home Care Solutions": {
     "folderId": "1VUr3SiNzjJKVr_gw-QIw2JCpuJZaSSPj",
     "folderName": "Flourish In Place Home Care Solutions - Kim Lee",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 82%)",
-    "matchedAt": "2025-11-26T05:34:38.041Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 82%)",
+    "matchedAt": "2025-11-26T05:34:38.041Z",
+    "reviewedAt": "2025-11-27T03:57:07.016Z"
   },
   "Bay Area Home Care LLC Dba Preferred Care At Home Of Central Contra Costa": {
     "folderId": "1Ebj7RGIfZpMDtZ8gZaYVmnL6WQTOIwjq",
     "folderName": "Bay Area Home Care dba preferred care at home",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "6 common words: \"bay, area, home, care, dba, preferred\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.051Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 6 common words: \"bay, area, home, care, dba, preferred\" (60% overlap)",
+    "matchedAt": "2025-11-26T05:34:38.051Z",
+    "reviewedAt": "2025-11-27T04:03:06.161Z"
   },
   "Compassionate Caregivers Of Michiana LLC Dba: Karing Hearts LLC": {
     "folderId": "1YflmMBOAWpj4Ju3zVo4McjoRUoK_FFxN",
     "folderName": "Compassionate Caregivers of Michiana LLC dba Karing Hearts LLC - Kim Yoder",
-    "confidence": 86,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 86%)",
-    "matchedAt": "2025-11-26T05:34:38.061Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 86%)",
+    "matchedAt": "2025-11-26T05:34:38.061Z",
+    "reviewedAt": "2025-11-27T03:54:13.319Z"
   },
   "Noah Enterprise LLC Dba Griswold Home Care": {
     "folderId": "1lZMEyguYgoLF9KYpK7znpzs0ZPuS4pbr",
     "folderName": "Noah Enterprise LLC Dba Griswold Home Care - Fasil Sahlmariam",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 71%)",
-    "matchedAt": "2025-11-26T05:34:38.069Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 71%)",
+    "matchedAt": "2025-11-26T05:34:38.069Z",
+    "reviewedAt": "2025-11-27T03:57:09.848Z"
   },
   "Fulfilling Needs Homecare, LLC": {
-    "folderId": "1VTC0KjiorQh9nvNZAPMVSJZwBcrJxzO7",
-    "folderName": "1776 Homecare, LLC",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"homecare, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.074Z"
-  },
-  "SEJ Resources, Inc. Dba Acti-kare Responsive In-home Services": {
-    "folderId": "1ojSauDdoyXTusffp4tLrutr4FChuAWFc",
-    "folderName": "SEJ Resources, Inc. Dba Acti-kare Responsive In-home Services - Steve Jewell",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 81%)",
-    "matchedAt": "2025-11-26T05:34:38.083Z"
-  },
-  "A Tender Heart Caregiver Services, LLC": {
-    "folderId": "1gIlc65NRELWjLU901koX0mXvYVaRIsKg",
-    "folderName": "A Tender Heart",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 38%)",
-    "matchedAt": "2025-11-26T05:34:38.089Z"
-  },
-  "Rent-A-daughter, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "1 common words: \"llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.093Z"
-  },
-  "HCA Phoenix LLC Dba Home Care Assistance Scottsdale": {
-    "folderId": "18GEQo9frqXFB3x0rEKnt9iHv12sceG4k",
-    "folderName": "HCA Phoenix",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 22%)",
-    "matchedAt": "2025-11-26T05:34:38.100Z"
-  },
-  "RRW, Inc": {
-    "folderId": "1_9udy436GKdQS0ByD3odKJ8T-DtMe9ek",
-    "folderName": "RRW",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 43%)",
-    "matchedAt": "2025-11-26T05:34:38.102Z"
-  },
-  "Integri Home Care, LLC": {
-    "folderId": "1fVI63NnpkNP_VdL5VcDM4bkhRjqSCCZl",
-    "folderName": "Integri Home Care, LLC - Randy Jackson",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 60%)",
-    "matchedAt": "2025-11-26T05:34:38.106Z"
-  },
-  "Busch Enterprises, Inc.  DBA Amada Senior Care City of Chicago": {
-    "folderId": "1KuR6UNUph3O9vXA0dNQxvrT5-VErLts2",
-    "folderName": "RTVT Enterprises LLC dba Always Best Care - Lynn Hancock",
-    "confidence": 53,
-    "matchType": "auto",
-    "reasoning": "String similarity: 53%",
-    "matchedAt": "2025-11-26T05:34:38.116Z"
-  },
-  "Heart At Home, LLC": {
-    "folderId": "1PydfdyjrOh2vCEU3NdfAOfXavLBksCJA",
-    "folderName": "Heart at Home, LLC - Abby Paylor",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 59%)",
-    "matchedAt": "2025-11-26T05:34:38.120Z"
-  },
-  "Elite Hope Home Health, LLC": {
-    "folderId": "1oeCt-4otj0ZixQ9OOwU0agYTROfDD2JV",
-    "folderName": "AccessiCare Home Health, LLC - WC Prospect",
-    "confidence": 72,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"home, health, llc\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.124Z"
-  },
-  "Caswell Bay, Inc (a Corp)": {
-    "folderId": "1s_XMZI2Uet3fSZ5G1gLbtdwWmH6HosOU",
-    "folderName": "Caswell Bay dba Hillendale Home Care",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"caswell, bay\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.127Z"
-  },
-  "Dignityfirst Health At Home LLC": {
-    "folderId": "1fv0f4fR70MZ0pMdypvpSjEtoweweHeqB",
-    "folderName": "DignityFirst Health At Home LLC - Toni Maldonado",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 67%)",
-    "matchedAt": "2025-11-26T05:34:38.134Z"
-  },
-  "Loredana Vasi, LLC Dba Sunshine Home Care Services": {
-    "folderId": "1dHyWKkznNut4czJbxvMq3jMZqnl_IpWc",
-    "folderName": "EZRI, LLC dba Helpful Hands Home Care Services, LLC",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "5 common words: \"llc, dba, home, care, services\" (63% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.140Z"
-  },
-  "Anchorage Home Care, LLC DBA Preferred Care At Home Of Alaska": {
-    "folderId": "1gzB-gtDEQruT3LK9a5u4DYmyYV9BjqoX",
-    "folderName": "Anchorage Home Care, LLC DBA Preferred Care At Home Of Alaska - Lynetta Hagel-Grant",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 76%)",
-    "matchedAt": "2025-11-26T05:34:38.149Z"
-  },
-  "Ashford Consolidated, Inc Dba Ashford Home Care": {
-    "folderId": "1dJT7pLnaSOnrRroYUI3DSHAD7qxrBH-t",
-    "folderName": "Ashford Consolidated, Inc Dba Ashford Home Care - Durrand Ashford",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 74%)",
-    "matchedAt": "2025-11-26T05:34:38.157Z"
-  },
-  "Medical Staffing And Consulting Network LLC Dba Crystal Cares Home Care": {
-    "folderId": "19ECQR178k0U-cIXnEzEJdAjh8R_YA0bZ",
-    "folderName": "Medical Staffing and Consulting Network LLC dba Crystal Cares Home Care - Crystal Laeder",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 83%)",
-    "matchedAt": "2025-11-26T05:34:38.167Z"
-  },
-  "Test- Trollycare": {
-    "folderId": "1p1G7sWH8_0f6gnk9lI-aAff9xZnmCXvV",
-    "folderName": "NSR Home Care",
-    "confidence": 47,
-    "matchType": "auto",
-    "reasoning": "String similarity: 47%",
-    "matchedAt": "2025-11-26T05:34:38.171Z"
-  },
-  "Carson Holdings, Inc Dba Homewatch Caregivers": {
-    "folderId": "1ufJXF-zwlrIyDKO3AZXeXpTEyc7Avvvi",
-    "folderName": "Carson Holdings, Inc Dba Homewatch Caregivers - Alex Salwell",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 77%)",
-    "matchedAt": "2025-11-26T05:34:38.179Z"
-  },
-  "Care Planning Institute, LLC": {
-    "folderId": "1j3mIMKQMvrecuQ0KHHHUByt8QorBxpPt",
-    "folderName": "Care Planning Institute - Mark Dunning",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"care, planning, institute\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.184Z"
-  },
-  "S&A Advisory Group, LLC DBA Interim Healthcare Of Queen Creek": {
-    "folderId": "1zAoI8DyhQuoOn0W2vZthuCjbwfMx3kqY",
-    "folderName": "ARG Senior Care LLC dba Always Best Care - Robin Henoch",
-    "confidence": 41,
-    "matchType": "auto",
-    "reasoning": "String similarity: 41%",
-    "matchedAt": "2025-11-26T05:34:38.193Z"
-  },
-  "Devoted Guardians Inc DBA Devoted Guardians Home Care": {
-    "folderId": "11z9he7VgYdllVkCeqLB6FEW1U1ztpsbv",
-    "folderName": "1212 Senior Care Inc dba Home Instead Senior Care #435",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "4 common words: \"inc, dba, home, care\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.202Z"
-  },
-  "CAS Services, Inc.": {
-    "folderId": "1iRiDYEsLFoIG3H5FtUADm7RH8Xwq20VL",
-    "folderName": "CAS Services, Inc. - Cheryl Sheasby",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 52%)",
-    "matchedAt": "2025-11-26T05:34:38.206Z"
-  },
-  "H3 Home Care Agency, LLC": {
-    "folderId": "1F_VlmzzfHO-QHbgw0sBdwSed2UY75E4V",
-    "folderName": "H3 Home Care Agency, LLC - Felix Hernandez",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 59%)",
-    "matchedAt": "2025-11-26T05:34:38.209Z"
-  },
-  "Elpitha, LLC Dba: Touching Hearts At Home - Northfield": {
-    "folderId": "1kWHYGPljqRYveSgsaDr8qrzsoTS3Fi8s",
-    "folderName": "Elpitha, LLC dba Touching Hearts Northfield",
-    "confidence": 84,
-    "matchType": "auto",
-    "reasoning": "String similarity: 84%",
-    "matchedAt": "2025-11-26T05:34:38.216Z"
-  },
-  "EpicCare Health, LLC": {
-    "folderId": "1oeCt-4otj0ZixQ9OOwU0agYTROfDD2JV",
-    "folderName": "AccessiCare Home Health, LLC - WC Prospect",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"health, llc\" (67% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.221Z"
-  },
-  "Keith & Associates, LLC Dba: Right At Home In The Northern Neck": {
-    "folderId": "1Ii2Ixu8kwsWoW6Q65oQ6ei29URdHrgzg",
-    "folderName": "Keith & Associates, LLC Dba_ Right At Home In The Northern Neck - Katherine Keith",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 79%)",
-    "matchedAt": "2025-11-26T05:34:38.230Z"
-  },
-  "Life Springs In Home Care": {
-    "folderId": "1BcAJXJmnp1LKQvoBLu1PqpDINNbbNifN",
-    "folderName": "Life Springs In Home Care - Debbie Maestas",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 63%)",
-    "matchedAt": "2025-11-26T05:34:38.234Z"
-  },
-  "Turtledove Home Infusion Nurses LLC": {
-    "folderId": "15pP0UBdGJPymX23mobXUiw7Yz4OZlVDs",
-    "folderName": "Turtledove Home Infusion Nurses LLC -  Debbie Bowley",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 71%)",
-    "matchedAt": "2025-11-26T05:34:38.240Z"
-  },
-  "Accessicare Elder Home Care": {
-    "folderId": "1c_TmDLBSLL7tL3JsJb-VqlEKwdrbg3XV",
-    "folderName": "AccessiCare Elder Home Care - Jon Baker",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 73%)",
-    "matchedAt": "2025-11-26T05:34:38.245Z"
-  },
-  "Summa Munus, LLC": {
-    "folderId": "1Xxdv3jcuzBirJA9Pir4DR8IukyZ5nqfe",
-    "folderName": "A & M",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "One name contains the other (similarity: 20%)",
-    "matchedAt": "2025-11-26T05:34:38.249Z"
-  },
-  "The Harp Group LLC Dba Comfort Keepers": {
-    "folderId": "1AXikKx1XmyFm20X4vEyjW_1FR8lvBewY",
-    "folderName": "The Harp Group LLC Dba Comfort Keepers - Maggie & Garrett Sullivan",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:38.255Z"
-  },
-  "Giving Care Home Care, LLC": {
-    "folderId": "1tryEuh-M0uPnzwBCS9Ii6VFHzW5BM1Mi",
-    "folderName": "#1 In Home Care LLC",
-    "confidence": 75,
-    "matchType": "auto",
-    "reasoning": "3 common words: \"care, home, llc\" (75% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.259Z"
-  },
-  "FHAE LLC DBA A Better Solution In Home Care": {
-    "folderId": "1gLGeWNzji-lc-cS91efjvdpkV5DpcS7u",
-    "folderName": "FHAE, LLC dba A Better Solution Home Care Fernando",
-    "confidence": 76,
-    "matchType": "auto",
-    "reasoning": "String similarity: 76%",
-    "matchedAt": "2025-11-26T05:34:38.267Z"
-  },
-  "Better Choice Home Health Care, Inc.": {
-    "folderId": "1wRs7ibZe-u5EzwzXSHuaU_UcJV_Sphzi",
-    "folderName": "Better Choice Home Health Care, Inc -  Jerry Karape - Prospecttyan",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 57%)",
-    "matchedAt": "2025-11-26T05:34:38.273Z"
-  },
-  "Quality Care At Home Inc  (formerly Superior Quality Home Health Llc)": {
-    "folderId": "1pYfRxumJ3FDGpNWkjcl5iBNgLklqeSYy",
-    "folderName": "Quality Care at Home (Superior Quality Home Health LLC )(2018)",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "String similarity: 73%",
-    "matchedAt": "2025-11-26T05:34:38.282Z"
-  },
-  "Core Care, LLC Dba Amigos Companion Care": {
-    "folderId": "1LtQdCboMpQ6Hga_ls-F8x5xQRSyfTZDc",
-    "folderName": "Core Care, LLC Dba Amigos Companion Care - Connie Rios",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 76%)",
-    "matchedAt": "2025-11-26T05:34:38.289Z"
-  },
-  "Sundance Home Care, Inc. Dba Griswold Home Care": {
-    "folderId": "1_C6_6bHX8l9EutgisfBqL8QrM-QWN6Rz",
-    "folderName": "Sundance Home Care Inc",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 49%)",
-    "matchedAt": "2025-11-26T05:34:38.296Z"
-  },
-  "Castle Ventures, Inc Dba Right At Home Northwest": {
-    "folderId": "1aUwijuXLw7Q5BsrtUzbXCInnvALjbpBQ",
-    "folderName": "Castle Ventures, Inc Dba Right At Home Northwest - Jeanette Palmer",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 75%)",
-    "matchedAt": "2025-11-26T05:34:38.303Z"
-  },
-  "Warren Procurement And Logistics LLC Dba HCA West Texas": {
     "folderId": "",
     "folderName": "",
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-26T05:34:38.312Z"
+    "matchedAt": "2025-11-27T04:52:16.255Z"
+  },
+  "SEJ Resources, Inc. Dba Acti-kare Responsive In-home Services": {
+    "folderId": "1ojSauDdoyXTusffp4tLrutr4FChuAWFc",
+    "folderName": "SEJ Resources, Inc. Dba Acti-kare Responsive In-home Services - Steve Jewell",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 81%)",
+    "matchedAt": "2025-11-26T05:34:38.083Z",
+    "reviewedAt": "2025-11-27T03:57:10.963Z"
+  },
+  "A Tender Heart Caregiver Services, LLC": {
+    "folderId": "1gIlc65NRELWjLU901koX0mXvYVaRIsKg",
+    "folderName": "A Tender Heart",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 38%)",
+    "matchedAt": "2025-11-26T05:34:38.089Z",
+    "reviewedAt": "2025-11-27T03:57:12.366Z"
+  },
+  "Rent-A-daughter, LLC": {
+    "folderId": "1goew9oGQuEZIekRL8SwGqWWtndu6Fdj3",
+    "folderName": "Rent a Daughter",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Meaningful part similarity: 92% (penalized - no word match)",
+    "matchedAt": "2025-11-27T04:12:48.393Z",
+    "reviewedAt": "2025-11-27T04:20:05.342Z"
+  },
+  "HCA Phoenix LLC Dba Home Care Assistance Scottsdale": {
+    "folderId": "18GEQo9frqXFB3x0rEKnt9iHv12sceG4k",
+    "folderName": "HCA Phoenix",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 22%)",
+    "matchedAt": "2025-11-26T05:34:38.100Z",
+    "reviewedAt": "2025-11-27T03:57:14.170Z"
+  },
+  "RRW, Inc": {
+    "folderId": "1_9udy436GKdQS0ByD3odKJ8T-DtMe9ek",
+    "folderName": "RRW",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 43%)",
+    "matchedAt": "2025-11-26T05:34:38.102Z",
+    "reviewedAt": "2025-11-27T03:57:15.582Z"
+  },
+  "Integri Home Care, LLC": {
+    "folderId": "1fVI63NnpkNP_VdL5VcDM4bkhRjqSCCZl",
+    "folderName": "Integri Home Care, LLC - Randy Jackson",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 60%)",
+    "matchedAt": "2025-11-26T05:34:38.106Z",
+    "reviewedAt": "2025-11-27T03:57:17.844Z"
+  },
+  "Busch Enterprises, Inc.  DBA Amada Senior Care City of Chicago": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.260Z"
+  },
+  "Heart At Home, LLC": {
+    "folderId": "1PydfdyjrOh2vCEU3NdfAOfXavLBksCJA",
+    "folderName": "Heart at Home, LLC - Abby Paylor",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 59%)",
+    "matchedAt": "2025-11-26T05:34:38.120Z",
+    "reviewedAt": "2025-11-27T03:57:21.226Z"
+  },
+  "Elite Hope Home Health, LLC": {
+    "folderId": "1CDb5L4o3fatXTPpwmevw6KGLYKrWFdV4",
+    "folderName": "Hands Of Hope Private Home Care, LLC",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"hope\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.261Z"
+  },
+  "Caswell Bay, Inc (a Corp)": {
+    "folderId": "1ShIL6skkAiT-R1-Eo1Ut9kfBTMCUy7MW",
+    "folderName": "Caswell Bay dba Hillendale Home Care",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"caswell, bay\"",
+    "matchedAt": "2025-11-27T04:04:47.237Z"
+  },
+  "Dignityfirst Health At Home LLC": {
+    "folderId": "1fv0f4fR70MZ0pMdypvpSjEtoweweHeqB",
+    "folderName": "DignityFirst Health At Home LLC - Toni Maldonado",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 67%)",
+    "matchedAt": "2025-11-26T05:34:38.134Z",
+    "reviewedAt": "2025-11-27T03:57:24.107Z"
+  },
+  "Loredana Vasi, LLC Dba Sunshine Home Care Services": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.264Z"
+  },
+  "Anchorage Home Care, LLC DBA Preferred Care At Home Of Alaska": {
+    "folderId": "1gzB-gtDEQruT3LK9a5u4DYmyYV9BjqoX",
+    "folderName": "Anchorage Home Care, LLC DBA Preferred Care At Home Of Alaska - Lynetta Hagel-Grant",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 76%)",
+    "matchedAt": "2025-11-26T05:34:38.149Z",
+    "reviewedAt": "2025-11-27T03:57:27.042Z"
+  },
+  "Ashford Consolidated, Inc Dba Ashford Home Care": {
+    "folderId": "1dJT7pLnaSOnrRroYUI3DSHAD7qxrBH-t",
+    "folderName": "Ashford Consolidated, Inc Dba Ashford Home Care - Durrand Ashford",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 74%)",
+    "matchedAt": "2025-11-26T05:34:38.157Z",
+    "reviewedAt": "2025-11-27T03:57:28.439Z"
+  },
+  "Medical Staffing And Consulting Network LLC Dba Crystal Cares Home Care": {
+    "folderId": "19ECQR178k0U-cIXnEzEJdAjh8R_YA0bZ",
+    "folderName": "Medical Staffing and Consulting Network LLC dba Crystal Cares Home Care - Crystal Laeder",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 83%)",
+    "matchedAt": "2025-11-26T05:34:38.167Z",
+    "reviewedAt": "2025-11-27T03:57:30.863Z"
+  },
+  "Test- Trollycare": {
+    "folderId": "1TvCGG0c49hA0Gkex0qFCbC7L0a0i2a4N",
+    "folderName": "test client",
+    "confidence": 70,
+    "matchType": "auto",
+    "reasoning": "1 common words: \"test\" (50% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.266Z"
+  },
+  "Carson Holdings, Inc Dba Homewatch Caregivers": {
+    "folderId": "1ufJXF-zwlrIyDKO3AZXeXpTEyc7Avvvi",
+    "folderName": "Carson Holdings, Inc Dba Homewatch Caregivers - Alex Salwell",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 77%)",
+    "matchedAt": "2025-11-26T05:34:38.179Z",
+    "reviewedAt": "2025-11-27T03:57:32.167Z"
+  },
+  "Care Planning Institute, LLC": {
+    "folderId": "1j3mIMKQMvrecuQ0KHHHUByt8QorBxpPt",
+    "folderName": "Care Planning Institute - Mark Dunning",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: 3 common words: \"care, planning, institute\" (75% overlap)",
+    "matchedAt": "2025-11-26T05:34:38.184Z",
+    "reviewedAt": "2025-11-27T04:00:25.939Z"
+  },
+  "S&A Advisory Group, LLC DBA Interim Healthcare Of Queen Creek": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.270Z"
+  },
+  "Devoted Guardians Inc DBA Devoted Guardians Home Care": {
+    "folderId": "1i4EnLBVcfT7a33NLL-eU07uvIJFrcjl5",
+    "folderName": "Devoted Guardians - Aaron",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"devoted, guardians\"",
+    "matchedAt": "2025-11-27T04:04:47.249Z"
+  },
+  "CAS Services, Inc.": {
+    "folderId": "1iRiDYEsLFoIG3H5FtUADm7RH8Xwq20VL",
+    "folderName": "CAS Services, Inc. - Cheryl Sheasby",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 52%)",
+    "matchedAt": "2025-11-26T05:34:38.206Z",
+    "reviewedAt": "2025-11-27T03:57:33.325Z"
+  },
+  "H3 Home Care Agency, LLC": {
+    "folderId": "1F_VlmzzfHO-QHbgw0sBdwSed2UY75E4V",
+    "folderName": "H3 Home Care Agency, LLC - Felix Hernandez",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 59%)",
+    "matchedAt": "2025-11-26T05:34:38.209Z",
+    "reviewedAt": "2025-11-27T03:57:34.677Z"
+  },
+  "Elpitha, LLC Dba: Touching Hearts At Home - Northfield": {
+    "folderId": "1kWHYGPljqRYveSgsaDr8qrzsoTS3Fi8s",
+    "folderName": "Elpitha, LLC dba Touching Hearts Northfield",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 84%",
+    "matchedAt": "2025-11-26T05:34:38.216Z",
+    "reviewedAt": "2025-11-27T03:58:11.950Z"
+  },
+  "EpicCare Health, LLC": {
+    "folderId": "",
+    "folderName": "",
+    "confidence": 0,
+    "matchType": "auto",
+    "reasoning": "No matching folder found (needs manual entry)",
+    "matchedAt": "2025-11-27T04:52:16.272Z"
+  },
+  "Keith & Associates, LLC Dba: Right At Home In The Northern Neck": {
+    "folderId": "1Ii2Ixu8kwsWoW6Q65oQ6ei29URdHrgzg",
+    "folderName": "Keith & Associates, LLC Dba_ Right At Home In The Northern Neck - Katherine Keith",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 79%)",
+    "matchedAt": "2025-11-26T05:34:38.230Z",
+    "reviewedAt": "2025-11-27T03:57:36.414Z"
+  },
+  "Life Springs In Home Care": {
+    "folderId": "1BcAJXJmnp1LKQvoBLu1PqpDINNbbNifN",
+    "folderName": "Life Springs In Home Care - Debbie Maestas",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 63%)",
+    "matchedAt": "2025-11-26T05:34:38.234Z",
+    "reviewedAt": "2025-11-27T03:57:39.006Z"
+  },
+  "Turtledove Home Infusion Nurses LLC": {
+    "folderId": "15pP0UBdGJPymX23mobXUiw7Yz4OZlVDs",
+    "folderName": "Turtledove Home Infusion Nurses LLC -  Debbie Bowley",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 71%)",
+    "matchedAt": "2025-11-26T05:34:38.240Z",
+    "reviewedAt": "2025-11-27T03:57:43.813Z"
+  },
+  "Accessicare Elder Home Care": {
+    "folderId": "1c_TmDLBSLL7tL3JsJb-VqlEKwdrbg3XV",
+    "folderName": "AccessiCare Elder Home Care - Jon Baker",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 73%)",
+    "matchedAt": "2025-11-26T05:34:38.245Z",
+    "reviewedAt": "2025-11-27T03:57:47.289Z"
+  },
+  "Summa Munus, LLC": {
+    "folderId": "1yxhzxyosy4HRzQS4U5MABjycVsYl9BH3",
+    "folderName": "Summa Munus 123 Home Care",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"summa, munus\"",
+    "matchedAt": "2025-11-27T04:04:47.255Z"
+  },
+  "The Harp Group LLC Dba Comfort Keepers": {
+    "folderId": "1AXikKx1XmyFm20X4vEyjW_1FR8lvBewY",
+    "folderName": "The Harp Group LLC Dba Comfort Keepers - Maggie & Garrett Sullivan",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:38.255Z",
+    "reviewedAt": "2025-11-27T03:57:52.507Z"
+  },
+  "Giving Care Home Care, LLC": {
+    "folderId": "17pcp-grCBAlw4G0X5itCtZVKD5vY2sZL",
+    "folderName": "Celestial Caregiving, LLC - Diane Stohr",
+    "confidence": 75,
+    "matchType": "auto",
+    "reasoning": "Meaningful containment: \"giving\" in \"celestial caregiving diane stohr\"",
+    "matchedAt": "2025-11-27T04:52:16.273Z"
+  },
+  "FHAE LLC DBA A Better Solution In Home Care": {
+    "folderId": "1gLGeWNzji-lc-cS91efjvdpkV5DpcS7u",
+    "folderName": "FHAE, LLC dba A Better Solution Home Care Fernando",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 76%",
+    "matchedAt": "2025-11-26T05:34:38.267Z",
+    "reviewedAt": "2025-11-27T04:00:01.961Z"
+  },
+  "Better Choice Home Health Care, Inc.": {
+    "folderId": "1wRs7ibZe-u5EzwzXSHuaU_UcJV_Sphzi",
+    "folderName": "Better Choice Home Health Care, Inc -  Jerry Karape - Prospecttyan",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 57%)",
+    "matchedAt": "2025-11-26T05:34:38.273Z",
+    "reviewedAt": "2025-11-27T03:57:58.657Z"
+  },
+  "Quality Care At Home Inc  (formerly Superior Quality Home Health Llc)": {
+    "folderId": "1pYfRxumJ3FDGpNWkjcl5iBNgLklqeSYy",
+    "folderName": "Quality Care at Home (Superior Quality Home Health LLC )(2018)",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 73%",
+    "matchedAt": "2025-11-26T05:34:38.282Z",
+    "reviewedAt": "2025-11-27T04:01:22.151Z"
+  },
+  "Core Care, LLC Dba Amigos Companion Care": {
+    "folderId": "1LtQdCboMpQ6Hga_ls-F8x5xQRSyfTZDc",
+    "folderName": "Core Care, LLC Dba Amigos Companion Care - Connie Rios",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 76%)",
+    "matchedAt": "2025-11-26T05:34:38.289Z",
+    "reviewedAt": "2025-11-27T03:58:01.622Z"
+  },
+  "Sundance Home Care, Inc. Dba Griswold Home Care": {
+    "folderId": "1_C6_6bHX8l9EutgisfBqL8QrM-QWN6Rz",
+    "folderName": "Sundance Home Care Inc",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 49%)",
+    "matchedAt": "2025-11-26T05:34:38.296Z",
+    "reviewedAt": "2025-11-27T03:58:03.265Z"
+  },
+  "Castle Ventures, Inc Dba Right At Home Northwest": {
+    "folderId": "1aUwijuXLw7Q5BsrtUzbXCInnvALjbpBQ",
+    "folderName": "Castle Ventures, Inc Dba Right At Home Northwest - Jeanette Palmer",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 75%)",
+    "matchedAt": "2025-11-26T05:34:38.303Z",
+    "reviewedAt": "2025-11-27T03:58:04.794Z"
+  },
+  "Warren Procurement And Logistics LLC Dba HCA West Texas": {
+    "folderId": "1P6bhurtzmNs4x3Q3CVrJNM5B_9pQOhQ6",
+    "folderName": "Warren Procurement And Logistics LLC Dba HCA West Texas - Kendall Warren",
+    "confidence": 95,
+    "matchType": "auto",
+    "reasoning": "All meaningful words match: \"warren, procurement, logistics, hca, west, texas\"",
+    "matchedAt": "2025-11-27T04:04:47.261Z"
   },
   "SHS Nh, LLC Dba 360 SHS": {
     "folderId": "1xklr2rQRUfxHfgYYmHxSxzcvO9KMLrkr",
     "folderName": "SHS NH, LLC Dba 360 SHS - Randy Loubier",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 61%)",
-    "matchedAt": "2025-11-26T05:34:38.316Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 61%)",
+    "matchedAt": "2025-11-26T05:34:38.316Z",
+    "reviewedAt": "2025-11-27T03:58:06.319Z"
   },
   "Omega Care, LLC": {
     "folderId": "1t4YiaRR_MifwYa0Q45pIvURpBVYNdlg1",
     "folderName": "Omega Home Care LLC",
-    "confidence": 74,
-    "matchType": "auto",
-    "reasoning": "String similarity: 74%",
-    "matchedAt": "2025-11-26T05:34:38.319Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: String similarity: 74%",
+    "matchedAt": "2025-11-26T05:34:38.319Z",
+    "reviewedAt": "2025-11-27T04:00:44.109Z"
   },
   "Healing Hearts NC, LLC Dba Healing Heats NC": {
-    "folderId": "1YflmMBOAWpj4Ju3zVo4McjoRUoK_FFxN",
-    "folderName": "Compassionate Caregivers of Michiana LLC dba Karing Hearts LLC - Kim Yoder",
-    "confidence": 72,
+    "folderId": "15vqFWbVeWmjqtxWwSZpiDvzgtibw2P7P",
+    "folderName": "Healing Hands Caring Hearts LLC",
+    "confidence": 73,
     "matchType": "auto",
-    "reasoning": "3 common words: \"hearts, llc, dba\" (60% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.326Z"
+    "reasoning": "2 common words: \"healing, hearts\" (67% overlap)",
+    "matchedAt": "2025-11-27T04:52:16.276Z"
   },
   "Serenity Healthcare Agency, LLC": {
-    "folderId": "1Yz5nfYiCa1O8G--0bI5uhEEUVAhBmwmQ",
-    "folderName": "Caring Hands Healthcare Services II, LLC - Celia Ogilvie",
-    "confidence": 70,
+    "folderId": "1HZOwmNMraWgbAYMDBa4Ujq7VVhx0viEO",
+    "folderName": "Serenity Living Care, Inc. Dba Serenity Living",
+    "confidence": 95,
     "matchType": "auto",
-    "reasoning": "2 common words: \"healthcare, llc\" (50% overlap)",
-    "matchedAt": "2025-11-26T05:34:38.332Z"
+    "reasoning": "All meaningful words match: \"serenity\"",
+    "matchedAt": "2025-11-27T04:04:47.267Z"
   },
   "T5 Management, Inc. DBA Right At Home - Northwest Indiana": {
     "folderId": "1cpc9_NIeVRuxUypTJyUKRPr9aqusxrVD",
     "folderName": "T5 Management",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "Prefix match detected (similarity: 25%)",
-    "matchedAt": "2025-11-26T05:34:38.341Z"
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually accepted: Prefix match detected (similarity: 25%)",
+    "matchedAt": "2025-11-26T05:34:38.341Z",
+    "reviewedAt": "2025-11-27T03:58:07.626Z"
   }
 }
