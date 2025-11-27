@@ -847,7 +847,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"test\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.144Z"
+    "matchedAt": "2025-11-27T06:30:27.622Z"
   },
   "JJD Senior Services LLC": {
     "folderId": "1Y-rw5CY2WdIroMCs_rw_El9YHeZk6UGp",
@@ -917,15 +917,15 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.148Z"
+    "matchedAt": "2025-11-27T06:30:27.626Z"
   },
   "Hylton Healthcare Solutions, LLC": {
-    "folderId": "10fC2RNaHvBc9ooOEVGkHdN0l1N22ZtKd",
-    "folderName": "N Solutions",
-    "confidence": 75,
+    "folderId": "1o-3CNM5m5Tc3B9hU7gXxjZQTYePUkHeE",
+    "folderName": "Affordable Home Care Solutions - Zach Shaw & Seth Layman",
+    "confidence": 70,
     "matchType": "auto",
-    "reasoning": "Meaningful containment: \"hylton solutions\" in \"solutions\"",
-    "matchedAt": "2025-11-27T04:52:16.151Z"
+    "reasoning": "1 common words: \"solutions\" (50% overlap)",
+    "matchedAt": "2025-11-27T06:30:27.629Z"
   },
   "HCA Of Naples, LLC DBA: Home Care Assistance of Naples": {
     "folderId": "155LaojXKMkPI678OCYbRV2t3O0Q07UFv",
@@ -951,7 +951,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.153Z"
+    "matchedAt": "2025-11-27T06:30:27.631Z"
   },
   "Sabalcare, LLC": {
     "folderId": "1fpkh3x5mHp4am7uNf960lPV8RSXqM6qT",
@@ -990,12 +990,13 @@
     "reviewedAt": "2025-11-27T03:54:21.556Z"
   },
   "N Solution LLC Dba: Senior Helpers Of Napa": {
-    "folderId": "1WzW-ZjkJk9MOSt5G4cvwINK3wPVkPCfh",
-    "folderName": "Magnusson Enterprises LLC Senior Helpers - Nick Magnusson",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"senior, helpers\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.157Z"
+    "folderId": "10fC2RNaHvBc9ooOEVGkHdN0l1N22ZtKd",
+    "folderName": "N Solutions",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:22:27.719Z",
+    "reviewedAt": "2025-11-27T06:22:27.719Z"
   },
   "Nu Care San Jose, Inc.": {
     "folderId": "1cJV0RKveto_meGHeDpncaPAs0bvU_upE",
@@ -1012,7 +1013,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"day\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.160Z"
+    "matchedAt": "2025-11-27T06:30:27.634Z"
   },
   "Capital Region Home Care LLC Dba Right At Home Albany": {
     "folderId": "1DF9-1L02gC7hd9xokn-xsjWXNRKatlBE",
@@ -1055,7 +1056,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"professionals\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.163Z"
+    "matchedAt": "2025-11-27T06:30:27.636Z"
   },
   "Empbrace Care Management, LLC": {
     "folderId": "1-nsfT9tNNTmPswaNtfh-3x4oq9fmrDOP",
@@ -1063,7 +1064,7 @@
     "confidence": 75,
     "matchType": "auto",
     "reasoning": "Meaningful containment: \"empbrace management\" in \"management\"",
-    "matchedAt": "2025-11-27T04:52:16.166Z"
+    "matchedAt": "2025-11-27T06:30:27.639Z"
   },
   "Sunshine Solutions Group LLC Dba Senior Helpers East San Diego": {
     "folderId": "13z-fIEhhVnaT6aBfx_SzpbanrkLNL7hJ",
@@ -1111,12 +1112,13 @@
     "reviewedAt": "2025-11-27T03:54:39.715Z"
   },
   "Crawford Health Services, LLC Dba Stay At Home Of Knoxville": {
-    "folderId": "",
-    "folderName": "",
-    "confidence": 0,
-    "matchType": "auto",
-    "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.169Z"
+    "folderId": "1kXqBwbEzUYs9wmz8JwH00u-ausrPGRJs",
+    "folderName": "Crawford Health Services LLC-Knoxville Scott Crawford",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:24:22.701Z",
+    "reviewedAt": "2025-11-27T06:24:22.701Z"
   },
   "The G & L Family Of Caregivers LLC": {
     "folderId": "1nQ4bqZz-B_ZS706gLpIFYD2RYlWCUecd",
@@ -1132,7 +1134,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"nursing\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.171Z"
+    "matchedAt": "2025-11-27T06:30:27.641Z"
   },
   "Grace Care Services, Inc": {
     "folderId": "1PGqySuuvJejgFNYccf-dm12zCjsJN77X",
@@ -1158,7 +1160,7 @@
     "confidence": 85,
     "matchType": "auto",
     "reasoning": "3/4 meaningful words match: \"enterprises, senior, helpers\"",
-    "matchedAt": "2025-11-27T04:52:16.176Z"
+    "matchedAt": "2025-11-27T06:30:27.645Z"
   },
   "A Place Called Home LLC Dba Thriving At Home Senior Care": {
     "folderId": "1ldJiPumN_HfioHusOlMrse9cQ-rBY74p",
@@ -1237,7 +1239,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.180Z"
+    "matchedAt": "2025-11-27T06:30:27.649Z"
   },
   "Dara Homecare, LLC": {
     "folderId": "",
@@ -1245,7 +1247,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.181Z"
+    "matchedAt": "2025-11-27T06:30:27.650Z"
   },
   "Pure Touch Home Care, LLC": {
     "folderId": "1284a0uanYDhxIiOBRrczuItaobGH1yZw",
@@ -1322,7 +1324,7 @@
     "confidence": 73,
     "matchType": "auto",
     "reasoning": "2 common words: \"angels, visiting\" (67% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.184Z"
+    "matchedAt": "2025-11-27T06:30:27.653Z"
   },
   "High Plains HCA": {
     "folderId": "1WTxhgcAiiK2s3CFh7PoggM9n7GmaFjcs",
@@ -1339,7 +1341,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"help\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.186Z"
+    "matchedAt": "2025-11-27T06:30:27.655Z"
   },
   "Avalon Care LLC": {
     "folderId": "1LSQ8u2rN36949YuU_RJiflssym5vP5SG",
@@ -1397,7 +1399,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.187Z"
+    "matchedAt": "2025-11-27T06:30:27.656Z"
   },
   "Complete Homecare Of America, Inc.": {
     "folderId": "1rJUALMuU8OTzU2p2oCgBKHpKr9knnp-1",
@@ -1422,7 +1424,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.190Z"
+    "matchedAt": "2025-11-27T06:30:27.659Z"
   },
   "Sunday Money LLC DBA Home Instead": {
     "folderId": "1V64_PGJxRtC8sYdnQdXMAWCmY2z80oWO",
@@ -1448,7 +1450,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.192Z"
+    "matchedAt": "2025-11-27T06:30:27.660Z"
   },
   "Believe Home Care Services, LLC": {
     "folderId": "1IzMFX8chgalLze-Sn_ZDNoJMlRJsrmKv",
@@ -1526,7 +1528,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.195Z"
+    "matchedAt": "2025-11-27T06:30:27.663Z"
   },
   "Celestial Caregiving, LLC": {
     "folderId": "1iP1LwUPnHDUgKj_O1m4WG2e9QGYDW0mt",
@@ -1578,7 +1580,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.199Z"
+    "matchedAt": "2025-11-27T06:30:27.667Z"
   },
   "Dare To Care Home Care, LLC": {
     "folderId": "17dj_hYJYSFbVjpBeoQQJY3Ynat0IsuGL",
@@ -1620,7 +1622,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.202Z"
+    "matchedAt": "2025-11-27T06:30:27.670Z"
   },
   "Loving Homecare, Inc.": {
     "folderId": "1qBXy4sa-n5FvaTfobV__zFcwfzbH6VSX",
@@ -1637,7 +1639,7 @@
     "confidence": 75,
     "matchType": "auto",
     "reasoning": "Meaningful containment: \"test transportation\" in \"transport\"",
-    "matchedAt": "2025-11-27T04:52:16.205Z"
+    "matchedAt": "2025-11-27T06:30:27.673Z"
   },
   "TRCA Services LLC DBA Homewell Care Services": {
     "folderId": "1l9gzD--n_q9IVvYGHUtWV2qr3Z6aTCSk",
@@ -1667,12 +1669,13 @@
     "reviewedAt": "2025-11-27T03:55:38.826Z"
   },
   "J5 Therapy Inc DBA J5 Caring Support Agency": {
-    "folderId": "",
-    "folderName": "",
-    "confidence": 0,
-    "matchType": "auto",
-    "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.208Z"
+    "folderId": "1j3_ViUKt6QatdfRHSnh95giWV6VOaEi6",
+    "folderName": "J5  Care & Support Agency - Jaranimo",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:27:23.713Z",
+    "reviewedAt": "2025-11-27T06:27:23.713Z"
   },
   "Green Tree Home Care, LLC": {
     "folderId": "12orIgIUve3hOCSeTeAjOJxlI63lSylbR",
@@ -1707,7 +1710,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.210Z"
+    "matchedAt": "2025-11-27T06:30:27.675Z"
   },
   "Stay In Home Care Inc.": {
     "folderId": "16z-MZFndJRw5MDOJuZYKJSf8UqKbwxvf",
@@ -1792,7 +1795,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.213Z"
+    "matchedAt": "2025-11-27T06:30:27.677Z"
   },
   "Glenwood Homecare LLC": {
     "folderId": "1Hvd3Oo8HZAW_3ZG28KWINKmmXLkAdawM",
@@ -1834,7 +1837,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.216Z"
+    "matchedAt": "2025-11-27T06:30:27.678Z"
   },
   "The Sjoberg Group, LLC Dba: Right At Home": {
     "folderId": "1_qpaN-wcuvvaNqY8jIFvos4dfVmmWjeF",
@@ -1851,7 +1854,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.218Z"
+    "matchedAt": "2025-11-27T06:30:27.680Z"
   },
   "Abacares LLC DBA Abacares Services": {
     "folderId": "1lGkb0kJX7ek6oZRGpL7Shev6OzHWcT0z",
@@ -1877,7 +1880,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.221Z"
+    "matchedAt": "2025-11-27T06:30:27.682Z"
   },
   "JUCE Services, Inc.dba Visiting Angels": {
     "folderId": "1Offyn4KaSWWhoa5s_xKSHKt8-A_raIU3",
@@ -1894,7 +1897,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.223Z"
+    "matchedAt": "2025-11-27T06:30:27.684Z"
   },
   "Anointed Angels Home Care, LLC": {
     "folderId": "14kkG6525eZJWI1XWgBt7bsuygUesVAf0",
@@ -1911,7 +1914,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.226Z"
+    "matchedAt": "2025-11-27T06:30:27.686Z"
   },
   "Divine Hands Home Health, LLC": {
     "folderId": "1lNos9fmKRAVf9Sx1avUc7yPPBvLijdHg",
@@ -1964,7 +1967,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.228Z"
+    "matchedAt": "2025-11-27T06:30:27.688Z"
   },
   "D'mission Home Health Services, Inc.": {
     "folderId": "",
@@ -1972,7 +1975,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.230Z"
+    "matchedAt": "2025-11-27T06:30:27.689Z"
   },
   "Lovewell Home Care, LLC": {
     "folderId": "1xPjk0jGdVbk1velTopQi3pps8pd830OD",
@@ -1997,7 +2000,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"hospice\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.232Z"
+    "matchedAt": "2025-11-27T06:30:27.692Z"
   },
   "The Master Caregiver Company, LLC": {
     "folderId": "1ljssjibGeWH0ChnrvqvLmWwXnS8lAZ9g",
@@ -2040,15 +2043,16 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.237Z"
+    "matchedAt": "2025-11-27T06:30:27.697Z"
   },
   "Kalyani Senior Services Co Dba Always Best Care Senior Services": {
-    "folderId": "1781rzOKLlECyBNI0xZpNprR1yA9_v4o6",
-    "folderName": "ARG Senior Care LLC dba Always Best Care - Robin Henoch",
-    "confidence": 85,
-    "matchType": "auto",
-    "reasoning": "3/4 meaningful words match: \"senior, always, best\"",
-    "matchedAt": "2025-11-27T04:52:16.241Z"
+    "folderId": "11NNaKaG6CbIrO9B9ZNrXeqOfIP5EImaR",
+    "folderName": "Kalyani Senior Services, Co. dba ABC Raleigh Sanjay Das",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:19:40.753Z",
+    "reviewedAt": "2025-11-27T06:19:40.753Z"
   },
   "William & Oliver, LLC Dba First Choice Senior Care": {
     "folderId": "1r0lkh6gHiWWojLg-_WmgJLdqLCAnEhoo",
@@ -2082,7 +2086,7 @@
     "confidence": 75,
     "matchType": "auto",
     "reasoning": "Meaningful containment: \"adels coordination\" in \"nation\"",
-    "matchedAt": "2025-11-27T04:52:16.244Z"
+    "matchedAt": "2025-11-27T06:30:27.700Z"
   },
   "Wings Of An Angel In Home Care, LLC": {
     "folderId": "1Kp-K5LjLf3zZdEZHJkxzTfFg2SY2V8RB",
@@ -2102,12 +2106,13 @@
     "reviewedAt": "2025-11-27T03:56:33.282Z"
   },
   "Mykala Enterprises, Inc Dba Right At Home Of South Central Michigan": {
-    "folderId": "",
-    "folderName": "",
-    "confidence": 0,
-    "matchType": "auto",
-    "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.248Z"
+    "folderId": "1gqEKsAPSdtIIa6vDs1JTWPrWRhc7x7ay",
+    "folderName": "Mykala Group DBA Right At Home Of Kalamazoo",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:28:53.590Z",
+    "reviewedAt": "2025-11-27T06:28:53.590Z"
   },
   "Allpro StaffNet Limited Liability Company DBA Allpro Homecare": {
     "folderId": "1FRRUzW2W0iiXOQCJt0PV9kQvstERzlTf",
@@ -2128,12 +2133,13 @@
     "reviewedAt": "2025-11-27T03:59:07.600Z"
   },
   "HSH Senior Services, Inc. Dba Home Sweet Home In-home Care": {
-    "folderId": "1TVDBEYGblf_65UReTKZAHMdEA7ccIDYS",
-    "folderName": "Central Coast In-Home Senior Care LLC - Ronald Torres",
-    "confidence": 70,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"senior, inhome\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.250Z"
+    "folderId": "11J4qN1vNlDKJi9-NASvgmbcAmVq33biC",
+    "folderName": "HSH Senior Services Inc.  William -joey-najchat",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:23:28.223Z",
+    "reviewedAt": "2025-11-27T06:23:28.223Z"
   },
   "Pierce Unit 1, LLC Dba Home Matters": {
     "folderId": "13Lk21pr8KkpZqqW1RlKYu8SHafKZUDys",
@@ -2185,7 +2191,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.252Z"
+    "matchedAt": "2025-11-27T06:30:27.702Z"
   },
   "Absf, LLC Dba Family Tree In-home Private Care": {
     "folderId": "1I04VImhS7sXqy7BBlUWQmzuozrhZf7ZW",
@@ -2317,7 +2323,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.255Z"
+    "matchedAt": "2025-11-27T06:30:27.705Z"
   },
   "SEJ Resources, Inc. Dba Acti-kare Responsive In-home Services": {
     "folderId": "1ojSauDdoyXTusffp4tLrutr4FChuAWFc",
@@ -2379,7 +2385,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.260Z"
+    "matchedAt": "2025-11-27T06:30:27.709Z"
   },
   "Heart At Home, LLC": {
     "folderId": "1PydfdyjrOh2vCEU3NdfAOfXavLBksCJA",
@@ -2396,7 +2402,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"hope\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.261Z"
+    "matchedAt": "2025-11-27T06:30:27.712Z"
   },
   "Caswell Bay, Inc (a Corp)": {
     "folderId": "1ShIL6skkAiT-R1-Eo1Ut9kfBTMCUy7MW",
@@ -2421,7 +2427,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.264Z"
+    "matchedAt": "2025-11-27T06:30:27.715Z"
   },
   "Anchorage Home Care, LLC DBA Preferred Care At Home Of Alaska": {
     "folderId": "1gzB-gtDEQruT3LK9a5u4DYmyYV9BjqoX",
@@ -2456,7 +2462,7 @@
     "confidence": 70,
     "matchType": "auto",
     "reasoning": "1 common words: \"test\" (50% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.266Z"
+    "matchedAt": "2025-11-27T06:30:27.717Z"
   },
   "Carson Holdings, Inc Dba Homewatch Caregivers": {
     "folderId": "1ufJXF-zwlrIyDKO3AZXeXpTEyc7Avvvi",
@@ -2482,7 +2488,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.270Z"
+    "matchedAt": "2025-11-27T06:30:27.720Z"
   },
   "Devoted Guardians Inc DBA Devoted Guardians Home Care": {
     "folderId": "1i4EnLBVcfT7a33NLL-eU07uvIJFrcjl5",
@@ -2525,7 +2531,7 @@
     "confidence": 0,
     "matchType": "auto",
     "reasoning": "No matching folder found (needs manual entry)",
-    "matchedAt": "2025-11-27T04:52:16.272Z"
+    "matchedAt": "2025-11-27T06:30:27.721Z"
   },
   "Keith & Associates, LLC Dba: Right At Home In The Northern Neck": {
     "folderId": "1Ii2Ixu8kwsWoW6Q65oQ6ei29URdHrgzg",
@@ -2586,7 +2592,7 @@
     "confidence": 75,
     "matchType": "auto",
     "reasoning": "Meaningful containment: \"giving\" in \"celestial caregiving diane stohr\"",
-    "matchedAt": "2025-11-27T04:52:16.273Z"
+    "matchedAt": "2025-11-27T06:30:27.723Z"
   },
   "FHAE LLC DBA A Better Solution In Home Care": {
     "folderId": "1gLGeWNzji-lc-cS91efjvdpkV5DpcS7u",
@@ -2669,12 +2675,13 @@
     "reviewedAt": "2025-11-27T04:00:44.109Z"
   },
   "Healing Hearts NC, LLC Dba Healing Heats NC": {
-    "folderId": "15vqFWbVeWmjqtxWwSZpiDvzgtibw2P7P",
-    "folderName": "Healing Hands Caring Hearts LLC",
-    "confidence": 73,
-    "matchType": "auto",
-    "reasoning": "2 common words: \"healing, hearts\" (67% overlap)",
-    "matchedAt": "2025-11-27T04:52:16.276Z"
+    "folderId": "1Npd6bP9MFLFXF6B0NBn9ublIslu6oigE",
+    "folderName": "Healing Hearts NC, LLC - WC Prospect",
+    "confidence": 100,
+    "matchType": "manual",
+    "reasoning": "Manually entered folder ID",
+    "matchedAt": "2025-11-27T06:22:00.524Z",
+    "reviewedAt": "2025-11-27T06:22:00.524Z"
   },
   "Serenity Healthcare Agency, LLC": {
     "folderId": "1HZOwmNMraWgbAYMDBa4Ujq7VVhx0viEO",
