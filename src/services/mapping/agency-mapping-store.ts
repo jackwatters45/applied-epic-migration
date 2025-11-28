@@ -5,7 +5,7 @@ import { Effect, Schema } from "effect";
 const MAPPINGS_FILE_PATH = "data/agency-mappings.json";
 
 // Types
-export type MatchType = "exact" | "auto" | "manual";
+export type MatchType = "exact" | "auto" | "manual" | "delete" | "create";
 
 export interface AgencyMapping {
   readonly folderId: string;
@@ -113,6 +113,16 @@ export class AgencyMappingStoreService extends Effect.Service<AgencyMappingStore
       // Get all mappings
       const getAll = () => load();
 
+      // Delete a mapping (remove from store)
+      const remove = (agencyName: string) =>
+        Effect.gen(function* () {
+          yield* load();
+          if (cache && agencyName in cache) {
+            delete cache[agencyName];
+          }
+          yield* save();
+        });
+
       // Clear cache (force reload on next access)
       const clearCache = () =>
         Effect.sync(() => {
@@ -124,6 +134,7 @@ export class AgencyMappingStoreService extends Effect.Service<AgencyMappingStore
         save,
         get,
         set,
+        remove,
         getUnmapped,
         getPendingReview,
         getAll,

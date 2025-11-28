@@ -184,6 +184,8 @@ const runReview = () =>
       }
       yield* display("  [s] Skip (review later)");
       yield* display("  [m] Enter manual folder ID");
+      yield* display("  [d] Delete (test folder, should not be added)");
+      yield* display("  [c] Create (no matching agency, needs to be created)");
       yield* display("  [q] Quit review");
       yield* display("");
 
@@ -253,6 +255,38 @@ const runReview = () =>
         };
         yield* store.set(mapping.agencyName, skippedMapping);
         yield* display("Skipped - will appear at end of next review.\n");
+      } else if (normalizedChoice === "d") {
+        // Mark for deletion - test folder that should not be added
+        const deleteMapping: AgencyMapping = {
+          folderId: "",
+          folderName: "",
+          confidence: 100,
+          matchType: "delete",
+          reasoning:
+            "Marked for deletion - test folder that should not be added to shared drive",
+          matchedAt: new Date().toISOString(),
+          reviewedAt: new Date().toISOString(),
+        };
+        yield* store.set(mapping.agencyName, deleteMapping);
+        yield* display(
+          `Marked for deletion: "${mapping.agencyName}" (test folder)\n`,
+        );
+      } else if (normalizedChoice === "c") {
+        // Mark for creation - no matching agency in shared drive
+        const createMapping: AgencyMapping = {
+          folderId: "",
+          folderName: "",
+          confidence: 100,
+          matchType: "create",
+          reasoning:
+            "Marked for creation - no matching agency folder exists in shared drive",
+          matchedAt: new Date().toISOString(),
+          reviewedAt: new Date().toISOString(),
+        };
+        yield* store.set(mapping.agencyName, createMapping);
+        yield* display(
+          `Marked for creation: "${mapping.agencyName}" (new folder needed)\n`,
+        );
       } else {
         yield* display(`Unknown option "${choice}", skipping...\n`);
       }
