@@ -1,4 +1,6 @@
 # TODO
 
-1. match all attachment org names to a google drive folder name!
-2. Dry run of merging
+- Unzip all attachment files
+- rename all attachments to actual nameof
+- Recreate hierarchy same as we did with google drive
+- Dry run of merging
