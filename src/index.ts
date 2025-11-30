@@ -3,8 +3,10 @@ import { Command, Options } from "@effect/cli";
 import { Terminal } from "@effect/platform";
 import { NodeContext, NodeRuntime, NodeTerminal } from "@effect/platform-node";
 import { ConfigProvider, Effect, Layer } from "effect";
+import { CacheMode } from "./lib/type.js";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
 import { AttachmentMoverService } from "./services/attachment-mover/mover.js";
+import { GoogleDriveFileService } from "./services/google-drive/file.js";
 import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import {
   type AgencyMapping,
@@ -13,6 +15,7 @@ import {
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
 import { MergingOrchestratorService } from "./services/merging/orchestrator.js";
 import { RollbackService } from "./services/merging/rollback.js";
+import { ZipAnalyzerService } from "./services/zip-analysis/analyzer.js";
 
 // Create a config layer from CLI options
 const makeConfigLayer = (options: {
@@ -496,13 +499,253 @@ const statusCommand = Command.make("status", {}, runStatus).pipe(
   Command.withDescription("Show current agency mapping status"),
 );
 
+// ============================================================================
+// Analyze Zips Command - Analyze zip file contents
+// ============================================================================
+
+const analyzeZipsLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  ZipAnalyzerService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const limitZipsOption = Options.integer("limit").pipe(
+  Options.withAlias("n"),
+  Options.withDescription("Limit to N zip files (for testing)"),
+  Options.optional,
+);
+
+const runAnalyzeZips = (options: { limit: number | undefined }) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const analyzer = yield* ZipAnalyzerService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("ZIP FILE ANALYZER");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    // Step 1: Get organized attachments
+    yield* display("Loading attachment metadata...");
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    // Step 2: Analyze zip files
+    yield* display("Analyzing zip files...\n");
+    const report = yield* analyzer.analyzeZips(organized, {
+      limit: options.limit,
+    });
+
+    // Display summary
+    yield* display(`\nAnalysis complete. Found ${report.totalZips} zip files.`);
+    yield* display("Report saved to: logs/zip-analysis-report.json");
+  }).pipe(Effect.provide(analyzeZipsLayer));
+
+const analyzeZipsCommand = Command.make(
+  "analyze-zips",
+  { limit: limitZipsOption },
+  (options) =>
+    runAnalyzeZips({
+      limit: options.limit._tag === "Some" ? options.limit.value : undefined,
+    }),
+).pipe(
+  Command.withDescription(
+    "Analyze zip file contents to understand their structure",
+  ),
+);
+
+// ============================================================================
+// Move Folder Contents Command
+// ============================================================================
+
+const moveFolderContentsLayer = Layer.mergeAll(
+  GoogleDriveFileService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const sourceFolderOption = Options.text("source").pipe(
+  Options.withAlias("s"),
+  Options.withDescription("Source folder ID to move contents from"),
+  Options.optional,
+);
+
+const targetFolderOption = Options.text("target").pipe(
+  Options.withAlias("t"),
+  Options.withDescription("Target folder ID to move contents to"),
+  Options.optional,
+);
+
+const deleteSourceOption = Options.boolean("delete-source").pipe(
+  Options.withDescription("Delete the source folder after moving all contents"),
+  Options.withDefault(false),
+);
+
+const runMoveFolderContents = (options: {
+  source: string | undefined;
+  target: string | undefined;
+  dryRun: boolean;
+  deleteSource: boolean;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const googleDrive = yield* GoogleDriveFileService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("MOVE FOLDER CONTENTS");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    // Interactive prompts if options not provided
+    let source = options.source;
+    let target = options.target;
+
+    if (!source) {
+      source = (yield* prompt("Enter source folder ID: ")).trim();
+      if (!source) {
+        yield* display("Source folder ID is required.");
+        return;
+      }
+    }
+
+    if (!target) {
+      target = (yield* prompt("Enter target folder ID: ")).trim();
+      if (!target) {
+        yield* display("Target folder ID is required.");
+        return;
+      }
+    }
+
+    yield* display(`Source folder: ${source}`);
+    yield* display(`Target folder: ${target}`);
+    yield* display(`Dry run: ${options.dryRun}`);
+    yield* display("");
+
+    // List all files in source folder (no cache to ensure fresh data)
+    yield* display("Listing files in source folder...");
+    const files = yield* googleDrive.listFiles({
+      parentId: source,
+      cacheMode: CacheMode.NONE,
+    });
+
+    yield* display(`Found ${files.length} items to move\n`);
+
+    if (files.length === 0) {
+      yield* display("No files to move.");
+      return;
+    }
+
+    let moved = 0;
+    let failed = 0;
+
+    if (options.dryRun) {
+      // Dry run - just list what would be moved
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        yield* display(`[${i + 1}/${files.length}] Would move: ${file.name}`);
+        moved++;
+      }
+    } else {
+      // Move files in parallel batches for speed
+      const BATCH_SIZE = 20; // Number of concurrent moves
+      const batches: Array<typeof files> = [];
+
+      for (let i = 0; i < files.length; i += BATCH_SIZE) {
+        batches.push(files.slice(i, i + BATCH_SIZE));
+      }
+
+      yield* display(
+        `Moving in ${batches.length} batches of up to ${BATCH_SIZE} files...\n`,
+      );
+
+      let processed = 0;
+      for (const batch of batches) {
+        // Process batch in parallel
+        const results = yield* Effect.all(
+          batch.map((file) =>
+            Effect.either(googleDrive.moveFile(file.id, target)).pipe(
+              Effect.map((result) => ({ file, result })),
+            ),
+          ),
+          { concurrency: BATCH_SIZE },
+        );
+
+        // Report results
+        for (const { file, result } of results) {
+          processed++;
+          if (result._tag === "Right") {
+            yield* display(
+              `[${processed}/${files.length}] Moved: ${file.name}`,
+            );
+            moved++;
+          } else {
+            yield* display(
+              `[${processed}/${files.length}] FAILED: ${file.name} - ${result.left}`,
+            );
+            failed++;
+          }
+        }
+      }
+    }
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("SUMMARY");
+    yield* display(`${"=".repeat(60)}`);
+    yield* display(`Total items: ${files.length}`);
+    yield* display(`Moved: ${moved}`);
+    yield* display(`Failed: ${failed}`);
+
+    if (options.dryRun) {
+      yield* display("\nThis was a DRY RUN - no files were actually moved.");
+    }
+
+    // Delete source folder if requested and all files were moved successfully
+    if (options.deleteSource && failed === 0 && !options.dryRun) {
+      yield* display("\nDeleting source folder...");
+      const deleteResult = yield* Effect.either(googleDrive.deleteFile(source));
+      if (deleteResult._tag === "Right") {
+        yield* display("Source folder deleted successfully.");
+      } else {
+        yield* display(`Failed to delete source folder: ${deleteResult.left}`);
+      }
+    } else if (options.deleteSource && options.dryRun) {
+      yield* display("\n[DRY RUN] Would delete source folder after move.");
+    } else if (options.deleteSource && failed > 0) {
+      yield* display(
+        "\nSource folder NOT deleted because some files failed to move.",
+      );
+    }
+  }).pipe(Effect.provide(moveFolderContentsLayer));
+
+const moveFolderContentsCommand = Command.make(
+  "move-folder-contents",
+  {
+    source: sourceFolderOption,
+    target: targetFolderOption,
+    dryRun: dryRunOption,
+    deleteSource: deleteSourceOption,
+  },
+  (options) =>
+    runMoveFolderContents({
+      source: options.source._tag === "Some" ? options.source.value : undefined,
+      target: options.target._tag === "Some" ? options.target.value : undefined,
+      dryRun: options.dryRun,
+      deleteSource: options.deleteSource,
+    }),
+).pipe(Command.withDescription("Move all contents from one folder to another"));
+
 // Root command that groups subcommands
 const rootCommand = Command.make("epic-migration").pipe(
   Command.withSubcommands([
     runCommand,
     moveCommand,
+    analyzeZipsCommand,
     reviewCommand,
     statusCommand,
+    moveFolderContentsCommand,
   ]),
   Command.withDescription("Applied Epic Migration CLI"),
 );

@@ -2,6 +2,7 @@ import { Config, Effect } from "effect";
 
 export enum SharedDriveId {
   PROD = "0ADXTdKmRqwv7Uk9PVA",
+  LOOSE = "0AJwDFs3ZHOkbUk9PVA",
   TEST = "0AOulfXIJNYOzUk9PVA",
   TEST_2 = "0ADcheCHr_qkFUk9PVA",
   TEST_3 = "0AN4wFrvCjZ9JUk9PVA",
