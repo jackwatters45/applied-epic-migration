@@ -450,6 +450,49 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
           }),
 
         /**
+         * Upload a file to Google Drive
+         */
+        uploadFile: (params: {
+          fileName: string;
+          content: Uint8Array;
+          parentId: string;
+          mimeType?: string | undefined;
+        }) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            const { Readable } = yield* Effect.promise(
+              () => import("node:stream"),
+            );
+
+            const response = yield* Effect.tryPromise({
+              try: () =>
+                drive.files.create({
+                  requestBody: {
+                    name: params.fileName,
+                    parents: [params.parentId],
+                  },
+                  media: {
+                    mimeType: params.mimeType || "application/octet-stream",
+                    body: Readable.from(Buffer.from(params.content)),
+                  },
+                  fields: "id,name",
+                  supportsAllDrives: true,
+                }),
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to upload file ${params.fileName}: ${error}`,
+                }),
+            });
+
+            return {
+              id: response.data.id || "",
+              name: response.data.name || "",
+            };
+          }),
+
+        /**
          * Search for files by name, optionally within a specific folder.
          * Returns all matching files (there may be multiple with the same name).
          */

@@ -5,7 +5,12 @@ import { NodeContext, NodeRuntime, NodeTerminal } from "@effect/platform-node";
 import { ConfigProvider, Effect, Layer } from "effect";
 import { CacheMode } from "./lib/type.js";
 import { AttachmentMetadataOrchestratorService } from "./services/attachment-metadata/orchestrator.js";
-import { AttachmentMoverService } from "./services/attachment-mover/mover.js";
+import { AttachmentMoverService } from "./services/attachment-pipeline/file-mover.js";
+import { AttachmentRenamerService } from "./services/attachment-pipeline/file-renamer.js";
+import { AttachmentHierarchyService } from "./services/attachment-pipeline/hierarchy-builder.js";
+import { AttachmentOrganizerService } from "./services/attachment-pipeline/orchestrator.js";
+import { ZipAnalyzerService } from "./services/attachment-pipeline/zip-analyzer.js";
+import { ZipExtractorService } from "./services/attachment-pipeline/zip-extractor.js";
 import { GoogleDriveFileService } from "./services/google-drive/file.js";
 import { GoogleDriveReorganizationService } from "./services/google-drive/reorganization.js";
 import {
@@ -15,7 +20,6 @@ import {
 import { MappingOrchestratorService } from "./services/mapping/orchestrator.js";
 import { MergingOrchestratorService } from "./services/merging/orchestrator.js";
 import { RollbackService } from "./services/merging/rollback.js";
-import { ZipAnalyzerService } from "./services/zip-analysis/analyzer.js";
 
 // Create a config layer from CLI options
 const makeConfigLayer = (options: {
@@ -557,6 +561,304 @@ const analyzeZipsCommand = Command.make(
 );
 
 // ============================================================================
+// Extract Zips Command - Extract all zip files
+// ============================================================================
+
+const extractZipsLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  ZipExtractorService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const runExtractZips = (options: {
+  limit: number | undefined;
+  dryRun: boolean;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const extractor = yield* ZipExtractorService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("ZIP FILE EXTRACTOR");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    if (options.dryRun) {
+      yield* display("DRY RUN MODE - No files will be uploaded or archived\n");
+    }
+
+    // Step 1: Get organized attachments
+    yield* display("Loading attachment metadata...");
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    // Step 2: Extract zip files
+    yield* display("Extracting zip files...\n");
+    const report = yield* extractor.extractAllZips(organized, {
+      limit: options.limit,
+      dryRun: options.dryRun,
+    });
+
+    // Display summary
+    yield* display("\nExtraction complete.");
+    yield* display(`  Zips processed: ${report.totalZips}`);
+    yield* display(`  Files extracted: ${report.totalFilesExtracted}`);
+    yield* display(`  Files uploaded: ${report.totalFilesUploaded}`);
+    yield* display("Report saved to: logs/zip-extraction-report.json");
+  }).pipe(Effect.provide(extractZipsLayer));
+
+const extractZipsCommand = Command.make(
+  "extract-zips",
+  {
+    limit: limitZipsOption,
+    dryRun: dryRunOption,
+  },
+  (options) =>
+    runExtractZips({
+      limit: options.limit._tag === "Some" ? options.limit.value : undefined,
+      dryRun: options.dryRun,
+    }),
+).pipe(
+  Command.withDescription(
+    "Extract all zip files and upload contents to Google Drive",
+  ),
+);
+
+// ============================================================================
+// Rename Attachments Command
+// ============================================================================
+
+const renameAttachmentsLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  AttachmentRenamerService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const limitRenameOption = Options.integer("limit").pipe(
+  Options.withAlias("n"),
+  Options.withDescription("Limit to N files (for testing)"),
+  Options.optional,
+);
+
+const runRenameAttachments = (options: {
+  limit: number | undefined;
+  dryRun: boolean;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const renamer = yield* AttachmentRenamerService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("ATTACHMENT RENAMER");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    if (options.dryRun) {
+      yield* display("DRY RUN MODE - No files will be renamed\n");
+    }
+
+    // Step 1: Get organized attachments
+    yield* display("Loading attachment metadata...");
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    // Step 2: Rename attachments
+    yield* display("Renaming attachments...\n");
+    const report = yield* renamer.renameAll(organized, {
+      limit: options.limit,
+      dryRun: options.dryRun,
+    });
+
+    // Display summary
+    yield* display("\nRename complete.");
+    yield* display(`  Total: ${report.totalAttachments}`);
+    yield* display(`  Renamed: ${report.renamed}`);
+    yield* display(`  Failed: ${report.failed}`);
+    yield* display("Report saved to: logs/rename-report.json");
+  }).pipe(Effect.provide(renameAttachmentsLayer));
+
+const renameAttachmentsCommand = Command.make(
+  "rename-attachments",
+  {
+    limit: limitRenameOption,
+    dryRun: dryRunOption,
+  },
+  (options) =>
+    runRenameAttachments({
+      limit: options.limit._tag === "Some" ? options.limit.value : undefined,
+      dryRun: options.dryRun,
+    }),
+).pipe(
+  Command.withDescription(
+    "Rename UUID-named attachments to human-readable names",
+  ),
+);
+
+// ============================================================================
+// Build Hierarchy Command
+// ============================================================================
+
+const buildHierarchyLayer = Layer.mergeAll(
+  AttachmentMetadataOrchestratorService.Default,
+  AttachmentHierarchyService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const limitHierarchyOption = Options.integer("limit").pipe(
+  Options.withAlias("n"),
+  Options.withDescription("Limit to N agencies (for testing)"),
+  Options.optional,
+);
+
+const runBuildHierarchy = (options: {
+  limit: number | undefined;
+  dryRun: boolean;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const metadataOrchestrator = yield* AttachmentMetadataOrchestratorService;
+    const hierarchyBuilder = yield* AttachmentHierarchyService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("HIERARCHY BUILDER");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    if (options.dryRun) {
+      yield* display("DRY RUN MODE - No folders will be created\n");
+    }
+
+    // Step 1: Get organized attachments
+    yield* display("Loading attachment metadata...");
+    const organized = yield* metadataOrchestrator.run({ useCache: true });
+
+    // Step 2: Build hierarchy
+    yield* display("Building Agency/Year hierarchy...\n");
+    const result = yield* hierarchyBuilder.buildHierarchy(organized, {
+      limit: options.limit,
+      dryRun: options.dryRun,
+    });
+
+    // Display summary
+    yield* display("\nHierarchy build complete.");
+    yield* display(`  Agencies: ${result.totalAgencies}`);
+    yield* display(`  Year folders: ${result.totalYearFolders}`);
+    yield* display(
+      `  Created: ${result.createdAgencyFolders} agencies, ${result.createdYearFolders} years`,
+    );
+    yield* display("Report saved to: logs/hierarchy-build-report.json");
+  }).pipe(Effect.provide(buildHierarchyLayer));
+
+const buildHierarchyCommand = Command.make(
+  "build-hierarchy",
+  {
+    limit: limitHierarchyOption,
+    dryRun: dryRunOption,
+  },
+  (options) =>
+    runBuildHierarchy({
+      limit: options.limit._tag === "Some" ? options.limit.value : undefined,
+      dryRun: options.dryRun,
+    }),
+).pipe(
+  Command.withDescription(
+    "Build Agency/Year folder hierarchy in attachments drive",
+  ),
+);
+
+// ============================================================================
+// Organize Command - Full pipeline
+// ============================================================================
+
+const organizeLayer = Layer.mergeAll(
+  AttachmentOrganizerService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const skipHierarchyOption = Options.boolean("skip-hierarchy").pipe(
+  Options.withDescription("Skip building hierarchy step"),
+  Options.withDefault(false),
+);
+
+const skipExtractOption = Options.boolean("skip-extract").pipe(
+  Options.withDescription("Skip extracting zips step"),
+  Options.withDefault(false),
+);
+
+const skipRenameOption = Options.boolean("skip-rename").pipe(
+  Options.withDescription("Skip renaming files step"),
+  Options.withDefault(false),
+);
+
+const limitOrganizeOption = Options.integer("limit").pipe(
+  Options.withAlias("n"),
+  Options.withDescription("Limit items per step (for testing)"),
+  Options.optional,
+);
+
+const runOrganize = (options: {
+  limit: number | undefined;
+  dryRun: boolean;
+  skipHierarchy: boolean;
+  skipExtract: boolean;
+  skipRename: boolean;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const organizer = yield* AttachmentOrganizerService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("ATTACHMENT ORGANIZER");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    const result = yield* organizer.organize({
+      limit: options.limit,
+      dryRun: options.dryRun,
+      skip: {
+        hierarchy: options.skipHierarchy,
+        extractZips: options.skipExtract,
+        rename: options.skipRename,
+      },
+    });
+
+    yield* display(
+      `\nPipeline ${result.success ? "completed successfully" : "failed"}`,
+    );
+  }).pipe(Effect.provide(organizeLayer));
+
+const organizeCommand = Command.make(
+  "organize",
+  {
+    limit: limitOrganizeOption,
+    dryRun: dryRunOption,
+    skipHierarchy: skipHierarchyOption,
+    skipExtract: skipExtractOption,
+    skipRename: skipRenameOption,
+  },
+  (options) =>
+    runOrganize({
+      limit: options.limit._tag === "Some" ? options.limit.value : undefined,
+      dryRun: options.dryRun,
+      skipHierarchy: options.skipHierarchy,
+      skipExtract: options.skipExtract,
+      skipRename: options.skipRename,
+    }),
+).pipe(
+  Command.withDescription(
+    "Run full organization pipeline: hierarchy -> extract -> rename",
+  ),
+);
+
+// ============================================================================
 // Move Folder Contents Command
 // ============================================================================
 
@@ -737,15 +1039,102 @@ const moveFolderContentsCommand = Command.make(
     }),
 ).pipe(Command.withDescription("Move all contents from one folder to another"));
 
+// ============================================================================
+// Merge to Shared Drive Command
+// ============================================================================
+
+import { SharedDriveMergerService } from "./services/attachment-pipeline/shared-drive-merger.js";
+
+const mergeToSharedDriveLayer = Layer.mergeAll(
+  SharedDriveMergerService.Default,
+  NodeContext.layer,
+  NodeTerminal.layer,
+);
+
+const limitMergeAgenciesOption = Options.integer("limit-agencies").pipe(
+  Options.withAlias("a"),
+  Options.withDescription("Limit to N agencies (for testing)"),
+  Options.optional,
+);
+
+const limitMergeFilesOption = Options.integer("limit-files").pipe(
+  Options.withAlias("f"),
+  Options.withDescription("Limit to N files per agency (for testing)"),
+  Options.optional,
+);
+
+const runMergeToSharedDrive = (options: {
+  dryRun: boolean;
+  limitAgencies: number | undefined;
+  limitFiles: number | undefined;
+}) =>
+  Effect.gen(function* () {
+    const terminal = yield* Terminal.Terminal;
+    const merger = yield* SharedDriveMergerService;
+
+    const display = (message: string) => terminal.display(`${message}\n`);
+
+    yield* display(`\n${"=".repeat(60)}`);
+    yield* display("MERGE TO SHARED DRIVE");
+    yield* display(`${"=".repeat(60)}\n`);
+
+    if (options.dryRun) {
+      yield* display("DRY RUN MODE - No files will be moved\n");
+    }
+
+    const report = yield* merger.mergeToSharedDrive({
+      dryRun: options.dryRun,
+      limitAgencies: options.limitAgencies,
+      limitFilesPerAgency: options.limitFiles,
+    });
+
+    yield* display(
+      `\nMerge ${report.success ? "completed successfully" : "completed with errors"}`,
+    );
+    yield* display(`  Agencies processed: ${report.processedAgencies}`);
+    yield* display(`  Files moved: ${report.movedFiles}`);
+    yield* display(`  Files failed: ${report.failedFiles}`);
+  }).pipe(Effect.provide(mergeToSharedDriveLayer));
+
+const mergeToSharedDriveCommand = Command.make(
+  "merge-to-shared-drive",
+  {
+    dryRun: dryRunOption,
+    limitAgencies: limitMergeAgenciesOption,
+    limitFiles: limitMergeFilesOption,
+  },
+  (options) =>
+    runMergeToSharedDrive({
+      dryRun: options.dryRun,
+      limitAgencies:
+        options.limitAgencies._tag === "Some"
+          ? options.limitAgencies.value
+          : undefined,
+      limitFiles:
+        options.limitFiles._tag === "Some"
+          ? options.limitFiles.value
+          : undefined,
+    }),
+).pipe(
+  Command.withDescription(
+    "Merge organized attachments from attachments drive to shared drive",
+  ),
+);
+
 // Root command that groups subcommands
 const rootCommand = Command.make("epic-migration").pipe(
   Command.withSubcommands([
     runCommand,
+    organizeCommand,
     moveCommand,
     analyzeZipsCommand,
+    extractZipsCommand,
+    buildHierarchyCommand,
+    renameAttachmentsCommand,
     reviewCommand,
     statusCommand,
     moveFolderContentsCommand,
+    mergeToSharedDriveCommand,
   ]),
   Command.withDescription("Applied Epic Migration CLI"),
 );

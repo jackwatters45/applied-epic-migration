@@ -5,7 +5,7 @@ import { ConfigService } from "../../lib/config.js";
 import type { Attachment, OrganizedByAgency } from "../../lib/type.js";
 import { GoogleDriveFileService } from "../google-drive/file.js";
 import { ProgressLoggerService } from "../lib/progress.js";
-import { type ZipContents, ZipInspectorService } from "./inspector.js";
+import { type ZipContents, ZipInspectorService } from "./zip-inspector.js";
 
 // ============================================================================
 // Types
