@@ -1,5 +1,6 @@
-import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
+import { FileSystem } from "@effect/platform";
+import { NodeContext } from "@effect/platform-node";
 import { Effect, Schedule, Schema } from "effect";
 import { type drive_v3, google } from "googleapis";
 import { CacheMode } from "src/lib/type.js";
@@ -49,12 +50,64 @@ type ListParams = {
   cacheMode?: CacheMode;
 };
 
+interface SearchParams {
+  /** File name to search for (exact match) */
+  readonly fileName: string;
+  /** Optional parent folder ID to search within */
+  readonly parentId?: string | undefined;
+  /** Optional shared drive ID */
+  readonly sharedDriveId?: string | undefined;
+}
+
 // Google Drive File Service
 export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileService>()(
   "GoogleDriveFileService",
   {
     effect: Effect.gen(function* () {
       const authService = yield* GoogleDriveAuthService;
+      const fs = yield* FileSystem.FileSystem;
+
+      // Cache helper functions using Effect FileSystem
+      const readCache = (
+        cacheKey: string,
+      ): Effect.Effect<GoogleDriveFile[], GoogleDriveFileError> =>
+        Effect.gen(function* () {
+          const cachePath = join(process.cwd(), ".cache", `${cacheKey}.json`);
+          const cachedData = yield* fs.readFileString(cachePath, "utf8").pipe(
+            Effect.mapError(
+              (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to read cache: ${error}`,
+                }),
+            ),
+          );
+          return JSON.parse(cachedData) as GoogleDriveFile[];
+        });
+
+      const writeCache = (
+        cacheKey: string,
+        data: GoogleDriveFile[],
+      ): Effect.Effect<void, GoogleDriveFileError> =>
+        Effect.gen(function* () {
+          const cacheDir = join(process.cwd(), ".cache");
+          const cachePath = join(cacheDir, `${cacheKey}.json`);
+
+          // Ensure cache directory exists
+          yield* fs
+            .makeDirectory(cacheDir, { recursive: true })
+            .pipe(Effect.ignore);
+
+          yield* fs
+            .writeFileString(cachePath, JSON.stringify(data, null, 2))
+            .pipe(
+              Effect.mapError(
+                (error) =>
+                  new GoogleDriveFileError({
+                    message: `Failed to write cache: ${error}`,
+                  }),
+              ),
+            );
+        });
 
       return {
         listFiles: (params: ListParams = {}) =>
@@ -87,8 +140,9 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
 
             const listParams: drive_v3.Params$Resource$Files$List = {
               q: query,
-              pageSize: 100,
-              fields: "files(id,name,mimeType,parents,size,modifiedTime)",
+              pageSize: 1000,
+              fields:
+                "nextPageToken,files(id,name,mimeType,parents,size,modifiedTime)",
               orderBy: "name",
               supportsAllDrives: true,
               includeItemsFromAllDrives: true,
@@ -99,15 +153,10 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
               listParams.corpora = "drive";
             }
 
-            const response = yield* Effect.tryPromise({
-              try: () => drive.files.list(listParams),
-              catch: (error) =>
-                new GoogleDriveFileError({
-                  message: `Failed to list files: ${error}`,
-                }),
+            const files = yield* fetchAllPages(drive, listParams, {
+              showProgress: true,
             });
 
-            const files = response.data.files || [];
             const result = files.map(
               (file): GoogleDriveFile => ({
                 id: file.id || "",
@@ -375,39 +424,79 @@ export class GoogleDriveFileService extends Effect.Service<GoogleDriveFileServic
                 }),
             });
           }),
+
+        downloadFile: (fileId: string) =>
+          Effect.gen(function* () {
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            const response = yield* Effect.tryPromise({
+              try: () =>
+                drive.files.get(
+                  {
+                    fileId,
+                    alt: "media",
+                    supportsAllDrives: true,
+                  },
+                  { responseType: "arraybuffer" },
+                ),
+              catch: (error) =>
+                new GoogleDriveFileError({
+                  message: `Failed to download file ${fileId}: ${error}`,
+                }),
+            });
+
+            return new Uint8Array(response.data as ArrayBuffer);
+          }),
+
+        /**
+         * Search for files by name, optionally within a specific folder.
+         * Returns all matching files (there may be multiple with the same name).
+         */
+        searchFiles: (params: SearchParams) =>
+          Effect.gen(function* () {
+            const { fileName, parentId, sharedDriveId } = params;
+
+            const authClient = yield* authService.getAuthenticatedClient();
+            const drive = google.drive({ version: "v3", auth: authClient });
+
+            // Build query - escape single quotes in filename
+            const escapedName = fileName.replace(/'/g, "\\'");
+            let query = `name='${escapedName}' and trashed=false`;
+
+            if (parentId) {
+              query = `'${parentId}' in parents and ${query}`;
+            }
+
+            const listParams: drive_v3.Params$Resource$Files$List = {
+              q: query,
+              pageSize: 100,
+              fields:
+                "nextPageToken,files(id,name,mimeType,parents,size,modifiedTime)",
+              supportsAllDrives: true,
+              includeItemsFromAllDrives: true,
+            };
+
+            if (sharedDriveId) {
+              listParams.driveId = sharedDriveId;
+              listParams.corpora = "drive";
+            }
+
+            const allFiles = yield* fetchAllPages(drive, listParams);
+
+            return allFiles.map(
+              (file): GoogleDriveFile => ({
+                id: file.id || "",
+                name: file.name || "",
+                mimeType: file.mimeType || "",
+                parents: file.parents || [],
+                ...(file.size && { size: file.size }),
+                ...(file.modifiedTime && { modifiedTime: file.modifiedTime }),
+              }),
+            );
+          }),
       } as const;
     }),
-    dependencies: [GoogleDriveAuthService.Default],
+    dependencies: [GoogleDriveAuthService.Default, NodeContext.layer],
   },
 ) {}
-
-// Cache helper functions
-const readCache = (
-  cacheKey: string,
-): Effect.Effect<GoogleDriveFile[], GoogleDriveFileError> =>
-  Effect.tryPromise({
-    try: async () => {
-      const cachePath = join(process.cwd(), ".cache", `${cacheKey}.json`);
-      const cachedData = await readFile(cachePath, "utf-8");
-      return JSON.parse(cachedData) as GoogleDriveFile[];
-    },
-    catch: (error) =>
-      new GoogleDriveFileError({
-        message: `Failed to read cache: ${error}`,
-      }),
-  });
-
-const writeCache = (
-  cacheKey: string,
-  data: GoogleDriveFile[],
-): Effect.Effect<void, GoogleDriveFileError> =>
-  Effect.tryPromise({
-    try: async () => {
-      const cachePath = join(process.cwd(), ".cache", `${cacheKey}.json`);
-      await writeFile(cachePath, JSON.stringify(data, null, 2));
-    },
-    catch: (error) =>
-      new GoogleDriveFileError({
-        message: `Failed to write cache: ${error}`,
-      }),
-  });
