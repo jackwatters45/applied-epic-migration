@@ -1,7 +1,7 @@
 import { FileSystem } from "@effect/platform";
 import { NodeContext } from "@effect/platform-node";
 import { Effect, Schema } from "effect";
-import { GoogleAuth } from "google-auth-library";
+import { JWT } from "google-auth-library";
 import { ConfigService } from "../../lib/config.js";
 
 // Error types for Google Drive authentication
@@ -13,6 +13,11 @@ export class GoogleDriveAuthError extends Schema.TaggedError<GoogleDriveAuthErro
   },
 ) {}
 
+interface ServiceAccountKey {
+  client_email: string;
+  private_key: string;
+}
+
 // Google Drive Auth Service
 export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthService>()(
   "GoogleDriveAuthService",
@@ -20,14 +25,7 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
     effect: Effect.gen(function* () {
       const config = yield* ConfigService;
       const fs = yield* FileSystem.FileSystem;
-      let authCache: GoogleAuth | null = null;
-
-      const createGoogleAuth = () => {
-        return new GoogleAuth({
-          keyFile: config.googleDrive.serviceAccountKeyPath,
-          scopes: [...config.googleDrive.scopes],
-        });
-      };
+      let authCache: JWT | null = null;
 
       return {
         getAuthenticatedClient: () =>
@@ -40,7 +38,7 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
             // Validate that the service account key file exists and is readable
             const keyPath = config.googleDrive.serviceAccountKeyPath;
 
-            yield* fs.readFileString(keyPath).pipe(
+            const keyFileContent = yield* fs.readFileString(keyPath).pipe(
               Effect.mapError(
                 () =>
                   new GoogleDriveAuthError({
@@ -50,12 +48,22 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
               ),
             );
 
-            // Create Google Auth instance
-            const googleAuth = createGoogleAuth();
+            const keyData = JSON.parse(keyFileContent) as ServiceAccountKey;
 
-            // Test authentication by getting credentials
+            // Get impersonation email for domain-wide delegation
+            const impersonateEmail = yield* config.googleDrive.impersonateEmail;
+
+            // Create JWT client with domain-wide delegation
+            const jwtClient = new JWT({
+              email: keyData.client_email,
+              key: keyData.private_key,
+              scopes: [...config.googleDrive.scopes],
+              subject: impersonateEmail,
+            });
+
+            // Authorize the client
             yield* Effect.tryPromise({
-              try: () => googleAuth.getCredentials(),
+              try: () => jwtClient.authorize(),
               catch: (error) =>
                 new GoogleDriveAuthError({
                   message: `Service account authentication failed: ${error}`,
@@ -63,27 +71,33 @@ export class GoogleDriveAuthService extends Effect.Service<GoogleDriveAuthServic
                 }),
             });
 
-            // Cache the authenticated client
-            authCache = googleAuth;
+            // Log authentication mode
+            console.log(
+              `Authenticated as service account, impersonating: ${impersonateEmail}`,
+            );
 
-            return googleAuth;
+            // Cache the authenticated client
+            authCache = jwtClient;
+
+            return jwtClient;
           }),
 
         getServiceAccountEmail: () =>
           Effect.gen(function* () {
-            const credentials = yield* Effect.tryPromise({
-              try: () => {
-                const auth = createGoogleAuth();
-                return auth.getCredentials();
-              },
-              catch: (error) =>
-                new GoogleDriveAuthError({
-                  message: `Failed to get service account email: ${error}`,
-                  status: 401,
-                }),
-            });
+            const keyPath = config.googleDrive.serviceAccountKeyPath;
 
-            return credentials.client_email;
+            const keyFileContent = yield* fs.readFileString(keyPath).pipe(
+              Effect.mapError(
+                () =>
+                  new GoogleDriveAuthError({
+                    message: `Cannot read service account key file at: ${keyPath}`,
+                    status: 500,
+                  }),
+              ),
+            );
+
+            const keyData = JSON.parse(keyFileContent) as ServiceAccountKey;
+            return keyData.client_email;
           }),
       } as const;
     }),

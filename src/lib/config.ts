@@ -21,6 +21,9 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         "GOOGLE_DRIVE_SCOPES",
       ).pipe(Config.withDefault(["https://www.googleapis.com/auth/drive"]));
 
+      // Email of the user to impersonate for domain-wide delegation
+      const impersonateEmail = Config.succeed("jack@trollycare.com");
+
       const metadataCsvPath = Config.succeed(
         "data/BORDE05_AttachmentMetaData_Report.xlsx - Results.csv",
       );
@@ -43,6 +46,7 @@ export class ConfigService extends Effect.Service<ConfigService>()(
         googleDrive: {
           serviceAccountKeyPath,
           scopes,
+          impersonateEmail,
         },
         metadataCsvPath,
         sharedClientDriveId,
